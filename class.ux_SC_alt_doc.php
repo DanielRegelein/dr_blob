@@ -150,16 +150,22 @@ class ux_SC_alt_doc extends SC_alt_doc {
 			//----------------------------------------------------------------------------------
 			if ( key($this->editconf) == 'tx_drblob_content' ) {
 				$rsID = key( $this->editconf['tx_drblob_content'] );
+
+				if ( isset( $_POST['_savedoknew_x'] ) ) {
+					$rsID = $rsID * (-1);
+				}
+
 				if ( is_array( $_FILES['data']['tmp_name']['tx_drblob_content'] ) ) {
+
 					$rsHashID = key( $_FILES['data']['tmp_name']['tx_drblob_content'] );
 					$fileName = $_FILES['data']['tmp_name']['tx_drblob_content'][$rsHashID]['blob_data'];
-					
+
 					if ( ( !empty( $fileName ) ) && ( $fileName != 'none' ) ) {
 						//Open File
 						$filePointer = fopen( $fileName, 'r' );
 							$data = addslashes( fread( $filePointer, filesize( $fileName ) ) );
 						fclose( $filePointer );
-		
+
 						//Prepare UPDATE-Array. Quoting the values is not nessesary, because this is done by 
 						//the method $GLOBALS['TYPO3_DB']->UPDATEquery that is called from $GLOBALS['TYPO3_DB']->exec_UPDATEquery
 						$arrValues = array(
@@ -168,9 +174,8 @@ class ux_SC_alt_doc extends SC_alt_doc {
 							'blob_size' => $_FILES['data']['size']['tx_drblob_content'][$rsHashID]['blob_data'],
 							'blob_type' => $_FILES['data']['type']['tx_drblob_content'][$rsHashID]['blob_data']
 						);
-						$GLOBALS['TYPO3_DB']->exec_UPDATEquery( 'tx_drblob_content', 'uid='.$rsID, $arrValues ); 
+						$rslt = $GLOBALS['TYPO3_DB']->exec_UPDATEquery( 'tx_drblob_content', 'uid='.$rsID, $arrValues );
 					}
-					
 				}
 			}
 			//----------------------------------------------------------------------------------

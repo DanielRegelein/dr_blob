@@ -113,6 +113,30 @@ class tx_drblob_pi1 extends tslib_pibase {
 				return $this->pi_wrapInBaseClass( $this->vTop( $content ) );
 			//break;
 			
+			case 'personal_list':
+				if ( strstr( $this->cObj->currentRecord, 'tt_content' ) ) {
+					if ( $GLOBALS['TSFE']->loginUser ) {
+						
+						$rsltPIDList = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+							'uid_pages',
+							'tx_drblob_personal',
+							'uid_feusers=\'' . $GLOBALS['TSFE']->fe_user->user['uid'] . '\''
+						);
+						$this->conf['pidList'] = null;
+						while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rsltPIDList ) ) {
+							$this->conf['pidList'] .= $this->conf['pidList'] ? ',' : '';
+							$this->conf['pidList'] .= $row['uid_pages'];
+						}
+						$this->conf['recursive'] = 0;
+
+						return $this->pi_wrapInBaseClass( $this->vPersonal_List( $content ) );
+
+					}
+				} else {
+					return '';
+				}
+			break;
+			
 			case 'list': 
 			default:
 				if ( strstr( $this->cObj->currentRecord, 'tt_content' ) ) {
@@ -140,6 +164,9 @@ class tx_drblob_pi1 extends tslib_pibase {
 		$ffQrySortDirection = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderDirection', 'sSettings' );
 		$ffQryLimit = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlLimitCount', 'sSettings' );
 		$ffSinglePID = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlSinglePID', 'sSettings' );
+		
+		$ffPersonalShowAddBtn = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlAdd2Fav', 'sSettings' );
+		
 		$singlePID = ( $ffSinglePID ? $ffSinglePID : $GLOBALS['TSFE']->id );
 		$tmplFile = $this->getTemplateFile();
 		$this->conf['listView.']['alternatingLayouts'] = intval( $this->conf['listView.']['alternatingLayouts'] ) > 0 ? intval( $this->conf['listView.']['alternatingLayouts'] ) : 2;
@@ -233,19 +260,27 @@ class tx_drblob_pi1 extends tslib_pibase {
 					'###BLOB_SORTLINK_TSTAMP###' => $this->getFieldHeader_sortLink('tstamp'),
 					'###BLOB_SORTLINK_AUTHOR###' => $this->getFieldHeader_sortLink('cruser_id'),
 				);
-				return $this->cObj->substituteMarkerArrayCached( 
+				
+				$extContent = $this->cObj->substituteMarkerArrayCached( 
 					$tmpl['total'],
 					$markerArray,
 					array(
 						'###CONTENT###'=> implode( '', $arrItems ),
 					)
 				);
+				
 			} else {//End of if ( $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) > 0 )
 
 				$tmpl['total'] = $this->cObj->getSubpart( $tmpl['total'], '###TEMPLATE_LIST_NOITEMS###' );
-				return $this->cObj->substituteMarkerArrayCached( $tmpl['total'] );
+				$extContent = $this->cObj->substituteMarkerArrayCached( $tmpl['total'] );
 	
 			}//End of the Else-Part of if ( $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) > 0 )
+
+			if ( $ffPersonalShowAddBtn ) {
+				$extContent .= $this->vPersonal_Config();
+			}				
+			return $extContent;
+
 		}//End of if ( $rslt )
 	}
 
@@ -346,6 +381,180 @@ class tx_drblob_pi1 extends tslib_pibase {
 		return $rtnValue;
 	}
 
+	
+	/**
+	 * @name	vPersonal_List
+	 * Method to display a container containing a user's personal selection of items.
+	 * 
+	 * @param	String	$content
+	 * @return	String	Parsed String containing the personal list
+	 * @access	private
+	 */
+	/*private*/function vPersonal_List( $content ) {
+		$ffSinglePID = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlSinglePID', 'sSettings' );
+		$ffQryLimit = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlLimitCount', 'sSettings' );
+		
+		$singlePID = ( $ffSinglePID ? $ffSinglePID : $GLOBALS['TSFE']->id );
+		$tmplFile = $this->getTemplateFile();
+		
+		$this->internal['results_at_a_time'] = t3lib_div::intInRange( $ffQryLimit, 1, 100, 5 );
+		$this->pi_listFields = 'uid,title,description,crdate,tstamp,l18n_parent';
+		$rslt = $this->pi_exec_query( 'tx_drblob_content', 0, 'AND tx_drblob_content.sys_language_uid = ' . $this->sys_language_uid, '', '', 'tstamp DESC', '' );
+
+		$tmpl['total'] = $this->cObj->fileResource( $tmplFile );
+		if ( $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) > 0 ) {
+			$this->conf['personalView.']['alternatingLayouts'] = intval( $this->conf['personalView.']['alternatingLayouts'] ) > 0 ? intval( $this->conf['personalView.']['alternatingLayouts'] ) : 2;
+			
+			$tmpl['total'] = $this->cObj->getSubpart( $tmpl['total'], '###TEMPLATE_PERSONAL###' );
+			$tmpl['item'] = $this->getLayouts( $tmpl['total'], $this->conf['personalView.']['alternatingLayouts'], 'BLOBITEM' );
+			$arrItems = array();
+			$count = 0;
+			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rslt ) )	{
+				$lUid = null;
+				$lUid = ( $this->sys_language_uid == 0 ) ? ( $this->internal['currentRow']['uid'] ) : ( $this->internal['currentRow']['l18n_parent'] ); 
+
+				$btnDownload = null;
+				if ( $this->blobExists( $this->internal['currentRow']['uid'] ) ) {
+					$btnDownload = $this->pi_linkTP( 
+						$this->pi_getLL('personal.button.download'), 
+						array( $this->prefixId => array( 
+								'downloadUid' => $this->internal['currentRow']['uid'] 
+							) 
+						), 
+						false, 
+						$GLOBALS['TSFE']->id 
+					);
+				}
+				
+				$arrItems[] = $this->cObj->substituteMarkerArrayCached( 
+					$tmpl['item'][$count%count( $tmpl['item'] )],
+					array_merge( 
+						$this->getGlobalMarkerArray( 'personal' ),
+						array(
+							'###BLOB_TITLE_LINK###' => $this->pi_list_linkSingle( 
+								$this->getFieldContent('title'), 
+								$lUid, //$this->internal['currentRow']['uid'],
+								true, 
+								array(), 
+								false, 
+								$singlePID 
+							),
+							'###BLOB_MORE_LINK###' => $this->pi_list_linkSingle( 
+								$this->pi_getLL('personal.button.show'), 
+								$lUid, //$this->internal['currentRow']['uid'], 
+								true, 
+								array(),
+								false, 
+								$singlePID 
+							),
+							'###BLOB_DOWNLOAD_LINK###' => $btnDownload
+						)
+					)
+				);
+				$count++;
+			}
+
+			$subpartArray = array();
+			$wrappedSubpartArray = array();
+			$markerArray = array(  );
+			$subpartArray['###CONTENT###'] = implode( '', $arrItems );
+			
+			return $this->cObj->substituteMarkerArrayCached( 
+				$tmpl['total'],
+				$markerArray,
+				$subpartArray,
+				$wrappedSubpartArray
+			);
+			
+		} else {
+
+			$tmpl['total'] = $this->cObj->getSubpart( $tmpl['total'], '###TEMPLATE_PERSONAL_NOITEMS###' );
+			return $this->cObj->substituteMarkerArrayCached( $tmpl['total'] );
+
+		}
+		
+	}
+	
+	
+	/**
+	 * @name	vPersonal_Config
+	 * Method to display the button to add or remove folders to/from the current user's favorites.
+	 * 
+	 * @access 	private
+	 * @return	Parsed String containing the button to add a folder 
+	 */
+	/*private*/function vPersonal_Config() {
+		if ( $GLOBALS['TSFE']->loginUser ) {
+			
+			$GLOBALS['TSFE']->no_cache = true;
+			
+			if ( $this->piVars['dr_blob']['action'] == 'add' ) {
+				
+				//Delete all items first...
+				$rsltDelete = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
+					'tx_drblob_personal',
+					'uid_feusers = \'' . $GLOBALS['TSFE']->fe_user->user['uid'] . '\' AND ' .
+						'uid_pages IN ( ' . $this->piVars['dr_blob']['items'] . ' ) '
+				);
+				
+				//Prepare Insert Values
+				$arrItems = explode( ',', $this->piVars['dr_blob']['items'] );
+				for( $i=0; $i < count($arrItems); $i++ ) {
+					$rsltInsert= $GLOBALS['TYPO3_DB']->exec_INSERTquery(
+						'tx_drblob_personal',
+						array(
+							'uid_feusers' => $GLOBALS['TSFE']->fe_user->user['uid'],
+							'uid_pages' => $arrItems[$i]
+						)
+					);			
+				}
+			} else if ( $this->piVars['dr_blob']['action'] == 'remove' ) {
+				
+				//Delete all items first...
+				$rsltDelete = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
+					'tx_drblob_personal',
+					'uid_feusers = \'' . $GLOBALS['TSFE']->fe_user->user['uid'] . '\' AND ' .
+						'uid_pages IN ( ' . $this->piVars['dr_blob']['items'] . ' ) '
+				);
+			}
+			unset( $this->piVars['dr_blob'] );
+
+			$pidList = $this->pi_getPidList( $this->conf['pidList'], $this->conf['recursive'] );
+			$rslt = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'count(*)',
+				'tx_drblob_personal',
+				'uid_feusers = \'' . $GLOBALS['TSFE']->fe_user->user['uid'] . '\' AND ' .
+					'uid_pages IN ( ' . $pidList . ' ) '
+			);
+			$arr = $GLOBALS['TYPO3_DB']->sql_fetch_row( $rslt );
+			
+			$arrValues = array(
+				'###FORM_METHOD###' => 'post',
+				'###FORM_TARGET###' => $this->cObj->getTypoLink_URL( $GLOBALS['TSFE']->id, array( 'no_cache' => 1 ) ),
+				'###ACTION###' => '',
+				'###ITEMS###' => $pidList
+			);
+			
+			$tmplFile = $this->getTemplateFile();
+			$tmplContent = $this->cObj->fileResource( $tmplFile );
+			if ( $arr[0] != ( substr_count( $pidList, ',' ) + 1 ) ) {
+				$arrValues['###ACTION###'] = 'add';
+				$tmplSubpart = '###TEMPLATE_PERSONAL_ADD_FOLDER###';
+			} else {
+				$arrValues['###ACTION###'] = 'remove';
+				$tmplSubpart = '###TEMPLATE_PERSONAL_REMOVE_FOLDER###';
+			}
+			
+			return $this->cObj->substituteMarkerArrayCached( 
+				$this->cObj->getSubpart( $tmplContent, $tmplSubpart ), 
+				$arrValues
+			);
+			
+		} else {
+			return '';
+		}
+	}
+	
 
 	/**
 	 * @name vSingle
@@ -556,7 +765,16 @@ class tx_drblob_pi1 extends tslib_pibase {
 
 		$this->internal['currentTable'] = 'tx_drblob_content'; 
 		$this->internal['currentRow'] = $this->pi_getRecord( 'tx_drblob_content', $this->piVars['downloadUid'] ); 
-            
+           
+		//write the download_count field
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+			'tx_drblob_content',
+			'uid= \'' . $this->piVars['downloadUid'] . '\'',
+			array(
+				'download_count' => ( $this->internal['currentRow']['download_count']+1 )
+			)
+		);
+		
 		$contentType = $this->getFieldContent( 'blob_type' ); 
 		if ( empty( $contentType ) ) { 
 			$contentType = 'text/plain'; 
@@ -663,6 +881,9 @@ class tx_drblob_pi1 extends tslib_pibase {
 			case 'list':
 				$dateWrap = $this->conf['listView.']['date_stdWrap'] ? $this->conf['listView.']['date_stdWrap'] : $this->pi_getLL( 'list.date_stdWrap' );
 			break;
+			case 'personal':
+				$dateWrap = $this->conf['personalView.']['date_stdWrap'] ? $this->conf['personalView.']['date_stdWrap'] : $this->pi_getLL( 'personal.date_stdWrap' );
+			break;
 		}
 
 		$arrMarker = array(
@@ -672,6 +893,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 			'###BLOB_AUTHOR_EMAIL###' => $this->getFieldContent('author_email'),
 			'###BLOB_CRDATE###' => date( $dateWrap, $this->getFieldContent('crdate')),
 			'###BLOB_LASTCHANGE###' => date( $dateWrap, $this->getFieldContent('tstamp')),
+			'###BLOB_DOWNLOADCOUNT###' => $this->getFieldContent('download_count'),
 			'###BLOB_FILENAME###' => $this->getFieldContent('blob_name'),
 			'###BLOB_FILESIZE###' => t3lib_div::formatSize( $this->getFieldContent('blob_size'), (' B| KB| MB| GB' ) ),
 			'###BLOB_FILETYPE###' => $this->getFieldContent('blob_type'),
@@ -682,6 +904,13 @@ class tx_drblob_pi1 extends tslib_pibase {
 			case 'single':
 				$arrMarker['###BLOB_DATA_EXISTS_SWITCH_START###'] = $this->blobExists( $this->piVars['showUid'] ) ? '' : ' <!-- ';
 				$arrMarker['###BLOB_DATA_EXISTS_SWITCH_END###'] = $this->blobExists( $this->piVars['showUid'] ) ? '' : ' --> ';
+			break;
+			case 'personal':
+				$toCut = intval( $this->conf['personalView.']['lengthOfDescription'] ) > 0 ? intval( $this->conf['personalView.']['lengthOfDescription'] ) : 150;
+				$arrMarker['###BLOB_DESCRIPTION###'] = strip_tags( $arrMarker['###BLOB_DESCRIPTION###'] );
+				if ( strlen( $arrMarker['###BLOB_DESCRIPTION###'] ) > $toCut ) {
+					$arrMarker['###BLOB_DESCRIPTION###'] = substr( $arrMarker['###BLOB_DESCRIPTION###'], 0, -(strlen( $arrMarker['###BLOB_DESCRIPTION###'] ) - $toCut ) ) . '...';
+				}
 			break;
 			case 'top':
 				$toCut = intval( $this->conf['topView.']['lengthOfDescription'] ) > 0 ? intval( $this->conf['topView.']['lengthOfDescription'] ) : 150;

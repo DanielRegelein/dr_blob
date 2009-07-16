@@ -15,3 +15,8 @@ plugin.tx_drblob_pi1.listView.alternatingLayouts = 2
 plugin.tx_drblob_pi1.topView.date_stdWrap = m/d/Y
 plugin.tx_drblob_pi1.topView.alternatingLayouts = 2
 plugin.tx_drblob_pi1.topView.lenghtOfDescription = 150
+
+//Personal
+plugin.tx_drblob_pi1.personalView.date_stdWrap = m/d/Y h:i
+plugin.tx_drblob_pi1.personalView.alternatingLayouts = 2
+plugin.tx_drblob_pi1.personalView.lenghtOfDescription = 150

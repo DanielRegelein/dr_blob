@@ -120,6 +120,89 @@ Variables:
 
 
 
+<!-- ###TEMPLATE_PERSONAL### begin -->
+	<table cellpadding="4" cellspacing="1" border="0" width="300">
+		<tr>
+			<th class="tx_drblob_personalitem_header">&nbsp;</th>
+		</tr>
+	<!-- ###CONTENT### begin -->
+
+		<!-- ###BLOBITEM### begin -->
+			<tr>
+				<td class="tx_drblob_personalitem1">
+					<font face="verdana" size="1" color="black">
+						###BLOB_LASTCHANGE###<br />
+						###BLOB_TITLE_LINK###
+						<p style="margin:0 0 0 0;">###BLOB_DESCRIPTION###</p>
+						###BLOB_MORE_LINK###<br />
+					</font><br />
+				</td>
+			</tr>
+		<!-- ###BLOBITEM### end -->
+			
+		<!-- ###BLOBITEM_1### begin -->
+			<tr>
+				<td class="tx_drblob_personalitem2">
+					<font face="verdana" size="1" color="black">
+						###BLOB_LASTCHANGE###<br />
+						###BLOB_TITLE_LINK###
+						<p style="margin:0 0 0 0;">###BLOB_DESCRIPTION###</p>
+						###BLOB_MORE_LINK###<br />
+					</font><br />
+				</td>
+			</tr>
+		<!-- ###BLOBITEM_1### end -->
+	
+		<!-- ###BLOBITEM_2### begin -->
+			<tr>
+				<td class="tx_drblob_personalitem3">
+					<font face="verdana" size="1" color="black">
+						###BLOB_LASTCHANGE###<br />
+						###BLOB_TITLE_LINK###
+						<p style="margin:0 0 0 0;">###BLOB_DESCRIPTION###</p>
+						###BLOB_MORE_LINK###<br />
+					</font><br />
+				</td>
+			</tr>
+		<!-- ###BLOBITEM_2### end -->
+	<!-- ###CONTENT### end -->
+		<tr>
+			<th class="container_footer">&nbsp;</td>
+		</tr>
+	</table>
+<!-- ###TEMPLATE_PERSONAL### end -->
+
+<!-- ###TEMPLATE_PERSONAL_NOITEMS### begin -->
+	<table cellpadding="4" cellspacing="1" border="0" width="300">
+		<tr>
+			<th class="tx_drblob_personalitem_header">Sorry, no Items found</th>
+		</tr>
+	</table>
+<!-- ###TEMPLATE_PERSONAL_NOITEMS### end -->
+
+
+<!-- ###TEMPLATE_PERSONAL_ADD_FOLDER### begin -->
+	<form method="###FORM_METHOD###" action="###FORM_TARGET###">
+		<input type="hidden" name="tx_drblob_pi1[dr_blob][action]" value="###ACTION###">
+		<input type="hidden" name="tx_drblob_pi1[dr_blob][items]" value="###ITEMS###">
+		<input type="Submit" value="Add this list's content to my Favorites">
+	</form>
+<!-- ###TEMPLATE_PERSONAL_ADD_FOLDER### end -->
+
+<!-- ###TEMPLATE_PERSONAL_REMOVE_FOLDER### begin -->
+	<form method="###FORM_METHOD###" action="###FORM_TARGET###">
+		<input type="hidden" name="tx_drblob_pi1[dr_blob][action]" value="###ACTION###">
+		<input type="hidden" name="tx_drblob_pi1[dr_blob][items]" value="###ITEMS###">
+		<input type="Submit" value="Remove this list's content from my Favorites">
+	</form>
+<!-- ###TEMPLATE_PERSONAL_REMOVE_FOLDER### end -->
+
+
+
+
+
+
+
 
 
 <!-- ###TEMPLATE_SINGLE### begin -->
@@ -154,7 +237,10 @@ Variables:
 				<td width="50%" class="box"><b>Filesize:</b> ###BLOB_FILESIZE###</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="box">###BLOB_DOWNLOAD_LINK###</td>
+				<td colspan="2" class="box">###BLOB_FILEICON### ###BLOB_DOWNLOAD_LINK###</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="box">This file was downloaded ###BLOB_DOWNLOADCOUNT### times.</td>
 			</tr>
 		###BLOB_DATA_EXISTS_SWITCH_END###
 		</table>

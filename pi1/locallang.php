@@ -24,7 +24,10 @@ $LOCAL_LANG = Array (
 		'top.button.download' => '[download]',
 		'top.button.show' => '[more]',
 		'top.date_stdWrap' => 'm/d/Y h:i',
-		'search.button.search' => 'Search'
+		'search.button.search' => 'Search',
+		'personal.date_stdWrap' =>'m/d/Y h:i',
+		'personal.button.download' => '[download]',
+		'personal.button.show' => '[more]',
 	),
 	'dk' => Array (
 	),
@@ -47,7 +50,11 @@ $LOCAL_LANG = Array (
 		'top.button.download' => '[download]',
 		'top.button.show' => '[mehr]',
 		'top.date_stdWrap' => 'd.m.Y H:i',
-		'search.button.search' => 'Suchen'
+		'search.button.search' => 'Suchen',
+		'personal.date_stdWrap' =>'d.m.Y H:i',
+		'personal.button.download' => '[download]',
+		'personal.button.show' => '[mehr]',
+
 	),
 	'no' => Array (
 	),
