@@ -64,9 +64,9 @@ t3lib_div::loadTCA('tt_content');
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1']='layout,select_key,recursive,pages';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='pi_flexform';
 
-t3lib_extMgm::addPlugin(array('LLL:EXT:dr_blob/locallang_tca.xml:tt_content.list_type_pi1', $_EXTKEY.'_pi1'),'list_type');
+t3lib_extMgm::addPlugin( array( 'LLL:EXT:dr_blob/locallang_tca.xml:tt_content.list_type_pi1', $_EXTKEY.'_pi1' ),'list_type');
 t3lib_extMgm::addStaticFile( $_EXTKEY, 'static/', 'File List (dr_blob)' );
-t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi1', 'FILE:EXT:dr_blob/flexform_ds.xml');
+t3lib_extMgm::addPiFlexFormValue( $_EXTKEY.'_pi1', 'FILE:EXT:dr_blob/flexform_ds.xml' );
 t3lib_extMgm::addLLrefForTCAdescr('tx_drblob_content','EXT:dr_blob/locallang_csh_txdrblobcontent.xml');
 t3lib_extMgm::addLLrefForTCAdescr('tx_drblob_category','EXT:dr_blob/locallang_csh_txdrblobcategory.xml');
 

@@ -114,6 +114,31 @@ $TCA['tx_drblob_content'] = array (
 				'type'=>'passthrough' 
 			) 
 		),
+		't3ver_label' => array(
+			'displayCond' => 'FIELD:t3ver_label:REQ:true',
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
+			'config' => array(
+				'type'=>'none',
+				'cols' => 27
+			)
+		),
+		'cruser_id' => array(
+			'displayCond' => 'HIDE_FOR_NON_ADMINS',
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.author',
+			'config' => array(
+				'type' => 'select',
+				'items' => array (
+					array('', 0),
+				),
+				'iconsInOptionTags' => true,
+				'foreign_table' => 'be_users',
+				'foreign_table_where' => '',
+				'foreign_table_loadIcons' => true,
+				'rootlevel' => true,
+			)
+		),
 		'title' => array (		
 			'exclude' => 0,
 			'l10n_mode' => 'prefixLangTitle',
@@ -250,7 +275,7 @@ $TCA['tx_drblob_content'] = array (
 
 	'palettes' => array (
 		'1' => array( 'showitem' => 'starttime,endtime,fe_group' ),
-		'2' => array( 'showitem' => 'l18n_parent' ),
+		'2' => array( 'showitem' => 'l18n_parent,t3ver_label,cruser_id' ),
 		'3' => array( 'showitem' => 'blob_size,blob_type,blob_checksum'  )
 	)
 );

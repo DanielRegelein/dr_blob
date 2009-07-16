@@ -1,4 +1,14 @@
-2008-06-xx  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
+2009-01-25
+	* Feature: Added PageTS-Conf-Vars and a Hook to enable Save&Preview-Function
+	* Feature: Integrated the Files with the indexed_search-engine.
+	* Feature: Added the vFolder-Option, currently in an experimental-state
+	
+	* Change: Now using the new documentation layout
+	
+	* Bugfix: Fixed a bug preventing the SINGLE-Mode from showing the File checksum
+	* Bugfix: Fixed the array_merge-Warning
+
+2008-06-22  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
 
 	* Release of version 1.7.0
 	

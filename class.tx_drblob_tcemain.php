@@ -29,7 +29,7 @@
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  * @package 	dr_blob
  * @filesource	class.tx_drblob_tcemain.php
- * @version		1.7.0
+ * @version		2.0.0
  * @since 		1.5.0, 2007-04-10
  */
 class tx_drblob_tcemain {
@@ -104,7 +104,34 @@ class tx_drblob_tcemain {
 			}
 		}
 	}
-
+	
+	
+	/**
+	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain) when a record is saved. This is used to preview a record
+	 *
+	 * @param	array		$fieldArray: The field names and their values to be processed (passed by reference)
+	 * @param	string		$table: The table TCEmain is currently processing
+	 * @param	string		$id: The records id (if any)
+	 * @param	object		$pObj: Reference to the parent object (TCEmain)
+	 * @return	void
+	 * @access public
+	 */
+	function processDatamap_preProcessFieldArray(&$fieldArray, $table, $id, &$pObj) {
+		
+		if( $table == $this->dbVars['table'] ) {
+			if ( isset( $GLOBALS['_POST']['_savedokview_x'] ) ) {
+				$pagesTSconf = t3lib_BEfunc::getPagesTSconfig( $GLOBALS['_POST']['popViewId'] );
+				if ( $pagesTSconf['tx_drblob.']['previewPid'] ) {
+					if( empty( $pagesTSconf['tx_drblob.']['previewMode'] ) || !array_key_exists( trim( $pagesTSconf['tx_drblob.']['previewMode'] ), array( 'list' => '', 'single' => '' ) ) ) {
+						$pagesTSconf['tx_drblob.']['previewMode']  = 'single';
+					}
+					$GLOBALS['_POST']['popViewId_addParams'] = ($fieldArray['sys_language_uid']>0?'&L='.$fieldArray['sys_language_uid']:'').'&no_cache=1' . ( ( $pagesTSconf['tx_drblob.']['previewMode']  == 'single' ) ? '&tx_drblob_pi1[showUid]='.$id : '' );
+					$GLOBALS['_POST']['popViewId'] = $pagesTSconf['tx_drblob.']['previewPid'];
+				}	
+			}
+		}
+	}
+	
 	
 	/**
 	 * @name		__toString

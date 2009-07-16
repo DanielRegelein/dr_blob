@@ -52,6 +52,7 @@
 			<label index="list_field_blob_checksum">Checksum</label>
 			<label index="list_field_cruser_id">Author</label>
 			<label index="list_field_crdate">Date</label>
+			<label index="list_field_version">Version</label>
 			<label index="list_field_tstamp">Last Change</label>
 			<label index="list_field_age">Age</label>
 			<label index="list_field_categories">Categories</label>
@@ -73,6 +74,7 @@
 			<label index="top_button_download">[download]</label>
 			<label index="top_button_show">[more]</label>
 			<label index="top_dateFormat">m/d/Y h:i</label>
+			<label index="list_vfoldertree">Folder Tree</label>
 			<label index="noRecordsFound">Sorry, no Items available</label>
 		</languageKey>
 	</data>

@@ -30,16 +30,15 @@
  * @copyright 	Copyright &copy; 2005-present Daniel Regelein
  * @package 	dr_blob
  * @filesource 	pi1/class.tx_drblob_pi1_wizicon.php
- * @version 	1.5.1
+ * @version 	2.0.0
  */
 class tx_drblob_pi1_wizicon {
 	function proc($wizardItems)	{
 		global $LANG;
 
 		$LL = $this->includeLocalLang();
-
 		$wizardItems['plugins_tx_drblob_pi1'] = array(
-			'icon'=>t3lib_extMgm::extRelPath('dr_blob').'pi1/ce_wiz.gif',
+			'icon'=>t3lib_extMgm::extRelPath('dr_blob').'pi1/' . ( t3lib_extMgm::isLoaded( 't3skin' ) ? 'ce_wiz.gif' : 'ce_wiz_oldskin.gif' ),
 			'title'=>$LANG->getLLL('pi1_title',$LL),
 			'description'=>$LANG->getLLL('pi1_plus_wiz_description',$LL),
 			'params'=>'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=dr_blob_pi1'

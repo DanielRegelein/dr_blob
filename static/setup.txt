@@ -1,5 +1,5 @@
 ###
-# This is the default TS-setup for dr_blob
+# This is the default TS-setup for dr_blob, Version 1.8.0
 ##
 
 plugin.tx_drblob_pi1 = USER
@@ -13,8 +13,8 @@ plugin.tx_drblob_pi1 {
   tryToOpenFileInline = 1
 
 
-  //ListView
-  listView {
+  //Define a Standard Configuration
+  dummyView {
     alternatingLayouts = {$plugin.tx_drblob.alternatingLayouts}
     categoryDivider = ,
     lenghtOfDescription = {$plugin.tx_drblob.lenghtOfDescription}
@@ -72,9 +72,11 @@ plugin.tx_drblob_pi1 {
     }
     
     filechecksum_stdWrap {
+      wrap = |
     }
     
     filetype_stdWrap {
+      wrap = |
     }
     
     moreLink_stdWrap {
@@ -85,15 +87,39 @@ plugin.tx_drblob_pi1 {
       }
     }
     
+	version_stdWrap {
+      wrap = |
+    }
+    
     title_stdWrap {
       wrap = |
     }
-
+  }
+  
+  listView < .dummyView 
+  listView {
+    vFolderTree_stdWrap {
+      wrap = <div class="tx_drblob_list-vFolderTree">|</div>
+    }
+    
+    vFolderTitleNO_stdWrap {
+      wrap = |
+    }
+      
+    vFolderTitleACT_stdWrap {
+      wrap = <b>|</b>
+    }
+    
+    vFolderIcon = IMAGE
+    vFolderIcon {
+      file = typo3/sysext/t3skin/icons/gfx/i/sysf.gif
+      border = 0
+      params = style="vertical-align: bottom;" align="top" class="c-recIcon"
+    }
   }
 
-  
   //TopView
-  topView < .listView
+  topView < .dummyView
   topView {
     category_stdWrap {
       wrap = <p>|</p>
@@ -108,7 +134,7 @@ plugin.tx_drblob_pi1 {
   
   
   //PersonalView
-  personalView < .listView
+  personalView < .dummyView
   personalView {
     category_stdWrap {
       wrap = <p>|</p>
@@ -123,7 +149,7 @@ plugin.tx_drblob_pi1 {
 
 
   //SingleView
-  singleView < .listView
+  singleView < .dummyView
   singleView {
     alternatingLayouts >
     substitutePagetitle = 1
@@ -133,15 +159,18 @@ plugin.tx_drblob_pi1 {
     categoryDivider = </li><li>
     category_stdWrap.wrap = <ul><li>|</li></ul>
 
+    description_stdWrap {
+      stripHtml = 0
+      crop >
+    }
+
     filesize_stdWrap.bytes.labels = Bytes| KiloBytes| MegaBytes| GigaBytes
     
     title_stdWrap.wrap = <strong>|</strong>
   }
 
 
-  
   _LOCAL_LANG {
-    
   }
   
   _CSS_DEFAULT_STYLE (
@@ -149,6 +178,8 @@ plugin.tx_drblob_pi1 {
     th.tx_drblob_list-head {}
     td.tx_drblob_list-row1{}
     td.tx_drblob_list-row2{}
+    
+    div.tx_drblob_list-vFolderTree { float:left; }
     
     .tx_drblob_top {}
     th.tx_drblob_top-head {}

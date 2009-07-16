@@ -271,5 +271,24 @@
 				</el>
 	  		</ROOT>
 		</sSettings>
+		<sVFolderTree>
+	  		<ROOT>
+		    	<TCEforms>
+					<sheetTitle>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.sheet.vFolderTree</sheetTitle>
+				</TCEforms>
+				<el>
+					<xmlShowVFolderTree>
+						<TCEforms>
+							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.showVFolderTree</label>
+							<config>
+								<type>check</type>
+								<value>1</value>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</xmlShowVFolderTree>
+				</el>
+			</ROOT>
+		</sVFolderTree>
     </sheets>
 </T3DataStructure>

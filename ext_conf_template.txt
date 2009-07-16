@@ -4,8 +4,11 @@ categoryStorage = StoragePID
   # cat=basic//20; type=boolean; label="Enable Download-Counter Reset": This option determines whether the Reset-Function for the Download-Counter is enabled- or not. Using this function can be restricted to special BE Groups through exclude fields. See the manual for more information.
 enableCounterReset = 0
 
+  # cat=basic//30; type=boolean; label="Use IndexedSearch Integration": This option determines whether to enable integration with the indexed_search - Extension. See the manual for more information.
+useIndexedSearchIntegration = 0
+
   #cat=basic/security/50;type=options[Both,Database,FileSystem];label="File Storage Locations": Define which Record types are possible
-fileStorageLocation = Database
+fileStorageLocation = 
 
   #cat=basic/security/;type=text;label="File System Storage Folder": Select the folder where to store the files if filesystem storage is enabled.
 fileStorageFolder = [document root]/uploads/tx_drblob/storage
