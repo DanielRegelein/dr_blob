@@ -1,6 +1,6 @@
 # TYPO3 Extension Manager dump 1.1
 #
-# Host: 190.9.130.150    Database: typo3entwicklung
+# Host: localhost    Database: typo3
 #--------------------------------------------------------
 
 
@@ -18,9 +18,11 @@ CREATE TABLE tx_drblob_content (
   starttime int(11) unsigned NOT NULL default '0',
   endtime int(11) unsigned NOT NULL default '0',
   fe_group int(11) unsigned NOT NULL default '0',
+  sys_language_uid int(11) NOT NULL default '0',
+  l18n_parent int(11) NOT NULL default '0',
+  l18n_diffsource mediumblob NOT NULL,
   title varchar(255) NOT NULL default '',
   description text NOT NULL,
-  sort int(11) NOT NULL default '0',
   is_vip enum('0','1') NOT NULL default '0',
   blob_name varchar(255) NOT NULL default '',
   blob_size varchar(255) NOT NULL default '',

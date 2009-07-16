@@ -6,7 +6,7 @@ plugin.tx_drblob_pi1.userFunc = tx_drblob_pi1->main
 plugin.tx_drblob_pi1.singleView.date_stdWrap = m/d/Y
 
 //ListView
-plugin.tx_drblob_pi1.listView.date_stdWrap = m/d/Y
+#plugin.tx_drblob_pi1.listView.date_stdWrap = m/d/Y
 plugin.tx_drblob_pi1.listView.showButtonValue = [ more ]
 plugin.tx_drblob_pi1.listView.downloadButtonValue = [ download ]
 plugin.tx_drblob_pi1.listView.alternatingLayouts = 2

@@ -6,89 +6,89 @@
  */
 
 $LOCAL_LANG = Array (
-	"default" => Array (
-		"pi1_title" => "Filelist",	
-		"pi1_plus_wiz_description" => "Adds a list of downloadable files that are stored in the database to the page",	
+	'default' => Array (
+		'pi1_title' => 'Filelist',	
+		'pi1_plus_wiz_description' => 'Adds a list of downloadable files that are stored in the database to the page',	
 	),
-	"dk" => Array (
+	'dk' => Array (
 	),
-	"de" => Array (
-		"pi1_title" => "Dateiliste",	
-		"pi1_plus_wiz_description" => "Fügt der Seite eine Liste downloadbarer Dateien hinzu die in der Datenbank gespeichert sind.",
+	'de' => Array (
+		'pi1_title' => 'Dateiliste',	
+		'pi1_plus_wiz_description' => 'Fügt der Seite eine Liste downloadbarer Dateien hinzu die in der Datenbank gespeichert sind.',
 	),
-	"no" => Array (
+	'no' => Array (
 	),
-	"it" => Array (
+	'it' => Array (
 	),
-	"fr" => Array (
+	'fr' => Array (
 	),
-	"es" => Array (
+	'es' => Array (
 	),
-	"nl" => Array (
+	'nl' => Array (
 	),
-	"cz" => Array (
+	'cz' => Array (
 	),
-	"pl" => Array (
+	'pl' => Array (
 	),
-	"si" => Array (
+	'si' => Array (
 	),
-	"fi" => Array (
+	'fi' => Array (
 	),
-	"tr" => Array (
+	'tr' => Array (
 	),
-	"se" => Array (
+	'se' => Array (
 	),
-	"pt" => Array (
+	'pt' => Array (
 	),
-	"ru" => Array (
+	'ru' => Array (
 	),
-	"ro" => Array (
+	'ro' => Array (
 	),
-	"ch" => Array (
+	'ch' => Array (
 	),
-	"sk" => Array (
+	'sk' => Array (
 	),
-	"lt" => Array (
+	'lt' => Array (
 	),
-	"is" => Array (
+	'is' => Array (
 	),
-	"hr" => Array (
+	'hr' => Array (
 	),
-	"hu" => Array (
+	'hu' => Array (
 	),
-	"gl" => Array (
+	'gl' => Array (
 	),
-	"th" => Array (
+	'th' => Array (
 	),
-	"gr" => Array (
+	'gr' => Array (
 	),
-	"hk" => Array (
+	'hk' => Array (
 	),
-	"eu" => Array (
+	'eu' => Array (
 	),
-	"bg" => Array (
+	'bg' => Array (
 	),
-	"br" => Array (
+	'br' => Array (
 	),
-	"et" => Array (
+	'et' => Array (
 	),
-	"ar" => Array (
+	'ar' => Array (
 	),
-	"he" => Array (
+	'he' => Array (
 	),
-	"ua" => Array (
+	'ua' => Array (
 	),
-	"lv" => Array (
+	'lv' => Array (
 	),
-	"jp" => Array (
+	'jp' => Array (
 	),
-	"vn" => Array (
+	'vn' => Array (
 	),
-	"ca" => Array (
+	'ca' => Array (
 	),
-	"ba" => Array (
+	'ba' => Array (
 	),
-	"kr" => Array (
+	'kr' => Array (
 	),
 );
 ?>
