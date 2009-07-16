@@ -1,0 +1,11 @@
+###
+# These are the default TS-constants for dr_blob
+##
+
+plugin.dr_blob {
+  fileExtIconHeight = 16
+  fileExtIconWidth = 18
+  stdDateWrap = d/m/Y
+  alterningLayouts = 2
+  lenghtOfDescription = 150
+}

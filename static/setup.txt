@@ -1,0 +1,72 @@
+//Setup
+plugin.tx_drblob_pi1 = USER
+plugin.tx_drblob_pi1 {
+  userFunc = tx_drblob_pi1->main
+
+  templateFile = typo3conf/ext/dr_blob/res/dr_blob.tmpl
+  fileExtIconFolder = typo3/gfx/fileicons/
+  fileExtIconHeight = {$plugin.dr_blob.fileExtIconHeight}
+  fileExtIconWidth = {$plugin.dr_blob.fileExtIconWidth}
+  searchFieldList = title,description,blob_name
+  emptySearchAtStart = 1
+
+  //SingleView
+  singleView {
+    date_stdWrap.date = {$plugin.dr_blob.stdDateWrap} h:i a
+    categoryDivider = </li><li>
+    category_stdWrap.wrap = <ul><li>|</li></ul>
+  }
+
+  //ListView
+  listView {
+    date_stdWrap.date = {$plugin.dr_blob.stdDateWrap}
+    alternatingLayouts = {$plugin.dr_blob.alterningLayouts}
+    categoryDivider = ,
+    category_stdWrap.wrap = |
+    lenghtOfDescription = 100
+  }
+
+  //TopView
+  topView {
+    date_stdWrap.date = {$plugin.dr_blob.stdDateWrap}
+    alternatingLayouts = {$plugin.dr_blob.alterningLayouts}
+    categoryDivider = ,
+    category_stdWrap.wrap = |
+    lenghtOfDescription = {$plugin.dr_blob.lenghtOfDescription}
+  }
+
+  //Personal
+  personalView {
+    date_stdWrap.date = {$plugin.dr_blob.stdDateWrap}
+    alternatingLayouts = {$plugin.dr_blob.alterningLayouts}
+    categoryDivider = ,
+    category_stdWrap.wrap = |
+    lenghtOfDescription = {$plugin.dr_blob.lenghtOfDescription}
+  }
+  
+  _LOCAL_LANG {
+    
+  }
+  
+  _CSS_DEFAULT_STYLE (
+    .tx_drblob_list {}
+    th.tx_drblob_list-head {}
+    td.tx_drblob_list-row1{}
+    td.tx_drblob_list-row2{}
+    
+    .tx_drblob_top {}
+    th.tx_drblob_top-head {}
+    th.tx_drblob_top-foot {}
+    td.tx_drblob_top-row1 {}
+    td.tx_drblob_top-row2 {}
+    
+    .tx_drblob_personal {}
+    th.tx_drblob_personal-head {}
+    th.tx_drblob_personal-foot {}
+    td.tx_drblob_personal-row1 {}
+    td.tx_drblob_personal-row2 {}
+    .tx_drblob_personal-btn { margin-top: 15px; }
+    
+    .tx_drblob_single {}
+  )
+}

@@ -2,11 +2,18 @@
 if ( !defined( 'TYPO3_MODE' ) ) {
 	die ( 'Access denied.' );
 }
+
 $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dr_blob']);
+if( strtolower( $extConf['categoryStorage'] ) == 'idlist' ) {
+	$extConf['categoryStorageWhere'] = ' AND tx_drblob_category.pid IN( ###PAGE_TSCONFIG_IDLIST### )';
+} else {
+	$extConf['categoryStorageWhere'] = ' AND tx_drblob_category.pid = ###STORAGE_PID###';
+}
+
 
 $TCA['tx_drblob_content'] = array (
 	'ctrl' => array(
-		'title' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content',		
+		'title' => 'LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content',		
 		'label' => 'title',
 		'sortby' => 'sorting',
 		'default_sortby' => 'ORDER BY title ASC',	
@@ -132,7 +139,7 @@ $TCA['tx_drblob_content'] = array (
 		'title' => array (		
 			'exclude' => 0,
 			'l10n_mode' => 'prefixLangTitle',
-			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.title',		
+			'label' => 'LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.title',		
 			'config' => array (
 				'type' => 'input',	
 				'size' => '30',	
@@ -143,7 +150,7 @@ $TCA['tx_drblob_content'] = array (
 		'description' => array (		
 			'exclude' => 0,
 			'l10n_mode' => 'prefixLangTitle',		
-			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.description',		
+			'label' => 'LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.description',		
 			'config' => array (
 				'type' => 'text',
 				'cols' => '30',
@@ -163,11 +170,11 @@ $TCA['tx_drblob_content'] = array (
 		),
 		'is_vip' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.is_vip',
+			'label' => 'LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.is_vip',
 			'config' => array (
 				'type' => 'check',
 				'items' => array(
-					array( 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.is_vip.desc' , '1' )
+					array( 'LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.is_vip.desc' , '1' )
 				),
 				'eval' => 'int'
 			)
@@ -175,16 +182,30 @@ $TCA['tx_drblob_content'] = array (
 		'download_count' => array(
 			'exclude' => 1,
 			'l10n_mode' => 'mergeIfNotBlank',
-			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.download_count',
+			'label' => 'LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.download_count',
 			'config' => array (
 				'type' => ( $extConf['enableCounterReset'] ? 'user' : 'passthrough' ),
 				'userFunc' => 'tx_drblob_FormFields->inputDownloadCounter'
 			)
 		),
+		'category' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.category',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'tx_drblob_category',
+				'foreign_table_where' => $extConf['categoryStorageWhere'],
+				'MM' => 'tx_drblob_category_mm',
+				'minitems' => 0,
+				'maxitems' => 500,
+				'size' => 3,
+				'default' => ''
+			)
+		),
 		'blob_name' => array (		
 			'exclude' => 0,	
 			'l10n_mode' => 'mergeIfNotBlank',
-			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.blob_name',		
+			'label' => 'LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.blob_name',		
 			'config' => array (
 				'type' => 'user',	
 				'userFunc' => 'tx_drblob_FormFields->inputFileName',
@@ -193,7 +214,7 @@ $TCA['tx_drblob_content'] = array (
 		'blob_size' => array (		
 			'exclude' => 1,
 			'l10n_mode' => 'mergeIfNotBlank',
-			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.blob_size',		
+			'label' => 'LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.blob_size',		
 			'config' => array (
 				'type' => 'user',
 				'userFunc' => 'tx_drblob_FormFields->inputFileSize',
@@ -203,7 +224,7 @@ $TCA['tx_drblob_content'] = array (
 		'blob_type' => array (		
 			'exclude' => 1,
 			'l10n_mode' => 'mergeIfNotBlank',
-			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.blob_type',		
+			'label' => 'LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.blob_type',		
 			'config' => array (
 				'type' => 'user',
 				'userFunc' => 'tx_drblob_FormFields->inputFileType'				
@@ -214,7 +235,7 @@ $TCA['tx_drblob_content'] = array (
 			'exclude' => 0,
 			'l10n_mode' => 'mergeIfNotBlank',
 			'l10n_display' => 'hideDiff',
-			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.blob_data',
+			'label' => 'LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.blob_data',
 			'config' => array(
 				'type' => 'user',
 				'userFunc' => 'tx_drblob_FormFields->inputFile'
@@ -223,12 +244,57 @@ $TCA['tx_drblob_content'] = array (
 	),
 
 	'types' => array (
-		'0' => array( 'showitem' => 'hidden;;1;;1-1-1,title;;;;2-2-2,sys_language_uid;;2;;,description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3,is_vip,download_count,blob_name,blob_size,blob_type,blob_data'),
+		'0' => array( 'showitem' => 'hidden;;1;;1-1-1,title;;;;2-2-2,sys_language_uid;;2;;,description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3,category,is_vip,download_count,blob_name,blob_size,blob_type,blob_data'),
 	),
 
 	'palettes' => array (
 		'1' => array( 'showitem' => 'starttime,endtime,fe_group' ),
 		'2' => array( 'showitem' => 'l18n_parent' ),
 	)
+);
+
+$TCA['tx_drblob_category'] = array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_category',
+		'label' => 'title',
+		'default_sortby' => 'ORDER BY title ASC',
+		'delete' => 'deleted',	
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'enablecolumns' => array (		
+			'disabled' => 'hidden',	
+		),
+		'iconfile' => t3lib_extMgm::extRelPath( 'dr_blob' ).'ico/ext_icon_category.gif',
+	),
+	'interface' => array(
+		'showRecordFieldList' => 'title,crdate,hidden',
+		'maxDBListItems' => 10
+	),
+	'columns' => array (
+		'hidden' => array (		
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
+			'config' => array (
+				'type' => 'check',
+				'default' => '0'
+			)
+		),
+		'title' => array (		
+			'exclude' => 0,
+			'l10n_mode' => 'prefixLangTitle',
+			'label' => 'LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_category.title',		
+			'config' => array (
+				'type' => 'input',	
+				'size' => '30',	
+				'max' => '255',	
+				'eval' => 'required,trim',
+			)
+		),
+	),
+	'types' => array (
+		'0' => array( 'showitem' => 'hidden,title' )
+	),
+	'palettes' => array()
 );
 ?>

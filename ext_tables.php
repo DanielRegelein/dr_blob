@@ -3,6 +3,7 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 t3lib_extMgm::addToInsertRecords('tx_drblob_content');
+t3lib_extMgm::addToInsertRecords('tx_drblob_category');
 
 $TCA['tx_drblob_content'] = array (
 	'ctrl' => array (
@@ -42,12 +43,31 @@ $TCA['tx_drblob_content'] = array (
 	)
 );
 
+$TCA['tx_drblob_category'] = array (
+	'ctrl' => array (
+		'title' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_category',		
+		'label' => 'title',
+		'default_sortby' => 'ORDER BY title ASC',	
+		'delete' => 'deleted',	
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'enablecolumns' => array (		
+			'disabled' => 'hidden',	
+		),
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
+		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'ico/ext_icon_category.gif',
+	),
+);
+
+
 
 t3lib_div::loadTCA('tt_content');
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1']='layout,select_key,recursive,pages';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='pi_flexform';
 
 t3lib_extMgm::addPlugin(array('LLL:EXT:dr_blob/locallang_db.php:tt_content.list_type_pi1', $_EXTKEY.'_pi1'),'list_type');
+t3lib_extMgm::addStaticFile( $_EXTKEY, 'static/', 'File List (dr_blob)' );
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi1', 'FILE:EXT:dr_blob/flexform_ds.xml');
 
 
@@ -57,6 +77,7 @@ require_once( t3lib_extMgm::extPath($_EXTKEY) . 'class.tx_drblob_FormFields.php'
 require_once(t3lib_extMgm::extPath( $_EXTKEY ).'class.tx_drblob_tcemain.php');
 	//Registing hook
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamap_postProcessFieldArray'][] = 'EXT:dr_blob/class.tx_drblob_tcemain.php:tx_drblob_tcemain';
+
 
 	//Adding Folder Icons
 t3lib_div::loadTCA('pages');

@@ -1,4 +1,18 @@
-2007-0X-XX  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
+2007-06-14  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
+
+	* Release of version 1.6.0
+	
+	* Feature: Added the categorization feature
+	* Feature: Added the TS config parameter to set the fields used by the search function
+	* Feature: Added Template Marker for Localization of Field Names. They use the namespace ###LANG_[field]###
+	* Feature: The eMail-address-marker now uses a cObject to allow spam protection of the email addresses.
+
+	* Change: Removed CSS Classes that didn't use the namespace tx_drblob_ from the reference template
+	* Change: The example extension template has to be included static now.
+	
+	* Bugfix: Removed a bug preventing the PERSONAL-mode from wrapping the date correctly.
+
+2007-05-04  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
 
 	* Release of version 1.5.1
 	
@@ -45,16 +59,17 @@
 	
 	* Feature: Added the possibility to display fileicons according to the attached files
 	* Feature: Added the calculation for the filesize
-	* Feature: Did some changes in the record input mask
 	* Feature: Prepared for the versioning used by workspaces
+	
+	* Change: Did some changes in the record input mask
 
 2005-11-29  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
 	
 	* Release of version 1.2.0
 
 	* Feature: Implemented the Typo3 Localization Features
-	* Feature: Added a cache controll header for downloadable files
-	* Feature: Added the TypoScript Variable to set a global template  as well as the template file priority.
+	* Feature: Added a cache control header for downloadable files
+	* Feature: Added the TypoScript Variable to set a global template as well as the template file priority.
 
 2005-10-27  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
 

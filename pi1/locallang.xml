@@ -16,17 +16,25 @@
 			<label index="list_field_cruser_id">Author</label>
 			<label index="list_field_crdate">Date</label>
 			<label index="list_field_tstamp">Last Change</label>
+			<label index="list_field_categories">Categories</label>
+			<label index="list_field_downloadcount">This record has been downloaded ###BLOB_DOWNLOADCOUNT### times</label>
+			<label index="list_field_author">Author</label>
+			<label index="list_field_author_mail">eMail address</label>
 			<label index="list_dateFormat">m/d/Y</label>
 			<label index="personal_dateFormat">m/d/Y h:i</label>
+			<label index="personal_button_add">Subscribe this list</label>
 			<label index="personal_button_download">[download]</label>
+			<label index="personal_button_remove">Unsubscribe this list</label>
 			<label index="personal_button_show">[more]</label>
 			<label index="search_button_search">Search</label>
 			<label index="single_button_download">Download attached file</label>
+			<label index="single_button_back">Back</label>
 			<label index="single_noItemFound">No record-id given</label>
 			<label index="single_dateFormat">m/d/Y</label>
 			<label index="top_button_download">[download]</label>
 			<label index="top_button_show">[more]</label>
 			<label index="top_dateFormat">m/d/Y h:i</label>
+			<label index="noRecordsFound">Sorry, no Items available</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="list_button_show">[mere]</label>
@@ -42,7 +50,7 @@
 			<label index="list_button_download">[download]</label>
 			<label index="list_button_show">[mehr]</label>
 			<label index="list_field_title">Titel</label>	
-			<label index="list_field_description">Begleittext</label>	
+			<label index="list_field_description">Beschreibung</label>	
 			<label index="list_field_blob_name">Dateiname</label>	
 			<label index="list_field_blob_size">Dateigröße</label>	
 			<label index="list_field_blob_type">Dateityp</label>	
@@ -50,17 +58,25 @@
 			<label index="list_field_cruser_id">Autor</label>		
 			<label index="list_field_crdate">Erstelldatum</label>
 			<label index="list_field_tstamp">Letzte Änderung</label>
+			<label index="list_field_categories">Kategorien</label>
+			<label index="list_field_downloadcount">Dieser Datensatz wurde bereits ###BLOB_DOWNLOADCOUNT### mal heruntergeladen</label>
+			<label index="list_field_author">Autor</label>
+			<label index="list_field_author_mail">eMail-Adresse</label>
 			<label index="list_dateFormat">d.m.Y</label>
 			<label index="personal_dateFormat">d.m.Y H:i</label>
+			<label index="personal_button_add">Diese Liste abonnieren</label>
 			<label index="personal_button_download">[download]</label>
+			<label index="personal_button_remove">Diese Liste nicht mehr abonnieren</label>
 			<label index="personal_button_show">[mehr]</label>		
 			<label index="search_button_search">Suchen</label>
 			<label index="single_button_download">angehängte Datei herunterladen</label>		
+			<label index="single_button_back">Zurück</label>
 			<label index="single_noItemFound">Keine Datensatznummer vorhanden</label>
 			<label index="single_dateFormat">d.m.Y</label>
 			<label index="top_button_download">[download]</label>
 			<label index="top_button_show">[mehr]</label>
 			<label index="top_dateFormat">d.m.Y H:i</label>
+			<label index="noRecordsFound">Momentan sind leider keine Einträge vorhanden</label>
 		</languageKey>
 		<languageKey index="no" type="array" />		
 		<languageKey index="it" type="array" />		

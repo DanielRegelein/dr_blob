@@ -25,9 +25,16 @@
 			<label index="tx_drblob_content.download_count">Downloadcounter</label>
 			<label index="tx_drblob_content.download_count.desc">This file has been downloaded ###DOWNLOAD_COUNT### times</label>
 			<label index="tx_drblob_content.download_count.reset">Reset Counter</label>
+			<label index="tx_drblob_content.category">File categories</label>
+			<label index="tx_drblob_category">File Category</label>
+			<label index="tx_drblob_category.title">Title</label>	
 			<label index="pages.folderIconsDescr">Files</label>
 			<label index="tt_content.list_type_pi1">Filelist</label>	
 			<label index="tt_content.pi_flexform.sheet.datasource">Data Source</label>
+			<label index="tt_content.pi_flexform.categories">Category selection:</label>
+			<label index="tt_content.pi_flexform.categories_mode">Category mode:</label>
+			<label index="tt_content.pi_flexform.categories_showAll">Show all (don't use selection below)</label>
+			<label index="tt_content.pi_flexform.categories_showSelected">Show only categories selected below</label>
 			<label index="tt_content.pi_flexform.sheet.settings">Settings</label>
 			<label index="tt_content.pi_flexform.whatToDisplay">What shall be displayed:</label>
 			<label index="tt_content.pi_flexform.whatToDisplay.top">TOP: List of VIP-items</label>
@@ -37,24 +44,26 @@
 			<label index="tt_content.pi_flexform.whatToDisplay.personal.list">PERSONAL: Personalizable list</label>
 			<label index="tt_content.pi_flexform.whatToDisplaypersonal.add">Show "Add to Personal Container" (LIST-Mode):</label>
 			<label index="tt_content.pi_flexform.limit">Number of items to list:</label>
-			<label index="tt_content.pi_flexform.recursive">Recursive</label>
 			<label index="tt_content.pi_flexform.listOrderBy">"Order by" this field (LIST-Mode):</label>
 			<label index="tt_content.pi_flexform.listOrderBy.title">Title</label>
 			<label index="tt_content.pi_flexform.listOrderBy.createdate">Date of the creation</label>
 			<label index="tt_content.pi_flexform.listOrderBy.lastchange">Date of the last change</label>
 			<label index="tt_content.pi_flexform.listOrderBy.author">Author</label>
 			<label index="tt_content.pi_flexform.listOrderBy.sorting">Custom Backend Sorting</label>
-			<label index="tt_content.pi_flexform.listOrderDirection">Ascending or Descending</label>
+			<label index="tt_content.pi_flexform.listOrderDirection">Ascending or Descending:</label>
 			<label index="tt_content.pi_flexform.listOrderDirection.asc">Ascending</label>
 			<label index="tt_content.pi_flexform.listOrderDirection.desc">Descending</label>
-			<label index="tt_content.pi_flexform.template_file">Template file</label>
+			<label index="tt_content.pi_flexform.template_file">Template file:</label>
 			<label index="tt_content.pi_flexform.singlePID">Page where to display single items:</label>
 			<label index="tt_content.pi_flexform.returnPID">Page where to return to:</label>
-			</languageKey>
+		</languageKey>
 		<languageKey index="dk" type="array">
+			<label index="tt_content.pi_flexform.categories">Kategori valg:</label>
+			<label index="tt_content.pi_flexform.categories_mode">Kategori indstilling:</label>
+			<label index="tt_content.pi_flexform.categories_showAll">Vis alle (uanset valg nedenunder)</label>
+			<label index="tt_content.pi_flexform.categories_showSelected">Vis nyheder med valgte kategorier</label>
 			<label index="tt_content.pi_flexform.sheet.settings">Indstillinger</label>
 			<label index="tt_content.pi_flexform.listOrderBy">"Sortér på" dette felt</label>
-			<label index="tt_content.pi_flexform.recursive">Rekursiv niveau valg</label>
 			<label index="tt_content.pi_flexform.listOrderDirection">Stigende eller faldende</label>
 			<label index="tt_content.pi_flexform.listOrderDirection.asc">Stigende</label>
 			<label index="tt_content.pi_flexform.listOrderDirection.desc">Faldende</label>
@@ -76,11 +85,18 @@
 			<label index="tx_drblob_content.download_count">Downloadzähler</label>
 			<label index="tx_drblob_content.download_count.desc">Diese Datei wurde bereits ###DOWNLOAD_COUNT### Mal heruntergeladen</label>
 			<label index="tx_drblob_content.download_count.reset">Zähler zurücksetzen</label>
+			<label index="tx_drblob_content.category">Datei Kategorie</label>
 			<label index="tx_drblob_content.sort.asc">Aufsteigend</label>
 			<label index="tx_drblob_content.sort.desc">Absteigend</label>
+			<label index="tx_drblob_category">Dateikategorie</label>
+			<label index="tx_drblob_category.title">Titel</label>	
 			<label index="pages.folderIconsDescr">Dateien</label>
 			<label index="tt_content.list_type_pi1">Dateiliste</label>
 			<label index="tt_content.pi_flexform.sheet.datasource">Datenquelle</label>
+			<label index="tt_content.pi_flexform.categories">Kategorieauswahl:</label>
+			<label index="tt_content.pi_flexform.categories_mode">Kategorien anzeigen:</label>
+			<label index="tt_content.pi_flexform.categories_showAll">Alle anzeigen (ignoriere folgende Auswahl)</label>
+			<label index="tt_content.pi_flexform.categories_showSelected">Nur ausgewählte Kategorien anzeigen</label>
 			<label index="tt_content.pi_flexform.sheet.settings">Einstellungen</label>
 			<label index="tt_content.pi_flexform.whatToDisplay">Was soll angezeigt werden:</label>
 			<label index="tt_content.pi_flexform.whatToDisplay.top">TOP: Liste bestehend aus VIP-Dokumenten</label>
@@ -90,7 +106,6 @@
 			<label index="tt_content.pi_flexform.whatToDisplay.personal.list">PERSONAL: Personalisierbare Liste</label>
 			<label index="tt_content.pi_flexform.whatToDisplaypersonal.add">"Zu Persönlichen Container hinzufügen" anzeigen (LIST-Mode):</label>
 			<label index="tt_content.pi_flexform.limit">Anzahl der Dokumente im LIST-, PERSONAL-Modus und im TOP-Modus:</label>
-			<label index="tt_content.pi_flexform.recursive">Rekursion</label>
 			<label index="tt_content.pi_flexform.listOrderBy">"Sortiere nach" diesem Feld (LIST-Modus):</label>
 			<label index="tt_content.pi_flexform.listOrderBy.title">Titel</label>
 			<label index="tt_content.pi_flexform.listOrderBy.createdate">Erstelldatum</label>
