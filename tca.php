@@ -2,7 +2,8 @@
 if (!defined ("TYPO3_MODE")) {
 	die ("Access denied.");
 }
-function user_dispInputFileName( $PA, $fobj ) {
+
+function user_inputFileName( $PA, $fobj ) {
 	return 	'<input ' .
 				'type="text" ' .
 				'name="' . $PA['itemFormElName'] . '" ' .
@@ -10,23 +11,29 @@ function user_dispInputFileName( $PA, $fobj ) {
 				'size="48" ' .
 				' / >';
 }
-function user_dispInputFileType( $PA, $fobj ) {
-	return 	'<input ' .
-				'type="text" ' .
+
+function user_inputFileType( $PA, $fobj ) {
+	return 	$PA['itemFormElValue'] . 
+			'<input ' .
+				'type="hidden" ' .
 				'name="' . $PA['itemFormElName'] . '" ' .
-				'value="' . $PA['itemFormElValue'] . '" ' .
-				'size="48" ' .
-				'readonly / >';
+				'value="' . $PA['itemFormElValue'] . '" / >';
 }
-function user_dispInputFileSize( $PA, $fobj ) {
-	return 	'<input ' .
-				'type="text" ' .
-				'name="' . $PA['itemFormElName'] . '" ' .
-				'value="' . $PA['itemFormElValue'] . '" ' .
-				'size="20" ' .
-				'readonly / > Bytes';
+
+function user_inputFileSize( $PA, $fobj ) {
+	if ( $PA['itemFormElValue'] ) {
+		return 	t3lib_div::formatSize( $PA['itemFormElValue'], (' B| KB| MB| GB' ) ) . 
+				'<input ' .
+					'type="hidden" ' .
+					'name="' . $PA['itemFormElName'] . '" ' .
+					'value="' . $PA['itemFormElValue'] . '" ' .
+				'/ >';
+	} else {
+		return '0 B';
+	}
 }
-function user_dispInputFile( $PA, $fobj ) {
+
+function user_inputFile( $PA, $fobj ) {
 	return 	'<input ' .
 				'type="file" ' .
 				'name="' . $PA['itemFormElName'] . '" ' .
@@ -35,31 +42,33 @@ function user_dispInputFile( $PA, $fobj ) {
 			'/ >';
 }
 
-
 $TCA['tx_drblob_content'] = Array (
-	'ctrl' => Array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content',		
 		'label' => 'title',
-		'title' => 'LLL:EXT:dr_blob/locallang_db.php:tt_content.list_type_pi1',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
-		'delete' => 'deleted',
-		'default_sortby' => 'ORDER BY title ASC',
+		'default_sortby' => 'ORDER BY title ASC',	
+		'delete' => 'deleted',	
 		'fe_group' => 'fe_group',
+		'starttime' => 'starttime',	
+		'endtime' => 'endtime',
 		'copyAfterDuplFields' => 'sys_language_uid',
 		'useColumnsForDefaultValues' => 'sys_language_uid',
 		'transOrigPointerField' => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'languageField' => 'sys_language_uid',
-		'starttime' => 'starttime',
-		'endtime' => 'endtime',
-		'enablecolumns' => array(
-			'disabled' => 'hidden',
-			'starttime' => 'starttime',
+		'versioning' => true,//Compatibilty with T3.7 / T3.8
+		'versioningWS' => true,
+		'versioning_followPages' => true,
+		'enablecolumns' => array (		
+			'disabled' => 'hidden',	
+			'starttime' => 'starttime',	
 			'endtime' => 'endtime',
 			'fe_group' => 'fe_group'
 		),
-		'iconfile' => t3lib_extMgm::extRelPath('dr_blob').'ext_icon.gif'
+		'iconfile' => t3lib_extMgm::extRelPath( 'dr_blob' ).'ext_icon.gif',
 	),
 
 	'interface' => array (
@@ -72,7 +81,6 @@ $TCA['tx_drblob_content'] = Array (
 	'columns' => array (
 		'hidden' => array (		
 			'exclude' => 1,
-			'l10n_mode' => 'mergeIfNotBlank',
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.hidden',
 			'config' => array (
 				'type' => 'check',
@@ -81,7 +89,6 @@ $TCA['tx_drblob_content'] = Array (
 		),
 		'starttime' => array (		
 			'exclude' => 1,
-			'l10n_mode' => 'mergeIfNotBlank',
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
 			'config' => array (
 				'type' => 'input',
@@ -98,7 +105,6 @@ $TCA['tx_drblob_content'] = Array (
 		),
 		'endtime' => array (		
 			'exclude' => 1,
-			'l10n_mode' => 'mergeIfNotBlank',
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
 			'config' => array (
 				'type' => 'input',
@@ -115,7 +121,6 @@ $TCA['tx_drblob_content'] = Array (
 		),
 		'fe_group' => array (
 			'exclude' => 1,	
-			'l10n_mode' => 'mergeIfNotBlank',
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fe_group',
 			'config' => array (
 				'type' => 'select',	
@@ -150,8 +155,8 @@ $TCA['tx_drblob_content'] = Array (
 				'items' => array (
 					array('', 0),
 				),
-				'foreign_table' => 'tt_news',
-				'foreign_table_where' => 'AND tt_news.uid=###REC_FIELD_l18n_parent### AND tt_news.sys_language_uid IN (-1,0)',
+				'foreign_table' => 'tx_drblob_content',
+				'foreign_table_where' => 'AND tt_news.uid=###REC_FIELD_l18n_parent### AND tx_drblob_content.sys_language_uid IN (-1,0)',
 				'wizards' => array(
 					'_PADDING' => 2,
 					'_VERTICAL' => 1,
@@ -205,11 +210,12 @@ $TCA['tx_drblob_content'] = Array (
 		),
 		'is_vip' => array(
 			'exclude' => 1,
-			'l10n_mode' => 'mergeIfNotBlank',
 			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.is_vip',
 			'config' => array (
 				'type' => 'check',
-				'value' => '1',
+				'items' => array(
+					array( 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.is_vip.desc' , '1' )
+				),
 				'eval' => 'int'
 			)
 		),
@@ -219,7 +225,7 @@ $TCA['tx_drblob_content'] = Array (
 			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.blob_name',		
 			'config' => array (
 				'type' => 'user',	
-				'userFunc' => 'user_dispInputFileName'	
+				'userFunc' => 'user_inputFileName'	
 			)
 		),
 		'blob_size' => array (		
@@ -227,8 +233,11 @@ $TCA['tx_drblob_content'] = Array (
 			'l10n_mode' => 'mergeIfNotBlank',
 			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.blob_size',		
 			'config' => array (
-				'type' => 'user',	
-				'userFunc' => 'user_dispInputFileSize'
+				'type' => 'user',
+				'userFunc' => 'user_inputFileSize',
+				//'type' => 'none',	
+				//'rows' => 1,
+				
 			)
 		),
 		'blob_type' => array (		
@@ -236,8 +245,10 @@ $TCA['tx_drblob_content'] = Array (
 			'l10n_mode' => 'mergeIfNotBlank',
 			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.blob_type',		
 			'config' => array (
-				'type' => 'user',	
-				'userFunc' => 'user_dispInputFileType'
+				'type' => 'user',
+				'userFunc' => 'user_inputFileType'				
+				//'type' => 'none',	
+				//'rows' => 1,
 			)
 		),
 		'blob_data' => array(
@@ -246,7 +257,7 @@ $TCA['tx_drblob_content'] = Array (
 			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.blob_data',
 			'config' => array(
 				'type' => 'user',
-				'userFunc' => 'user_dispInputFile'
+				'userFunc' => 'user_inputFile'
 			)
 		)
 	),

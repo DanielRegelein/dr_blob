@@ -33,7 +33,7 @@ require_once( PATH_tslib . 'class.tslib_pibase.php' );
  * @copyright Copyright &copy; 2005,Daniel Regelein
  * @package Typo3
  * @filesource pi1/class.tx_drblob_pi1.php
- * @version 0.9.9
+ * @version 1.3.0
  * 
  * @TODO Function 'init'
  * @TODO Function 'generateList' -->
@@ -523,6 +523,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 						'###BLOB_SORTLINK_TITLE###'  => $this->pi_getLL( 'list.field.title'),
 						'###BLOB_SORTLINK_CRDATE###' => $this->pi_getLL( 'list.field.crdate'),
 						'###BLOB_SORTLINK_TSTAMP###' => $this->pi_getLL( 'list.field.tstamp'),
+						'###BLOB_SORTLINK_LASTCHANGE###' => $this->pi_getLL( 'list.field.tstamp'),
 						'###BLOB_SORTLINK_AUTHOR###' => $this->pi_getLL( 'list.field.cruser_id'),
 					);
 					$content .= $this->cObj->substituteMarkerArrayCached( 
@@ -564,7 +565,8 @@ class tx_drblob_pi1 extends tslib_pibase {
 		header( 'Expires: ' . gmdate( 'D, d M Y H:i:s', ( time()-3600 ) . ' GMT' ), true ); 
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT', true ); 
 		header( 'Pragma: no-cache', true ); 
-		header( 'Cache-Control: post-check=0, pre-check=0', true ); 
+		header( 'Cache-Control: post-check=0, pre-check=0', true );
+		//header( 'Cache-Control: no-store, no-cache, must-revalidate' );
 		header( 'Content-Type: ' . $contentType, true ); 
 		header( 'Content-Length: ' . $this->getFieldContent( 'blob_size' ) ); 
 		header( 'Content-Transfer-Encoding: binary', true ); 
@@ -671,8 +673,9 @@ class tx_drblob_pi1 extends tslib_pibase {
 			'###BLOB_CRDATE###' => date( $dateWrap, $this->getFieldContent('crdate')),
 			'###BLOB_LASTCHANGE###' => date( $dateWrap, $this->getFieldContent('tstamp')),
 			'###BLOB_FILENAME###' => $this->getFieldContent('blob_name'),
-			'###BLOB_FILESIZE###' => $this->getFieldContent('blob_size'),
+			'###BLOB_FILESIZE###' => t3lib_div::formatSize( $this->getFieldContent('blob_size'), (' B| KB| MB| GB' ) ),
 			'###BLOB_FILETYPE###' => $this->getFieldContent('blob_type'),
+			'###BLOB_FILEICON###' => $this->getFileIcon( $this->getFieldContent('blob_name') ),
 		);
 		
 		switch( $mode ) {
@@ -708,8 +711,28 @@ class tx_drblob_pi1 extends tslib_pibase {
 		
 		return $this->internal['currentRow'][$fN];
 	}
-
 	
+	
+	/**
+	 * @name 	getFileIcon
+	 * Returns the fileicon for the given Filename.
+	 * 
+	 * @param 	String 	$filename
+	 * @return 	String 	<img>-tag
+	 * @access 	protected
+	 */
+	/*protected*/function getFileIcon( $fileName ) {
+		if ( !empty( $fileName ) ) {
+			$tmp = t3lib_div::split_fileref( $fileName );
+			$iconPath = 't3lib/gfx/fileicons/';
+			$icon = @is_file($iconPath.$tmp['realFileext'].'.gif') ? $iconPath.$tmp['realFileext'].'.gif' : $iconPath.'default.gif';
+			return '<img src="'.$icon.'" border="0" alt="'.$tmp['realFileext'].'" height="16px" width="18px" />';
+		} else {
+			return '';
+		}
+	}
+
+
 	/**
 	 * @name	getAuthor
 	 * Queries the be_users table for the Author of an record
