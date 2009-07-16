@@ -1,0 +1,32 @@
+<!-- ###TEMPLATE_SINGLE### begin -->
+	<div id="popup">
+		<table border="0" cellspacing="4" cellpadding="4" width="700">
+			<tr>
+				<td colspan="2" class="box"><b>###BLOB_TITLE_LBL###:</b> ###BLOB_TITLE_VAL###</td>
+			</tr>
+			<tr>
+				<td width="50%" class="box"><b>###BLOB_AUTHOR_LBL###:</b> ###BLOB_AUTHOR_VAL###</td>
+				<td width="50%" class="box"><b>###BLOB_SORT_LBL###:</b> ###BLOB_SORT_VAL###</td>
+			</tr>
+			<tr>
+				<td width="50%" class="box"><b>###BLOB_CRDATE_LBL###:</b> ###BLOB_CRDATE_VAL###</td>
+				<td width="50%" class="box"><b>###BLOB_TSTAMP_LBL###:</b> ###BLOB_TSTAMP_VAL###</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="box"><b>###BLOB_DESCRIPTION_LBL###:</b><br />###BLOB_DESCRIPTION_VAL###</td>
+			</tr>
+		###BLOB_DATA_EXISTS_SWITCH_START###
+			<tr>
+				<td width="50%" class="box"><b>###BLOB_FILENAME_LBL###:</b> ###BLOB_FILENAME_VAL###</td>
+				<td width="50%" class="box"><b>###BLOB_FILESIZE_LBL###:</b> ###BLOB_FILESIZE_VAL### Bytes</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="box">###BLOB_FILEDATA_VAL###</td>
+			</tr>
+		###BLOB_DATA_EXISTS_SWITCH_END###
+		</table>
+		<form action="###BLOB_SINGLE_RTN-URL###" method="post">
+			<input type="submit" value="###BLOB_SINGLE_RTN-LBL###" class="button1">
+		</form>
+	</div>
+<!-- ###TEMPLATE_SINGLE### end -->

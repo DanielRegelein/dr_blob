@@ -1,0 +1,17 @@
+//Setup
+
+plugin.tx_drblob_pi1.listView = USER
+plugin.tx_drblob_pi1.listView.tableProperties = USER
+
+plugin.tx_drblob_pi1.listView.tableProperties.border = 0
+plugin.tx_drblob_pi1.listView.tableProperties.width = 100%
+plugin.tx_drblob_pi1.listView.tableProperties.class = 
+plugin.tx_drblob_pi1.listView.tableProperties.cellpadding = 0
+plugin.tx_drblob_pi1.listView.tableProperties.cellspacing = 0
+plugin.tx_drblob_pi1.listView.showButtonValue = S
+plugin.tx_drblob_pi1.listView.downloadButtonValue = D
+plugin.tx_drblob_pi1.listView.date_stdWrap = m/d/Y
+plugin.tx_drblob_pi1.listView.
+
+plugin.tx_drblob_pi1.singleView = USER
+plugin.tx_drblob_pi1.singleView.date_stdWrap = m/d/Y
