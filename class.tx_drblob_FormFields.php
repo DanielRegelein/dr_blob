@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
+*  (c) 2005-present Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,11 +29,11 @@
  * 
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  * @category 	Frontend Plugins
- * @copyright 	Copyright &copy; 2005-past Daniel Regelein
+ * @copyright 	Copyright &copy; 2005-present Daniel Regelein
  * @package 	dr_blob
  * @filesource	class.user_txdrblobFormFields.php
  * @since		Version 1.5.0, 2007-04-10
- * @version 	1.5.1
+ * @version 	1.7.0
  */
 class tx_drblob_FormFields {
 
@@ -56,7 +56,7 @@ class tx_drblob_FormFields {
 
 	function inputFileSize( $PA, $fobj ) {
 		if ( $PA['itemFormElValue'] ) {
-			return 	t3lib_div::formatSize( $PA['itemFormElValue'], (' B| KB| MB| GB' ) ) . '<input ' .
+			return t3lib_div::formatSize( $PA['itemFormElValue'], (' B| KB| MB| GB' ) ) . '<input ' .
 				'type="hidden" ' .
 				'name="' . $PA['itemFormElName'] . '" ' .
 				'value="' . $PA['itemFormElValue'] . '" / >';
@@ -64,6 +64,14 @@ class tx_drblob_FormFields {
 			return '0 B';
 		}
 	}
+	
+	function inputFileChecksum( $PA, $fobj ) {
+			return $PA['itemFormElValue'] . '<input ' .
+				'type="hidden" ' .
+				'name="' . $PA['itemFormElName'] . '" ' .
+				'value="' . $PA['itemFormElValue'] . '" / >';
+	}
+
 
 	function inputFile( $PA, $fobj ) {
 		return 	'<input ' .
@@ -74,7 +82,7 @@ class tx_drblob_FormFields {
 	}
 	
 	function inputDownloadCounter( $PA, $fobj ) {
-		$desc = explode( '###DOWNLOAD_COUNT###', $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.download_count.desc') );
+		$desc = explode( '###DOWNLOAD_COUNT###', $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.download_count.desc') );
 		return $desc[0] . 
 			'<input ' .
 				'type="text" ' .
@@ -84,7 +92,7 @@ class tx_drblob_FormFields {
 				'readonly="readonly" /> ' .
 			$desc[1] . '. ' . 
 			'<input type="button" ' . 
-				'value="' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.download_count.reset') . '" ' . 
+				'value="' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.download_count.reset') . '" ' . 
 				'onClick="document.getElementsByName(\'' . $PA['itemFormElName'] . '\')[0].value = \'0\'; ' . implode( '',$PA['fieldChangeFunc'] ) . '" />';
 	}
 };

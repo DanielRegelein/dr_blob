@@ -1,66 +1,144 @@
-//Setup
+###
+# This is the default TS-setup for dr_blob
+##
+
 plugin.tx_drblob_pi1 = USER
 plugin.tx_drblob_pi1 {
   userFunc = tx_drblob_pi1->main
 
-  templateFile = typo3conf/ext/dr_blob/res/dr_blob.tmpl
+  templateFile = EXT:dr_blob/res/dr_blob.tmpl
   fileExtIconFolder = typo3/sysext/cms/tslib/media/fileicons/
   searchFieldList = title,description,blob_name
   emptySearchAtStart = 1
+  tryToOpenFileInline = 1
 
-  //SingleView
-  singleView {
-    date_stdWrap.date = {$plugin.dr_blob.stdDateWrap} h:i a
-    categoryDivider = </li><li>
-    category_stdWrap.wrap = <ul><li>|</li></ul>
-    email_stdWrap.wrap = |
-    filesize_stdWrap {
-      bytes = 1
-      bytes.labels = Bytes| KiloBytes| MegaBytes| GigaBytes
-    }
-  }
 
   //ListView
   listView {
-    date_stdWrap.date = {$plugin.dr_blob.stdDateWrap}
-    alternatingLayouts = {$plugin.dr_blob.alterningLayouts}
+    alternatingLayouts = {$plugin.tx_drblob.alternatingLayouts}
     categoryDivider = ,
-    category_stdWrap.wrap = |
-    lenghtOfDescription = 100
-    email_stdWrap.wrap = |
+    lenghtOfDescription = {$plugin.tx_drblob.lenghtOfDescription}
+    
+    
+    age_stdWrap {
+      age = 1
+    }
+
+    author_stdWrap {
+      wrap = |
+    }
+
+    category_stdWrap {
+      wrap = |
+    }
+
+    date_stdWrap {
+      date = {$plugin.tx_drblob.stdDateWrap}
+    }
+    
+    description_stdWrap {
+      stripHtml = 1
+      crop < {$plugin.tx_drblob.lenghtOfDescription}
+    }
+    
+    downloadLink_stdWrap {
+      wrap = |      
+      typolink {
+        ATagBeforeWrap = 1
+        ATagParams = class="tx_drblob_downloadlink"
+      }
+    }
+    
+    downloadcount_stdWrap {
+      wrap = |
+      wrap2 = &nbsp;|&nbsp;
+    }
+
+    email_stdWrap {
+      wrap = |
+      typolink {
+        ATagParams = class="tx_drblob_emaillink"
+      }
+    }
+    
+    filename_stdWrap {
+      wrap = |
+    }
+    
     filesize_stdWrap {
       bytes = 1
       bytes.labels = B| KB| MB| GB
+      wrap = |
     }
+    
+    filechecksum_stdWrap {
+    }
+    
+    filetype_stdWrap {
+    }
+    
+    moreLink_stdWrap {
+      wrap = |      
+      typolink {
+        ATagBeforeWrap = 1
+        ATagParams = class="tx_drblob_morelink"
+      }
+    }
+    
+    title_stdWrap {
+      wrap = |
+    }
+
   }
 
+  
   //TopView
+  topView < .listView
   topView {
-    date_stdWrap.date = {$plugin.dr_blob.stdDateWrap}
-    alternatingLayouts = {$plugin.dr_blob.alterningLayouts}
-    categoryDivider = ,
-    category_stdWrap.wrap = |
-    lenghtOfDescription = {$plugin.dr_blob.lenghtOfDescription}
-    email_stdWrap.wrap = |
-    filesize_stdWrap {
-      bytes = 1
-      bytes.labels = B| KB| MB| GB
+    category_stdWrap {
+      wrap = <p>|</p>
+    }
+    
+    description_stdWrap {
+      wrap = <p>|</p>
+      stripHtml = 1
+      crop < .lenghtOfDescription
+    }
+  }
+  
+  
+  //PersonalView
+  personalView < .listView
+  personalView {
+    category_stdWrap {
+      wrap = <p>|</p>
+    }
+    
+    description_stdWrap {
+      wrap = <p>|</p>
+      stripHtml = 1
+      crop < .lenghtOfDescription
     }
   }
 
-  //Personal
-  personalView {
-    date_stdWrap.date = {$plugin.dr_blob.stdDateWrap}
-    alternatingLayouts = {$plugin.dr_blob.alterningLayouts}
-    categoryDivider = ,
-    category_stdWrap.wrap = |
-    lenghtOfDescription = {$plugin.dr_blob.lenghtOfDescription}
-    email_stdWrap.wrap = |
-    filesize_stdWrap {
-      bytes = 1
-      bytes.labels = B| KB| MB| GB
-    }
+
+  //SingleView
+  singleView < .listView
+  singleView {
+    alternatingLayouts >
+    substitutePagetitle = 1
+    substituteIndextitle = 1
+
+    date_stdWrap.date = {$plugin.tx_drblob.stdDateWrap} h:i a
+    categoryDivider = </li><li>
+    category_stdWrap.wrap = <ul><li>|</li></ul>
+
+    filesize_stdWrap.bytes.labels = Bytes| KiloBytes| MegaBytes| GigaBytes
+    
+    title_stdWrap.wrap = <strong>|</strong>
   }
+
+
   
   _LOCAL_LANG {
     

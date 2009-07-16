@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "dr_blob"
 #
-# Auto generated 05-03-2009 10:06
+# Auto generated 05-03-2009 10:09
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.
@@ -12,18 +12,18 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'File list',
-	'description' => 'This plugin allows to generate a list of files that are stored in the database instead of the file system to ensure a secure data storage.',
+	'description' => 'This plugin allows to generate a list of files that are stored in the database, or in a folder in- or outside the document root directory of typo3 to ensure a secure data storage.',
 	'category' => 'plugin',
 	'shy' => 0,
-	'version' => '1.6.1',
+	'version' => '1.7.0',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
 	'module' => '',
-	'state' => 'stable',
+	'state' => 'beta',
 	'uploadfolder' => 1,
-	'createDirs' => '',
+	'createDirs' => 'uploads/tx_drblob/storage',
 	'modify_tables' => '',
 	'clearcacheonload' => 0,
 	'lockType' => '',
@@ -40,7 +40,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:54:{s:9:"Changelog";s:4:"e740";s:30:"class.tx_drblob_FormFields.php";s:4:"1a19";s:27:"class.tx_drblob_tcemain.php";s:4:"fbba";s:21:"ext_conf_template.txt";s:4:"2e35";s:12:"ext_icon.gif";s:4:"46ed";s:17:"ext_localconf.php";s:4:"652c";s:14:"ext_tables.php";s:4:"bd83";s:14:"ext_tables.sql";s:4:"48cd";s:15:"flexform_ds.xml";s:4:"2cf1";s:16:"locallang_db.xml";s:4:"68a9";s:17:"locallang_wiz.xml";s:4:"82dd";s:7:"tca.php";s:4:"c1b5";s:16:"res/dr_blob.tmpl";s:4:"52d1";s:20:"static/constants.txt";s:4:"2cc3";s:16:"static/setup.txt";s:4:"b581";s:25:"ico/ext_icon_category.gif";s:4:"85a9";s:32:"ico/ext_icon_category__h.gif.gif";s:4:"f18b";s:24:"ico/ext_icon_content.gif";s:4:"46ed";s:27:"ico/ext_icon_content__f.gif";s:4:"2e29";s:28:"ico/ext_icon_content__fu.gif";s:4:"b3b3";s:27:"ico/ext_icon_content__h.gif";s:4:"8e13";s:29:"ico/ext_icon_content__hfu.gif";s:4:"4539";s:28:"ico/ext_icon_content__ht.gif";s:4:"ddb5";s:29:"ico/ext_icon_content__htf.gif";s:4:"ddb5";s:29:"ico/ext_icon_content__htu.gif";s:4:"04a2";s:28:"ico/ext_icon_content__hu.gif";s:4:"534f";s:27:"ico/ext_icon_content__t.gif";s:4:"5fb2";s:28:"ico/ext_icon_content__tf.gif";s:4:"5fb2";s:29:"ico/ext_icon_content__tfu.gif";s:4:"2a9b";s:28:"ico/ext_icon_content__tu.gif";s:4:"2a9b";s:27:"ico/ext_icon_content__u.gif";s:4:"f9cf";s:27:"ico/ext_icon_content__x.gif";s:4:"3baa";s:23:"ico/ext_icon_folder.gif";s:4:"9a69";s:26:"ico/ext_icon_folder__f.gif";s:4:"47d1";s:27:"ico/ext_icon_folder__fp.gif";s:4:"8e8c";s:27:"ico/ext_icon_folder__fu.gif";s:4:"7b50";s:26:"ico/ext_icon_folder__h.gif";s:4:"b742";s:27:"ico/ext_icon_folder__hp.gif";s:4:"f44c";s:28:"ico/ext_icon_folder__htu.gif";s:4:"6e53";s:29:"ico/ext_icon_folder__htup.gif";s:4:"8963";s:27:"ico/ext_icon_folder__hu.gif";s:4:"d687";s:28:"ico/ext_icon_folder__hup.gif";s:4:"1e2d";s:26:"ico/ext_icon_folder__t.gif";s:4:"4fe8";s:27:"ico/ext_icon_folder__tp.gif";s:4:"3842";s:27:"ico/ext_icon_folder__tu.gif";s:4:"1f33";s:28:"ico/ext_icon_folder__tup.gif";s:4:"01fa";s:26:"ico/ext_icon_folder__u.gif";s:4:"961f";s:27:"ico/ext_icon_folder__up.gif";s:4:"83e3";s:14:"doc/manual.sxw";s:4:"9f58";s:14:"pi1/ce_wiz.gif";s:4:"a6c1";s:27:"pi1/class.tx_drblob_pi1.php";s:4:"04f8";s:35:"pi1/class.tx_drblob_pi1_wizicon.php";s:4:"798b";s:13:"pi1/clear.gif";s:4:"cc11";s:17:"pi1/locallang.xml";s:4:"e0cf";}',
+	'_md5_values_when_last_written' => 'a:89:{s:9:"Changelog";s:4:"f9e5";s:30:"class.tx_drblob_FormFields.php";s:4:"a900";s:27:"class.tx_drblob_tcemain.php";s:4:"2164";s:21:"ext_conf_template.txt";s:4:"9e84";s:12:"ext_icon.gif";s:4:"46ed";s:17:"ext_localconf.php";s:4:"652c";s:14:"ext_tables.php";s:4:"ab23";s:14:"ext_tables.sql";s:4:"40db";s:24:"ext_typoscript_setup.txt";s:4:"ae00";s:15:"flexform_ds.xml";s:4:"9d3b";s:34:"locallang_csh_txdrblobcategory.xml";s:4:"faaf";s:33:"locallang_csh_txdrblobcontent.xml";s:4:"350a";s:17:"locallang_tca.xml";s:4:"f412";s:17:"locallang_wiz.xml";s:4:"ff94";s:7:"tca.php";s:4:"c1f0";s:16:"res/dr_blob.tmpl";s:4:"4904";s:20:"static/constants.txt";s:4:"9034";s:16:"static/setup.txt";s:4:"e6de";s:25:"ico/ext_icon_category.gif";s:4:"85a9";s:32:"ico/ext_icon_category__h.gif.gif";s:4:"f18b";s:24:"ico/ext_icon_content.gif";s:4:"46ed";s:27:"ico/ext_icon_content_db.gif";s:4:"4904";s:30:"ico/ext_icon_content_db__f.gif";s:4:"8d82";s:31:"ico/ext_icon_content_db__fu.gif";s:4:"556a";s:30:"ico/ext_icon_content_db__h.gif";s:4:"5e02";s:31:"ico/ext_icon_content_db__hf.gif";s:4:"5e02";s:32:"ico/ext_icon_content_db__hfu.gif";s:4:"3391";s:31:"ico/ext_icon_content_db__ht.gif";s:4:"ef7c";s:32:"ico/ext_icon_content_db__htf.gif";s:4:"ddb5";s:33:"ico/ext_icon_content_db__htfu.gif";s:4:"5db1";s:32:"ico/ext_icon_content_db__htu.gif";s:4:"3b13";s:31:"ico/ext_icon_content_db__hu.gif";s:4:"3391";s:30:"ico/ext_icon_content_db__t.gif";s:4:"4bff";s:31:"ico/ext_icon_content_db__tf.gif";s:4:"5fb2";s:32:"ico/ext_icon_content_db__tfu.gif";s:4:"2a9b";s:31:"ico/ext_icon_content_db__tu.gif";s:4:"6702";s:30:"ico/ext_icon_content_db__u.gif";s:4:"68b8";s:30:"ico/ext_icon_content_db__x.gif";s:4:"3baa";s:27:"ico/ext_icon_content_fs.gif";s:4:"654b";s:30:"ico/ext_icon_content_fs__f.gif";s:4:"36be";s:31:"ico/ext_icon_content_fs__fu.gif";s:4:"4b3a";s:30:"ico/ext_icon_content_fs__h.gif";s:4:"33c1";s:31:"ico/ext_icon_content_fs__hf.gif";s:4:"33c1";s:32:"ico/ext_icon_content_fs__hfu.gif";s:4:"4c18";s:31:"ico/ext_icon_content_fs__ht.gif";s:4:"ce40";s:33:"ico/ext_icon_content_fs__htfu.gif";s:4:"361e";s:32:"ico/ext_icon_content_fs__htu.gif";s:4:"361e";s:31:"ico/ext_icon_content_fs__hu.gif";s:4:"4c18";s:30:"ico/ext_icon_content_fs__t.gif";s:4:"4eb1";s:31:"ico/ext_icon_content_fs__tf.gif";s:4:"4eb1";s:32:"ico/ext_icon_content_fs__tfu.gif";s:4:"ade8";s:31:"ico/ext_icon_content_fs__tu.gif";s:4:"ade8";s:30:"ico/ext_icon_content_fs__u.gif";s:4:"d0f3";s:30:"ico/ext_icon_content_fs__x.gif";s:4:"3baa";s:23:"ico/ext_icon_folder.gif";s:4:"60be";s:26:"ico/ext_icon_folder__f.gif";s:4:"d180";s:27:"ico/ext_icon_folder__fp.gif";s:4:"405d";s:27:"ico/ext_icon_folder__fu.gif";s:4:"221e";s:28:"ico/ext_icon_folder__fup.gif";s:4:"812c";s:26:"ico/ext_icon_folder__h.gif";s:4:"b002";s:28:"ico/ext_icon_folder__hfu.gif";s:4:"803d";s:29:"ico/ext_icon_folder__hfup.gif";s:4:"c6de";s:27:"ico/ext_icon_folder__hp.gif";s:4:"eb40";s:27:"ico/ext_icon_folder__ht.gif";s:4:"7565";s:28:"ico/ext_icon_folder__htf.gif";s:4:"5213";s:29:"ico/ext_icon_folder__htfp.gif";s:4:"c42e";s:30:"ico/ext_icon_folder__htfup.gif";s:4:"2540";s:28:"ico/ext_icon_folder__htp.gif";s:4:"c42e";s:28:"ico/ext_icon_folder__htu.gif";s:4:"c4bb";s:29:"ico/ext_icon_folder__htup.gif";s:4:"2540";s:27:"ico/ext_icon_folder__hu.gif";s:4:"803d";s:28:"ico/ext_icon_folder__hup.gif";s:4:"12dd";s:26:"ico/ext_icon_folder__t.gif";s:4:"3307";s:27:"ico/ext_icon_folder__tf.gif";s:4:"6b17";s:28:"ico/ext_icon_folder__tfp.gif";s:4:"86ef";s:28:"ico/ext_icon_folder__tfu.gif";s:4:"d0ec";s:29:"ico/ext_icon_folder__tfup.gif";s:4:"4012";s:27:"ico/ext_icon_folder__tp.gif";s:4:"f434";s:27:"ico/ext_icon_folder__tu.gif";s:4:"d0ec";s:28:"ico/ext_icon_folder__tup.gif";s:4:"4012";s:26:"ico/ext_icon_folder__u.gif";s:4:"7c54";s:27:"ico/ext_icon_folder__up.gif";s:4:"555b";s:30:"ico/t3skin/ext_icon_folder.gif";s:4:"c074";s:14:"doc/manual.sxw";s:4:"8607";s:14:"pi1/ce_wiz.gif";s:4:"a6c1";s:27:"pi1/class.tx_drblob_pi1.php";s:4:"7ec1";s:35:"pi1/class.tx_drblob_pi1_wizicon.php";s:4:"1294";s:13:"pi1/clear.gif";s:4:"cc11";s:17:"pi1/locallang.xml";s:4:"093e";}',
 );
 
 ?>

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-past Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
+*  (c) 2005-present Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,10 +33,10 @@ require_once( PATH_tslib . 'class.tslib_pibase.php' );
  * @extends 	tslib_pibase
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  * @category 	Frontend Plugins
- * @copyright 	Copyright &copy; 2005-past Daniel Regelein
+ * @copyright 	Copyright &copy; 2005-present Daniel Regelein
  * @package 	dr_blob
  * @filesource 	pi1/class.tx_drblob_pi1.php
- * @version 	1.6.1
+ * @version 	1.7.0
  */
 class tx_drblob_pi1 extends tslib_pibase {
 
@@ -222,7 +222,6 @@ class tx_drblob_pi1 extends tslib_pibase {
 			break;
 			
 			case 'personal':
-				
 				$arrListSettings['tsObj'] = 'personalView.';
 				$arrListSettings['tmplSubpart'] = 'TEMPLATE_PERSONAL';
 				$this->internal['orderBy'] = 'tstamp';
@@ -235,17 +234,6 @@ class tx_drblob_pi1 extends tslib_pibase {
 				$arrListSettings['tsObj'] = 'listView.';
 				$arrListSettings['recLimit'] = ( $ffLimit ? $ffLimit : 25 );
 				$arrListSettings['tmplSubpart'] = 'TEMPLATE_LIST';
-				
-				/**
-				 * ---------------------------------------------------------------------------------------------------------
-				 * @deprecated
-				 */
-				$arrListSettings['btnWrapShow'] = $this->conf['listView.']['showButtonValue'] ? $this->conf['listView.']['showButtonValue'] : $this->pi_getLL( 'list_button_show' );
-				$arrListSettings['btnWrapDwnld'] = $this->conf['listView.']['downloadButtonValue'] ? $this->conf['listView.']['downloadButtonValue'] : $this->pi_getLL( 'list_button_download' );
-				/**
-				 * @deprecated
-				 * ---------------------------------------------------------------------------------------------------------
-				 */
 				
 				$ffQrySortBy = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderBy', 'sSettings' );
 				$ffQrySortDirection = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderDirection', 'sSettings' );
@@ -331,25 +319,19 @@ class tx_drblob_pi1 extends tslib_pibase {
 				}
 
 					//generate listtype-specific marker
-				$LINK_ITEM = explode('|', $this->pi_list_linkSingle( '|', $this->internal['currentRow']['uid'], true, array(),	false,	$arrListSettings['singlePid'] ) );
-				$LINK_FILE = explode('|', $this->pi_linkTP( '|', array( $this->prefixId => array( 'downloadUid' => $this->internal['currentRow']['uid'] ) ), false, $GLOBALS['TSFE']->id ) );
+				$this->conf[$arrListSettings['tsObj']]['moreLink_stdWrap.']['typolink.']['useCacheHash'] = 1;
+				$this->conf[$arrListSettings['tsObj']]['moreLink_stdWrap.']['typolink.']['no_cache'] = 0;
+				$this->conf[$arrListSettings['tsObj']]['moreLink_stdWrap.']['typolink.']['parameter'] = $arrListSettings['singlePid'];
+				$this->conf[$arrListSettings['tsObj']]['moreLink_stdWrap.']['typolink.']['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('',array( $this->prefixId => array( 'showUid' => $this->internal['currentRow']['uid'] ) ),'',1).$this->pi_moreParams;
+				$LINK_ITEM = explode('|', $this->cObj->stdWrap( '|', $this->conf[$arrListSettings['tsObj']]['moreLink_stdWrap.']) );
 				
+				$this->conf[$arrListSettings['tsObj']]['downloadLink_stdWrap.']['typolink.']['useCacheHash'] = 0;
+				$this->conf[$arrListSettings['tsObj']]['downloadLink_stdWrap.']['typolink.']['no_cache'] = 1;
+				$this->conf[$arrListSettings['tsObj']]['downloadLink_stdWrap.']['typolink.']['parameter'] = $GLOBALS['TSFE']->id;
+				$this->conf[$arrListSettings['tsObj']]['downloadLink_stdWrap.']['typolink.']['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('',array( $this->prefixId => array( 'downloadUid' => $this->internal['currentRow']['uid'] ) ),'',1).$this->pi_moreParams;
+				$LINK_FILE = explode('|', $this->cObj->stdWrap( '|', $this->conf[$arrListSettings['tsObj']]['downloadLink_stdWrap.']) );
+
 				$specMarker = array();
-				
-				/**
-				 * ---------------------------------------------------------------------------------------------------------
-				 * @deprecated
-				 */
-				$specMarker['###BLOB_TITLE_LINK###'] = $LINK_ITEM[0] . $this->getFieldContent('title') . $LINK_ITEM[1];
-				$specMarker['###BLOB_MORE_LINK###'] = $LINK_ITEM[0] . $arrListSettings['btnWrapShow'] . $LINK_ITEM[1];
-				$specMarker['###BLOB_DOWNLOAD_LINK###'] = null;
-				if ( $this->blobExists( $this->internal['currentRow']['uid'] ) ) {
-					$specMarker['###BLOB_DOWNLOAD_LINK###'] = $LINK_FILE[0] . $arrListSettings['btnWrapDwnld'] . $LINK_FILE[1];
-				}
-				/**
-				 * @deprecated
-				 * ---------------------------------------------------------------------------------------------------------
-				 */
 				$blobUID =  $this->internal['currentRow']['_LOCALIZED_UID'] ? $this->internal['currentRow']['_LOCALIZED_UID'] : $this->internal['currentRow']['uid'];
 				if ( !$this->blobExists( $blobUID ) ) {
 					$LINK_FILE = array( 0 => '' , 1=> '' );
@@ -512,15 +494,29 @@ class tx_drblob_pi1 extends tslib_pibase {
 			$this->internal['currentRow'] = $this->pi_getRecord( $this->dbVars['table_content'], intval( $this->piVars['showUid'] ) );
 			
 				//Fetch the translated version if exists
-			if ( $this->sys_language_uid > 0 ) {
+			if ( $this->sys_language_uid != 0 ) {
 				$this->internal['currentRow'] = $GLOBALS['TSFE']->sys_page->getRecordOverlay( $this->dbVars['table_content'], $this->internal['currentRow'], $this->sys_language_uid );
 			}
-				//download-link
 			
+				//substitute Pagetitle
+			if( (bool)$this->conf['singleView.']['substitutePagetitle'] == true ) {
+				$GLOBALS['TSFE']->page['title'] = $this->internal['currentRow']['title'];	
+			}
+					
+				//substitute Pagetitle
+			if( (bool)$this->conf['singleView.']['substituteIndextitle'] == true ) {
+				$GLOBALS['TSFE']->indexedDocTitle = $this->internal['currentRow']['title'];
+			}
+			
+				//download-link
 			$btnDownload = null;
-			$blobUID =  ($this->internal['currentRow']['_LOCALIZED_UID'] ? $this->internal['currentRow']['_LOCALIZED_UID'] : $this->internal['currentRow']['uid']);
+			$blobUID =  ( $this->internal['currentRow']['_LOCALIZED_UID'] ? $this->internal['currentRow']['_LOCALIZED_UID'] : $this->internal['currentRow']['uid'] );
 			if ( $this->blobExists( $blobUID ) ) {
-				$LINK_FILE = explode('|', $this->pi_linkTP( '|', array( $this->prefixId => array( 'downloadUid' => $this->internal['currentRow']['uid'] ) ), false, $GLOBALS['TSFE']->id ) );
+				$this->conf['singleView.']['downloadLink_stdWrap.']['typolink.']['useCacheHash'] = 0;
+				$this->conf['singleView.']['downloadLink_stdWrap.']['typolink.']['no_cache'] = 1;
+				$this->conf['singleView.']['downloadLink_stdWrap.']['typolink.']['parameter'] = $GLOBALS['TSFE']->id;
+				$this->conf['singleView.']['downloadLink_stdWrap.']['typolink.']['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('',array( $this->prefixId => array( 'downloadUid' => $this->internal['currentRow']['uid'] ) ),'',1).$this->pi_moreParams;
+				$LINK_FILE = explode('|', $this->cObj->stdWrap( '|', $this->conf['singleView.']['downloadLink_stdWrap.']) );
 				$btnDownload = $this->pi_getLL('single_button_download');
 			} else {
 				$LINK_FILE = array( 0, 1 );
@@ -646,6 +642,12 @@ class tx_drblob_pi1 extends tslib_pibase {
 		if ( empty( $contentType ) ) {
 			$contentType = 'text/plain';
 		}
+		
+		if( empty( $this->conf['tryToOpenFileInline'] ) || (bool)$this->conf['tryToOpenFileInline'] == false ) {
+			$contentDisposition = 'attachment';
+		} else {
+			$contentDisposition = 'inline';
+		}
 
 		header( 'Expires: ' . gmdate( 'D, d M Y H:i:s', ( time()-3600 ) . ' GMT' ), true );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT', true );
@@ -653,7 +655,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 		header( 'Content-Type: ' . $contentType, true );
 		header( 'Content-Length: ' . $this->getFieldContent( 'blob_size' ) );
 		header( 'Content-Transfer-Encoding: binary', true );
-		header( 'Content-Disposition: attachment; filename='.$this->getFieldContent( 'blob_name' ) );
+		header( 'Content-Disposition: '.$contentDisposition.'; filename='.urlencode( $this->getFieldContent( 'blob_name' ) ) );
 		
 			//This is the workaround of the IE-X-SSL Bug.
 			//Thanks to Christoph Lorenz for that :-)
@@ -664,7 +666,19 @@ class tx_drblob_pi1 extends tslib_pibase {
 			header( 'Pragma: no-cache', true );
 		}
 
-		echo stripslashes( $this->getFieldContent( 'blob_data' ) );
+
+		$fileContent = null;
+		if( $this->getFieldContent( 'type' ) == 1 ) {
+			$fileContent = $this->getFieldContent( 'blob_data' );
+		} else {
+			$extConf = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dr_blob'] );
+			$file = t3lib_div::dirname( $extConf['fileStorageFolder'] ) . '/' . $this->getFieldContent( 'blob_data' );
+			$fp = fopen( $file, 'r' );
+				$fileContent = fread( $fp, filesize ( $file ) );
+			fclose( $fp );
+		}
+		
+		echo stripslashes( $fileContent );
 
 		//Avoid Typo from displaying the page
 		exit();
@@ -719,22 +733,26 @@ class tx_drblob_pi1 extends tslib_pibase {
 			if( !is_array( $this->conf[$mode.'View.']['date_stdWrap.']  ) ) {
 				$this->conf[$mode.'View.']['date_stdWrap.']['date'] = $this->pi_getLL( $mode.'_dateFormat' );
 			}
-			$tmpVars['email'] = $this->getFieldContent('author_email');
-			$this->conf[$mode.'View.']['email_stdWrap.']['typolink.']['parameter'] = $tmpVars['email'];
+			$this->conf[$mode.'View.']['downloadcount_stdWrap.']['wrap3'] = $this->pi_getLL( 'list_field_downloadcount_wrap' );
+			$this->conf[$mode.'View.']['downloadcount_stdWrap.']['wrap3.']['splitChar'] = '###TIMES###';
+			$this->conf[$mode.'View.']['email_stdWrap.']['typolink.']['parameter'] = $this->getFieldContent('author_email');
+			
 			
 			$arrMarker = array(
 				'###BLOB_UID###' => $this->getFieldContent('uid'),
-				'###BLOB_TITLE###' => $this->getFieldContent('title'),
-				'###BLOB_DESCRIPTION###' => $this->pi_RTEcssText( $this->getFieldContent('description') ),
-				'###BLOB_AUTHOR###' => $this->getFieldContent('author'),
+				'###BLOB_TITLE###' => $this->cObj->stdWrap( $this->getFieldContent('title'), $this->conf[$mode.'View.']['title_stdWrap.'] ),
+				'###BLOB_DESCRIPTION###' => $this->cObj->stdWrap( $this->pi_RTEcssText( $this->getFieldContent('description') ), $this->conf[$mode.'View.']['description_stdWrap.'] ),
+				'###BLOB_AUTHOR###' => $this->cObj->stdWrap( $this->getFieldContent('author'), $this->conf[$mode.'View.']['author_stdWrap.'] ),
 				'###BLOB_AUTHOR_EMAIL###' => $this->cObj->stdWrap( $tmpVars['email'], $this->conf[$mode.'View.']['email_stdWrap.'] ),
 				'###BLOB_CRDATE###' => $this->cObj->stdWrap( $this->getFieldContent( 'crdate' ), $this->conf[$mode.'View.']['date_stdWrap.'] ),
 				'###BLOB_LASTCHANGE###' => $this->cObj->stdWrap( $this->getFieldContent( 'tstamp' ), $this->conf[$mode.'View.']['date_stdWrap.'] ),
-				'###BLOB_DOWNLOADCOUNT###' => $this->getFieldContent('download_count'),
-				'###BLOB_FILENAME###' => $this->getFieldContent('blob_name'),
+				'###BLOB_AGE###' => $this->cObj->stdWrap( $this->getFieldContent( 'crdate' ), $this->conf[$mode.'View.']['age_stdWrap.'] ),
+				'###BLOB_DOWNLOADCOUNT###' => $this->cObj->stdWrap( $this->getFieldContent('download_count'), $this->conf[$mode.'View.']['downloadcount_stdWrap.'] ),
+				'###BLOB_CHECKSUM###' => $this->cObj->stdWrap( $this->getFieldContent('blob_checksum'), $this->conf[$mode.'View.']['filechecksum_stdWrap.'] ),			
+				'###BLOB_FILENAME###' => $this->cObj->stdWrap( $this->getFieldContent('blob_name'), $this->conf[$mode.'View.']['filename_stdWrap.'] ),
 				'###BLOB_FILESIZE###' => $this->cObj->stdWrap( $this->getFieldContent('blob_size'), $this->conf[$mode.'View.']['filesize_stdWrap.'] ),
-				'###BLOB_FILETYPE###' => $this->getFieldContent('blob_type'),
-				'###BLOB_FILEICON###' => $this->getFileIcon( $this->getFieldContent('blob_name') ),
+				'###BLOB_FILETYPE###' => $this->cObj->stdWrap( $this->getFieldContent('blob_type'), $this->conf[$mode.'View.']['filetype_stdWrap.'] ),
+				'###BLOB_FILEICON###' => $this->getFileIcon( $this->getFieldContent( 'blob_name' ) ),
 				'###BLOB_CATEGORIES###' => '',
 			);
 			
@@ -749,21 +767,10 @@ class tx_drblob_pi1 extends tslib_pibase {
 				case 'single':
 					unset( $arrMarker['###BLOB_MORE###'] );
 				break;
-				case 'list':
-				case 'personal':
-				case 'top':
-					$tmp['toCut'] = intval( $this->conf[$mode.'View.']['lengthOfDescription'] ) > 0 ? intval( $this->conf[$mode.'View.']['lengthOfDescription'] ) : 150;
-					$arrMarker['###BLOB_DESCRIPTION###'] = strip_tags( $arrMarker['###BLOB_DESCRIPTION###'] );
-					if ( strlen( $arrMarker['###BLOB_DESCRIPTION###'] ) > $tmp['toCut'] ) {
-						$arrMarker['###BLOB_DESCRIPTION###'] = substr( $arrMarker['###BLOB_DESCRIPTION###'], 0, -(strlen( $arrMarker['###BLOB_DESCRIPTION###'] ) - $tmp['toCut'] ) ) . '...';
-					}
-				break;
 			}
 		}
 
 		if( $what != 'content' ) {
-			$tmp['dwnLdCnt'] = preg_replace( '|(.?)###BLOB_DOWNLOADCOUNT###(.?)|', ' ' . $this->getFieldContent('download_count') . ' ', $this->pi_getLL( 'list_field_downloadcount' ), 1 );
-			
 			$arrLangMarker = array(
 				'###LANG_UID###' => $this->pi_getLL( 'field_uid' ),
 				'###LANG_TITLE###' => $this->pi_getLL( 'list_field_title' ),
@@ -771,11 +778,13 @@ class tx_drblob_pi1 extends tslib_pibase {
 				'###LANG_FILENAME###' => $this->pi_getLL( 'list_field_blob_name' ),
 				'###LANG_FILESIZE###' => $this->pi_getLL( 'list_field_blob_size' ),
 				'###LANG_FILETYPE###' => $this->pi_getLL( 'list_field_blob_type' ),
+				'###LANG_CHECKSUM###' => $this->pi_getLL( 'list_field_blob_checksum' ),
 				'###LANG_CRDATE###' => $this->pi_getLL( 'list_field_crdate' ),
 				'###LANG_CATEGORIES###' => $this->pi_getLL( 'list_field_categories' ),
 				'###LANG_LASTCHANGE###' => $this->pi_getLL( 'list_field_tstamp' ),
+				'###LANG_AGE###' => $this->pi_getLL( 'list_field_age' ),
 				'###LANG_NOITEMS###' => $this->pi_getLL( 'noRecordsFound' ),
-				'###LANG_DOWNLOADCOUNT###' => $tmp['dwnLdCnt'],
+				'###LANG_DOWNLOADCOUNT###' => $this->pi_getLL( 'list_field_downloadcount' ),
 				'###BLOB_MORE###' => $this->pi_getLL( $mode .'_button_show' ),
 				'###BLOB_DOWNLOAD###' => $this->pi_getLL( $mode.'_button_download' ),
 				'###LANG_AUTHOR###' => $this->pi_getLL(  'list_field_author' ),

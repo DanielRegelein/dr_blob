@@ -1,3 +1,20 @@
+2008-06-xx  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
+
+	* Release of version 1.7.0
+	
+	* Feature: It's now possible to store files either in the database, or in the filesystem
+	* Feature: The fields "Author", "Filename", "Filesize", "Filetype" and "Title" are now configurable using a stdWrap
+	* Feature: Added the possibility to substitute Page- and Indextitle in SingleView
+	* Feature: Added CSH for backend forms
+	* Feature: Outsourced all non-english language labels for the translation tool
+	* Feature: Added the possibility to open a file inline (inside a browser window / browser tab)
+	* Feature: Added a checksum for all newly uploaded files
+	
+	* Change: The layout of the TCA-Form for a filerecord has been changed.
+	* Change: Removed vars that where marked as deprecated (BLOB_TITLE_LINK, BLOB_MORE_LINK & BLOB_DOWNLOAD_LINK)
+	
+	* Bugfix: Fixed a bug that occured with Firefox when downloading a file with a filename that contains blank spaces.
+	
 2007-09-25  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
 
 	* Release of version 1.6.1
@@ -7,7 +24,7 @@
 	* Feature: Added a SORTLINK-Marker for the filesize (blob_size) and filetype (blob_type)
 	
 	* Change: Removed the TS-Values fileExtIconHeight and fileExtIconWidth. They are now detected automaticlly
-	* Change: Changed the is_vip – field from type “enum” to type “tinyint” to increase dbal-compatibility
+	* Change: Changed the is_vip - field from type "enum" to type "tinyint" to increase dbal-compatibility
 	* Change: Changed the field blob_size from varchar to int to allow sorting
 
 2007-06-14  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>

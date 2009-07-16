@@ -1,27 +1,7 @@
 //Setup
 plugin.tx_drblob_pi1 = USER
-plugin.tx_drblob_pi1.userFunc = tx_drblob_pi1->main
+plugin.tx_drblob_pi1 {
+  userFunc = tx_drblob_pi1->main
 
-
-plugin.tx_drblob_pi1.templateFile = typo3conf/ext/dr_blob/res/dr_blob.tmpl
-plugin.tx_drblob_pi1.fileExtIconFolder = typo3/gfx/fileicons/
-plugin.tx_drblob_pi1.fileExtIconHeight = 16
-plugin.tx_drblob_pi1.fileExtIconWidth = 18
-
-
-//SingleView
-plugin.tx_drblob_pi1.singleView.date_stdWrap.date = m/d/Y
-
-//ListView
-plugin.tx_drblob_pi1.listView.date_stdWrap.date = m/d/Y
-plugin.tx_drblob_pi1.listView.alternatingLayouts = 2
-
-//TopView
-plugin.tx_drblob_pi1.topView.date_stdWrap.date = m/d/Y
-plugin.tx_drblob_pi1.topView.alternatingLayouts = 2
-plugin.tx_drblob_pi1.topView.lenghtOfDescription = 150
-
-//Personal
-plugin.tx_drblob_pi1.personalView.date_stdWrap.date = m/d/Y h:i
-plugin.tx_drblob_pi1.personalView.alternatingLayouts = 2
-plugin.tx_drblob_pi1.personalView.lenghtOfDescription = 150
+  templateFile = typo3conf/ext/dr_blob/res/dr_blob.tmpl
+}

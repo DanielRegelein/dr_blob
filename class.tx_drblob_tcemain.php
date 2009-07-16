@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
+*  (c) 2005-present Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,12 +29,13 @@
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  * @package 	dr_blob
  * @filesource	class.tx_drblob_tcemain.php
- * @version		1.5.1
+ * @version		1.7.0
  * @since 		1.5.0, 2007-04-10
  */
 class tx_drblob_tcemain {
 	
 	var $dbVars = array( 'table' => 'tx_drblob_content' );
+	var $defaultUploadFolder = 'uploads/tx_drblob/storage';
 
 	
 	/**
@@ -50,7 +51,8 @@ class tx_drblob_tcemain {
 	 * @return		void
 	 */
 	/*public*/function processDatamap_afterDatabaseOperations( $status, $table, $id, $fieldArray, $obj ){
-
+		$this->defaultUploadFolder = PATH_site . $this->defaultUploadFolder;
+		
 		if( $table == $this->dbVars['table'] ) {
 			
 			if ( !is_int( $id ) ) {
@@ -58,18 +60,41 @@ class tx_drblob_tcemain {
 			} else {
 				$item = $id;
 			}
+			
 			if ( is_array( $_FILES['data']['tmp_name'][$this->dbVars['table']] ) ) {
 				$fileName = $_FILES['data']['tmp_name'][$this->dbVars['table']][$id]['blob_data'];
 				if ( ( !empty( $fileName ) ) && ( $fileName != 'none' ) ) {
 						//Open File and Quote it
 					$filePointer = fopen( $fileName, 'r' );
-						$data = addslashes( fread( $filePointer, filesize( $fileName ) ) );
+						$data = fread( $filePointer, filesize( $fileName ) );
+						$md5_checksum = md5( $data );
+						$data = addslashes( $data );
 					fclose( $filePointer );
+					
+					/* print( $obj->checkValue_currentRecord['type'] );
+					 * 
+					 * Type 1 -- Database
+					 * Type 2 -- Filesystem
+					 */
+
+					//Store file in the filesystem
+					if( $obj->checkValue_currentRecord['type'] == '2' ) {
+						$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dr_blob']);
+						
+						//Generate Filename
+						$folder = $extConf['fileStorageFolder'] ? $extConf['fileStorageFolder'] : $this->defaultUploadFolder;
+						
+						//The target filename has a random number in it's name to ensure unique filenames when versioning records.
+						$targetFileName = $item . '_' . rand() . '.blob';
+						t3lib_div::writeFile( t3lib_div::dirname( $folder ) . '/' . $targetFileName, $data );
+						$data = $targetFileName;
+					}
 					
 						//Prepare UPDATE-Array. Quoting the values is not nessesary, because this is done by 
 						//the method $GLOBALS['TYPO3_DB']->UPDATEquery that is called from $GLOBALS['TYPO3_DB']->exec_UPDATEquery
 					$arrValues = array(
 						'blob_data' => $data,
+						'blob_checksum' => $md5_checksum,
 						'blob_name' => $_FILES['data']['name'][$this->dbVars['table']][$id]['blob_data'],
 						'blob_size' => $_FILES['data']['size'][$this->dbVars['table']][$id]['blob_data'],
 						'blob_type' => $_FILES['data']['type'][$this->dbVars['table']][$id]['blob_data']

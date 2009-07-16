@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Language labels for the FE plugin Filelist (dr_blob) used to localize the plugin configuration mask and the TCA-Fields</description>
+		<type>module</type>
+		<labelContext type="array">
+			<label index="tx_drblob_content"></label>
+			<label index="tx_drblob_content.title"></label>
+			<label index="tx_drblob_content.description"></label>
+			<label index="tx_drblob_content.type"></label>
+			<label index="tx_drblob_content.type.db"></label>
+			<label index="tx_drblob_content.type.fs"></label>
+			<label index="tx_drblob_content.type.dam"></label>
+			<label index="tx_drblob_content.cruser_id"></label>
+			<label index="tx_drblob_content.crdate"></label>
+			<label index="tx_drblob_content.tstamp"></label>
+			<label index="tx_drblob_content.blob_name"></label>
+			<label index="tx_drblob_content.blob_size"></label>
+			<label index="tx_drblob_content.blob_type"></label>
+			<label index="tx_drblob_content.blob_data"></label>
+			<label index="tx_drblob_content.is_vip"></label>
+			<label index="tx_drblob_content.is_vip.desc"></label>
+			<label index="tx_drblob_content.download_count"></label>
+			<label index="tx_drblob_content.download_count.desc"></label>
+			<label index="tx_drblob_content.download_count.reset"></label>
+			<label index="tx_drblob_content.category"></label>
+			<label index="tx_drblob_category"></label>
+			<label index="tx_drblob_category.title"></label>
+			<label index="pages.folderIconsDescr"></label>
+			<label index="tt_content.list_type_pi1"></label>
+			<label index="tt_content.pi_flexform.sheet.datasource"></label>
+			<label index="tt_content.pi_flexform.categories"></label>
+			<label index="tt_content.pi_flexform.categories_mode"></label>
+			<label index="tt_content.pi_flexform.categories_showAll"></label>
+			<label index="tt_content.pi_flexform.categories_showSelected"></label>
+			<label index="tt_content.pi_flexform.sheet.settings"></label>
+			<label index="tt_content.pi_flexform.whatToDisplay"></label>
+			<label index="tt_content.pi_flexform.whatToDisplay.top"></label>
+			<label index="tt_content.pi_flexform.whatToDisplay.list"></label>
+			<label index="tt_content.pi_flexform.whatToDisplay.single"></label>
+			<label index="tt_content.pi_flexform.whatToDisplay.search"></label>
+			<label index="tt_content.pi_flexform.whatToDisplay.personal.list"></label>
+			<label index="tt_content.pi_flexform.whatToDisplaypersonal.add"></label>
+			<label index="tt_content.pi_flexform.limit"></label>
+			<label index="tt_content.pi_flexform.listOrderBy"></label>
+			<label index="tt_content.pi_flexform.listOrderBy.title"></label>
+			<label index="tt_content.pi_flexform.listOrderBy.createdate"></label>
+			<label index="tt_content.pi_flexform.listOrderBy.lastchange"></label>
+			<label index="tt_content.pi_flexform.listOrderBy.author"></label>
+			<label index="tt_content.pi_flexform.listOrderBy.sorting"></label>
+			<label index="tt_content.pi_flexform.listOrderBy.blob_size"></label>
+			<label index="tt_content.pi_flexform.listOrderBy.blob_name"></label>
+			<label index="tt_content.pi_flexform.listOrderBy.blob_type"></label>
+			<label index="tt_content.pi_flexform.listOrderDirection"></label>
+			<label index="tt_content.pi_flexform.listOrderDirection.asc"></label>
+			<label index="tt_content.pi_flexform.listOrderDirection.desc"></label>
+			<label index="tt_content.pi_flexform.template_file"></label>
+			<label index="tt_content.pi_flexform.singlePID"></label>
+			<label index="tt_content.pi_flexform.returnPID"></label>
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_drblob_content">Secure File</label>
+			<label index="tx_drblob_content.title">Title</label>
+			<label index="tx_drblob_content.description">Description</label>
+			<label index="tx_drblob_content.type">Record storage type</label>
+			<label index="tx_drblob_content.type.db">Store file in the Database</label>
+			<label index="tx_drblob_content.type.fs">Store file in the Filesystem</label>
+			<label index="tx_drblob_content.type.dam">Associate with a DAM file</label>
+			<label index="tx_drblob_content.cruser_id">Author</label>
+			<label index="tx_drblob_content.crdate">Create Date</label>
+			<label index="tx_drblob_content.tstamp">Last Change</label>
+			<label index="tx_drblob_content.blob_name">Filename</label>
+			<label index="tx_drblob_content.blob_size">Filesize</label>
+			<label index="tx_drblob_content.blob_type">Filetype</label>
+			<label index="tx_drblob_content.blob_checksum">File Checksum</label>
+			<label index="tx_drblob_content.blob_data">File</label>
+			<label index="tx_drblob_content.is_vip">VIP-Record?</label>
+			<label index="tx_drblob_content.is_vip.desc">Shall this record be shown in a vip-list?</label>
+			<label index="tx_drblob_content.download_count">Downloadcounter</label>
+			<label index="tx_drblob_content.download_count.desc">This file has been downloaded ###DOWNLOAD_COUNT### times</label>
+			<label index="tx_drblob_content.download_count.reset">Reset Counter</label>
+			<label index="tx_drblob_content.category">File categories</label>
+			<label index="tx_drblob_category">File Category</label>
+			<label index="tx_drblob_category.title">Title</label>
+			<label index="pages.folderIconsDescr">Files</label>
+			<label index="tt_content.list_type_pi1">Filelist</label>
+			<label index="tt_content.pi_flexform.sheet.datasource">Data Source</label>
+			<label index="tt_content.pi_flexform.categories">Category selection:</label>
+			<label index="tt_content.pi_flexform.categories_mode">Category mode:</label>
+			<label index="tt_content.pi_flexform.categories_showAll">Show all (don't use selection below)</label>
+			<label index="tt_content.pi_flexform.categories_showSelected">Show only categories selected below</label>
+			<label index="tt_content.pi_flexform.sheet.settings">Settings</label>
+			<label index="tt_content.pi_flexform.whatToDisplay">What shall be displayed:</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.top">TOP: List of VIP-items</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.list">LIST: List of items</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.single">SINGLE: Single item</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.search">SEARCH: Search items</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.personal.list">PERSONAL: Personalizable list</label>
+			<label index="tt_content.pi_flexform.whatToDisplaypersonal.add">Show &quot;Add to Personal Container&quot; (LIST-Mode):</label>
+			<label index="tt_content.pi_flexform.limit">Number of items to list:</label>
+			<label index="tt_content.pi_flexform.listOrderBy">&quot;Order by&quot; this field (LIST-Mode):</label>
+			<label index="tt_content.pi_flexform.listOrderBy.title">Title</label>
+			<label index="tt_content.pi_flexform.listOrderBy.createdate">Date of the creation</label>
+			<label index="tt_content.pi_flexform.listOrderBy.lastchange">Date of the last change</label>
+			<label index="tt_content.pi_flexform.listOrderBy.author">Author</label>
+			<label index="tt_content.pi_flexform.listOrderBy.sorting">Custom Backend Sorting</label>
+			<label index="tt_content.pi_flexform.listOrderBy.blob_name">Filename</label>
+			<label index="tt_content.pi_flexform.listOrderBy.blob_size">Filesize</label>
+			<label index="tt_content.pi_flexform.listOrderBy.blob_type">Mimetype</label>
+			<label index="tt_content.pi_flexform.listOrderDirection">Ascending or Descending:</label>
+			<label index="tt_content.pi_flexform.listOrderDirection.asc">Ascending</label>
+			<label index="tt_content.pi_flexform.listOrderDirection.desc">Descending</label>
+			<label index="tt_content.pi_flexform.template_file">Template file:</label>
+			<label index="tt_content.pi_flexform.singlePID">Page where to display single items:</label>
+			<label index="tt_content.pi_flexform.returnPID">Page where to return to:</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+	</orig_hash>
+	<orig_text type="array">
+	</orig_text>
+</T3locallang>

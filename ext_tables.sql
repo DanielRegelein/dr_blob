@@ -19,6 +19,7 @@ CREATE TABLE tx_drblob_content (
   endtime int(11) unsigned default '0',
   fe_group int(11) unsigned default '0',
   sorting int(11) unsigned default '0',
+  type tinyint(4) DEFAULT '1' NOT NULL,
   sys_language_uid int(11) default '0',
   l18n_parent int(11) default '0',
   l18n_diffsource mediumblob,
@@ -38,6 +39,7 @@ CREATE TABLE tx_drblob_content (
   blob_name varchar(255) default '',
   blob_size int(11) default '0',
   blob_type varchar(255) default '',
+  blob_checksum varchar(255) default '',
   blob_data longblob,
   PRIMARY KEY (uid),
   KEY parent (pid),
@@ -66,7 +68,9 @@ CREATE TABLE tx_drblob_category (
   deleted tinyint(1) default '0',
   hidden tinyint(1) default '0',
   title varchar(255) default '',
-  PRIMARY KEY (uid)
+  PRIMARY KEY (uid),
+  KEY parent (pid),
+  KEY title (title)
 );
 
 

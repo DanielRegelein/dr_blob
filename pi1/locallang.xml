@@ -1,24 +1,62 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>Language labels for the Filelist FE plugin "dr_blob"</description>
+		<description>FE language labels for the Filelist FE plugin &quot;dr_blob&quot;</description>
+		<labelContext type="array">
+			<label index="list_button_download"></label>
+			<label index="list_button_show"></label>
+			<label index="list_field_uid"></label>
+			<label index="list_field_title"></label>
+			<label index="list_field_description"></label>
+			<label index="list_field_blob_name"></label>
+			<label index="list_field_blob_size"></label>
+			<label index="list_field_blob_type"></label>
+			<label index="list_field_blob_data"></label>
+			<label index="list_field_blob_checksum"></label>
+			<label index="list_field_cruser_id"></label>
+			<label index="list_field_crdate"></label>
+			<label index="list_field_tstamp"></label>
+			<label index="list_field_age"></label>
+			<label index="list_field_categories"></label>
+			<label index="list_field_downloadcount"></label>
+			<label index="list_field_author"></label>
+			<label index="list_field_author_mail"></label>
+			<label index="list_dateFormat"></label>
+			<label index="personal_dateFormat"></label>
+			<label index="personal_button_add"></label>
+			<label index="personal_button_download"></label>
+			<label index="personal_button_remove"></label>
+			<label index="personal_button_show"></label>
+			<label index="search_button_search"></label>
+			<label index="single_button_download"></label>
+			<label index="single_button_back"></label>
+			<label index="single_noItemFound"></label>
+			<label index="single_dateFormat"></label>
+			<label index="top_button_download"></label>
+			<label index="top_button_show"></label>
+			<label index="top_dateFormat"></label>
+			<label index="noRecordsFound"></label>
+		</labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="list_button_download">[download]</label>
 			<label index="list_button_show">[more]</label>
-			<label index="list_field_uid">Record No</label>	
-			<label index="list_field_title">Title</label>	
-			<label index="list_field_description">Description</label>	
-			<label index="list_field_blob_name">Filename</label>	
-			<label index="list_field_blob_size">Filesize</label>	
-			<label index="list_field_blob_type">Filetype</label>	
+			<label index="list_field_uid">Record No</label>
+			<label index="list_field_title">Title</label>
+			<label index="list_field_description">Description</label>
+			<label index="list_field_blob_name">Filename</label>
+			<label index="list_field_blob_size">Filesize</label>
+			<label index="list_field_blob_type">Filetype</label>
 			<label index="list_field_blob_data">File</label>
+			<label index="list_field_blob_checksum">Checksum</label>
 			<label index="list_field_cruser_id">Author</label>
 			<label index="list_field_crdate">Date</label>
 			<label index="list_field_tstamp">Last Change</label>
+			<label index="list_field_age">Age</label>
 			<label index="list_field_categories">Categories</label>
-			<label index="list_field_downloadcount">This record has been downloaded ###BLOB_DOWNLOADCOUNT### times</label>
+			<label index="list_field_downloadcount">Popularity</label>
+			<label index="list_field_downloadcount_wrap">This record has been downloaded ###TIMES### times</label>
 			<label index="list_field_author">Author</label>
 			<label index="list_field_author_mail">eMail address</label>
 			<label index="list_dateFormat">m/d/Y</label>
@@ -37,85 +75,9 @@
 			<label index="top_dateFormat">m/d/Y h:i</label>
 			<label index="noRecordsFound">Sorry, no Items available</label>
 		</languageKey>
-		<languageKey index="dk" type="array">
-			<label index="list_button_show">[mere]</label>
-			<label index="list_dateFormat">d.m.Y</label>
-			<label index="personal_dateFormat">d.m.Y H:i</label>
-			<label index="personal_button_show">[mere]</label>
-			<label index="search_button_search">Søg</label>
-			<label index="single_dateFormat">d.m.Y</label>
-			<label index="top_dateFormat">d.m.Y H:i</label>
-			<label index="top_button_show">[mere]</label>
-		</languageKey>
-		<languageKey index="de" type="array">
-			<label index="list_button_download">[download]</label>
-			<label index="list_button_show">[mehr]</label>
-			<label index="list_field_uid">Datensatznummer</label>	
-			<label index="list_field_title">Titel</label>	
-			<label index="list_field_description">Beschreibung</label>	
-			<label index="list_field_blob_name">Dateiname</label>	
-			<label index="list_field_blob_size">Dateigröße</label>	
-			<label index="list_field_blob_type">Dateityp</label>	
-			<label index="list_field_blob_data">Datei</label>
-			<label index="list_field_cruser_id">Autor</label>		
-			<label index="list_field_crdate">Erstelldatum</label>
-			<label index="list_field_tstamp">Letzte Änderung</label>
-			<label index="list_field_categories">Kategorien</label>
-			<label index="list_field_downloadcount">Dieser Datensatz wurde bereits ###BLOB_DOWNLOADCOUNT### mal heruntergeladen</label>
-			<label index="list_field_author">Autor</label>
-			<label index="list_field_author_mail">eMail-Adresse</label>
-			<label index="list_dateFormat">d.m.Y</label>
-			<label index="personal_dateFormat">d.m.Y H:i</label>
-			<label index="personal_button_add">Diese Liste abonnieren</label>
-			<label index="personal_button_download">[download]</label>
-			<label index="personal_button_remove">Diese Liste nicht mehr abonnieren</label>
-			<label index="personal_button_show">[mehr]</label>		
-			<label index="search_button_search">Suchen</label>
-			<label index="single_button_download">angehängte Datei herunterladen</label>		
-			<label index="single_button_back">Zurück</label>
-			<label index="single_noItemFound">Keine Datensatznummer vorhanden</label>
-			<label index="single_dateFormat">d.m.Y</label>
-			<label index="top_button_download">[download]</label>
-			<label index="top_button_show">[mehr]</label>
-			<label index="top_dateFormat">d.m.Y H:i</label>
-			<label index="noRecordsFound">Momentan sind leider keine Einträge vorhanden</label>
-		</languageKey>
-		<languageKey index="no" type="array" />		
-		<languageKey index="it" type="array" />		
-		<languageKey index="fr" type="array" />		
-		<languageKey index="es" type="array" />		
-		<languageKey index="nl" type="array" />		
-		<languageKey index="cz" type="array" />		
-		<languageKey index="pl" type="array" />		
-		<languageKey index="si" type="array" />		
-		<languageKey index="fi" type="array" />		
-		<languageKey index="tr" type="array" />		
-		<languageKey index="se" type="array" />		
-		<languageKey index="pt" type="array" />		
-		<languageKey index="ru" type="array" />		
-		<languageKey index="ro" type="array" />		
-		<languageKey index="ch" type="array" />		
-		<languageKey index="sk" type="array" />		
-		<languageKey index="lt" type="array" />		
-		<languageKey index="is" type="array" />		
-		<languageKey index="hr" type="array" />		
-		<languageKey index="hu" type="array" />		
-		<languageKey index="gl" type="array" />		
-		<languageKey index="th" type="array" />		
-		<languageKey index="gr" type="array" />		
-		<languageKey index="hk" type="array" />		
-		<languageKey index="eu" type="array" />		
-		<languageKey index="bg" type="array" />		
-		<languageKey index="br" type="array" />		
-		<languageKey index="et" type="array" />		
-		<languageKey index="ar" type="array" />		
-		<languageKey index="he" type="array" />		
-		<languageKey index="ua" type="array" />		
-		<languageKey index="lv" type="array" />		
-		<languageKey index="jp" type="array" />		
-		<languageKey index="vn" type="array" />		
-		<languageKey index="ca" type="array" />		
-		<languageKey index="ba" type="array" />		
-		<languageKey index="kr" type="array" />
 	</data>
+	<orig_hash type="array">
+	</orig_hash>
+	<orig_text type="array">
+	</orig_text>
 </T3locallang>

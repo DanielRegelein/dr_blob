@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-past Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
+*  (c) 2005-present Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,7 +27,7 @@
  *
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  * @category 	Frontend Plugins
- * @copyright 	Copyright &copy; 2005-past Daniel Regelein
+ * @copyright 	Copyright &copy; 2005-present Daniel Regelein
  * @package 	dr_blob
  * @filesource 	pi1/class.tx_drblob_pi1_wizicon.php
  * @version 	1.5.1
