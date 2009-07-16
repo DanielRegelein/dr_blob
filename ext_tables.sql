@@ -12,6 +12,7 @@ CREATE TABLE tx_drblob_content (
   starttime int(11) unsigned NOT NULL default '0',
   endtime int(11) unsigned NOT NULL default '0',
   fe_group int(11) unsigned NOT NULL default '0',
+  sorting int(11) unsigned NOT NULL default '0',
   sys_language_uid int(11) NOT NULL default '0',
   l18n_parent int(11) NOT NULL default '0',
   l18n_diffsource mediumblob NOT NULL,

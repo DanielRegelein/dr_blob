@@ -2,29 +2,28 @@
 if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
-
 t3lib_extMgm::addToInsertRecords('tx_drblob_content');
 
 $TCA['tx_drblob_content'] = array (
 	'ctrl' => array (
 		'title' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content',		
 		'label' => 'title',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
+		'sortby' => 'sorting',
 		'default_sortby' => 'ORDER BY title ASC',	
-		'delete' => 'deleted',	
-		'fe_group' => 'fe_group',
-		'starttime' => 'starttime',	
-		'endtime' => 'endtime',
 		'copyAfterDuplFields' => 'sys_language_uid',
 		'useColumnsForDefaultValues' => 'sys_language_uid',
 		'transOrigPointerField' => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'languageField' => 'sys_language_uid',
-		'versioning' => true, //Compatibilty with T3.7 / T3.8 
 		'versioningWS' => true,
 		'versioning_followPages' => true,
+		'delete' => 'deleted',	
+		'fe_group' => 'fe_group',
+		'starttime' => 'starttime',	
+		'endtime' => 'endtime',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
 		'enablecolumns' => array (		
 			'disabled' => 'hidden',	
 			'starttime' => 'starttime',	
@@ -49,6 +48,16 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='pi_fle
 
 t3lib_extMgm::addPlugin(array('LLL:EXT:dr_blob/locallang_db.php:tt_content.list_type_pi1', $_EXTKEY.'_pi1'),'list_type');
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi1', 'FILE:EXT:dr_blob/flexform_ds.xml');
+
+
+	//Including the class containing the nessesary custom input elements
+require_once( t3lib_extMgm::extPath($_EXTKEY) . 'class.tx_drblob_FormFields.php' );
+	//Including the class containing the hook for TCEmain
+require_once(t3lib_extMgm::extPath( $_EXTKEY ).'class.tx_drblob_tcemain.php');
+
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamap_postProcessFieldArray'][] = 
+	'EXT:dr_blob/class.tx_drblob_tcemain.php:tx_drblob_tcemain';
+
 
 if (TYPO3_MODE=='BE') {
 	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_drblob_pi1_wizicon'] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_drblob_pi1_wizicon.php';

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3DataStructure>
 	<meta>
 		<langDisable>1</langDisable>
@@ -195,6 +196,10 @@
 										<numIndex index="0">LLL:EXT:dr_blob/locallang_db.php:tt_content.pi_flexform.listOrderBy.author</numIndex>
 										<numIndex index="1">cruser_id</numIndex>
 									</numIndex>
+									<numIndex index="5" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/locallang_db.php:tt_content.pi_flexform.listOrderBy.sorting</numIndex>
+										<numIndex index="1">sorting</numIndex>
+									</numIndex>
 								</items>
 								<maxitems>1</maxitems>
 								<size>1</size>
@@ -244,5 +249,5 @@
 				</el>
 	  		</ROOT>
 		</sSettings>
-    </sheets>-->
+    </sheets>
 </T3DataStructure>

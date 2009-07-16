@@ -25,16 +25,18 @@
 require_once( PATH_tslib . 'class.tslib_pibase.php' );
 
 /**
- * tx_drblob_pi1
- * Plugin 'Binary Object List' for the 'dr_blob' extension.
+ * @name		tx_drblob_pi1
+ * Frontend plugin "File List", Ext.Key "dr_blob"
+ * This class is executed by the Typo3 Frontend to generate File Lists 
+ * for secure downloads. 
  *
  * @extends 	tslib_pibase
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  * @category 	Frontend Plugins
- * @copyright 	Copyright &copy; 2005,2006 Daniel Regelein
- * @package 	Typo3
+ * @copyright 	Copyright &copy; 2005-past Daniel Regelein
+ * @package 	dr_blob
  * @filesource 	pi1/class.tx_drblob_pi1.php
- * @version 	1.4.1
+ * @version 	1.5.0
  */
 class tx_drblob_pi1 extends tslib_pibase {
 
@@ -77,7 +79,6 @@ class tx_drblob_pi1 extends tslib_pibase {
 	 * @access	public
 	 */
 	/*public*/function main( $content, $conf ) {
-		
 		$this->init( $conf );
 		
 		if ( $this->piVars['downloadUid'] ) {
@@ -106,7 +107,6 @@ class tx_drblob_pi1 extends tslib_pibase {
 						$this->conf['recursive'] = 0;
 
 						return $this->pi_wrapInBaseClass( $this->makeList( 'personal_list' ) );
-
 					}
 				} else {
 					return '';
@@ -134,19 +134,13 @@ class tx_drblob_pi1 extends tslib_pibase {
 	 */
 	/*protected*/function init( $conf ) {
 		
-			//Set this to an init funciton in the next version
+		$this->conf = $conf;
 		$this->pi_initPIflexForm();
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		$this->conf = $conf;
 
 			//Get site-language
-		if ( $GLOBALS['TSFE']->config['config']['sys_language_uid'] != '' ) {
-			$this->sys_language_uid = $GLOBALS['TSFE']->config['config']['sys_language_uid'];
-		} else {
-			$this->sys_language_uid = 0;
-		}
-
+		$this->sys_language_uid = $GLOBALS['TSFE']->sys_language_content;
 	}
 	
 	
@@ -204,31 +198,30 @@ class tx_drblob_pi1 extends tslib_pibase {
 				$this->internal['descFlag'] = '1';
 			break;
 			
-			case 'list':
 			case 'search':
-				if( $listType == 'search' ) {
-					if ( $this->piVars['sword'] ) {
-						$arrListSettings['sqlWhereClause'] = ' AND ( ';
-						foreach( $this->searchFields as $key=>$value ) {
-							if ( $key != 0 ) {
-								$arrListSettings['sqlWhereClause'] .= ' OR'; 
-							}
-							$arrListSettings['sqlWhereClause'] .= ' ' . $value . ' LIKE \'%' . htmlspecialchars( $this->piVars['sword'] ) . '%\'';
+				if ( $this->piVars['sword'] ) {
+					$arrListSettings['sqlWhereClause'] = ' AND ( ';
+					foreach( $this->searchFields as $key=>$value ) {
+						if ( $key != 0 ) {
+							$arrListSettings['sqlWhereClause'] .= ' OR'; 
 						}
-						$arrListSettings['sqlWhereClause'] .= ' ) ';
-					} else {
-						$arrListSettings['sqlWhereClause'] = 'AND 0';
+						$arrListSettings['sqlWhereClause'] .= ' ' . $value . ' LIKE \'%' . htmlspecialchars( $this->piVars['sword'] ) . '%\'';
 					}
+					$arrListSettings['sqlWhereClause'] .= ' ) ';
+				} else {
+					$arrListSettings['sqlWhereClause'] = 'AND 0';
 				}
+				//no 'break' --> Fall-Through to list-mode
+
+			case 'list':
 			
 				$arrListSettings['tsObj'] = 'listView.';
 				$arrListSettings['recLimit'] = ( $ffLimit ? $ffLimit : 25 );
 				$arrListSettings['tmplSubpart'] = '###TEMPLATE_LIST###';
 				$arrListSettings['tmplSubpart_noItem'] = '###TEMPLATE_LIST_NOITEMS###';
 				$arrListSettings['tmplMarkerPart'] = 'list';
-				$arrListSettings['btnWrapShow'] = $this->conf['listView.']['showButtonValue'] ? $this->conf['listView.']['showButtonValue'] : $this->pi_getLL('list.button.show');
+				$arrListSettings['btnWrapShow'] = $this->conf['listView.']['showButtonValue'] ? $this->conf['listView.']['showButtonValue'] : $this->pi_getLL('list_button_show');
 				$arrListSettings['btnWrapDwnld'] = $this->conf['listView.']['downloadButtonValue'] ? $this->conf['listView.']['downloadButtonValue'] : $this->pi_getLL('list.button.download');
-
 				
 				$ffQrySortBy = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderBy', 'sSettings' );
 				$ffQrySortDirection = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderDirection', 'sSettings' );
@@ -256,7 +249,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 			
 			//Prepare DB Queries
 		$this->internal['results_at_a_time'] = t3lib_div::intInRange( $arrListSettings['recLimit'], 1, 1000, 20 );
-		$this->internal['orderByList'] = 'title,crdate,tstamp,cruser_id';
+		$this->internal['orderByList'] = 'sorting,title,crdate,tstamp,cruser_id';
 		$this->pi_listFields = 'uid,title,description,crdate,tstamp,l18n_parent,cruser_id,blob_name,blob_size,blob_type,download_count';
  		$arrListSettings['sqlWhereClauseLocal'] = ' AND tx_drblob_content.sys_language_uid = 0';
 
@@ -268,13 +261,12 @@ class tx_drblob_pi1 extends tslib_pibase {
 
 			//DB Queries 
 		$rsltNumRows = $this->pi_exec_query( 'tx_drblob_content', 1, $arrListSettings['sqlWhereClause'] . $arrListSettings['sqlWhereClauseLocal'] );
-		
 		list( $this->internal['res_count'] ) = $GLOBALS['TYPO3_DB']->sql_fetch_row( $rsltNumRows );
 		if( $this->internal['res_count'] > 0 ) {
 
 				//Building the List... (quering for all def. Records)
 			$rslt = $this->pi_exec_query( 'tx_drblob_content', 0, $arrListSettings['sqlWhereClause'] . $arrListSettings['sqlWhereClauseLocal'] );
-
+			
 				//If the current language isn't the default language...
 			if( $this->sys_language_uid != 0 ) {
 				$stdLangRecordList = null;
@@ -682,28 +674,16 @@ class tx_drblob_pi1 extends tslib_pibase {
 	 * @access	protected 
 	 */
 	/*protected*/function getGlobalMarkerArray( $mode ) {
-		switch ( $mode ) {
-			case 'single':
-				$dateWrap = $this->conf['singleView.']['date_stdWrap'] ? $this->conf['singleView.']['date_stdWrap'] : $this->pi_getLL( 'single.date_stdWrap' );
-			break;
-			case 'top':
-				$dateWrap = $this->conf['topView.']['date_stdWrap'] ? $this->conf['topView.']['date_stdWrap'] : $this->pi_getLL( 'top.date_stdWrap' );
-			break;
-			case 'list':
-				$dateWrap = $this->conf['listView.']['date_stdWrap'] ? $this->conf['listView.']['date_stdWrap'] : $this->pi_getLL( 'list.date_stdWrap' );
-			break;
-			case 'personal':
-				$dateWrap = $this->conf['personalView.']['date_stdWrap'] ? $this->conf['personalView.']['date_stdWrap'] : $this->pi_getLL( 'personal.date_stdWrap' );
-			break;
-		}
+
+		$dateWrap = is_array( $this->conf[$mode.'View.']['date_stdWrap.'] ) ? $this->conf[$mode.'View.']['date_stdWrap.'] : array( 'date' => $this->pi_getLL( $mode.'.dateFormat' ) ) ;
 
 		$arrMarker = array(
 			'###BLOB_TITLE###' => $this->getFieldContent('title'),
 			'###BLOB_DESCRIPTION###' => $this->pi_RTEcssText( $this->getFieldContent('description') ),
 			'###BLOB_AUTHOR###' => $this->getFieldContent('author'),
 			'###BLOB_AUTHOR_EMAIL###' => $this->getFieldContent('author_email'),
-			'###BLOB_CRDATE###' => date( $dateWrap, $this->getFieldContent('crdate')),
-			'###BLOB_LASTCHANGE###' => date( $dateWrap, $this->getFieldContent('tstamp')),
+			'###BLOB_CRDATE###' => $this->cObj->stdWrap( $this->getFieldContent( 'crdate' ), $dateWrap ),
+			'###BLOB_LASTCHANGE###' => $this->cObj->stdWrap( $this->getFieldContent( 'tstamp' ), $dateWrap ),
 			'###BLOB_DOWNLOADCOUNT###' => $this->getFieldContent('download_count'),
 			'###BLOB_FILENAME###' => $this->getFieldContent('blob_name'),
 			'###BLOB_FILESIZE###' => t3lib_div::formatSize( $this->getFieldContent('blob_size'), (' B| KB| MB| GB' ) ),
@@ -761,11 +741,18 @@ class tx_drblob_pi1 extends tslib_pibase {
 	 * @access 	protected
 	 */
 	/*protected*/function getFileIcon( $fileName ) {
+
+		$icon = array(
+			'path' => ( !empty( $this->conf['fileExtIconFolder'] ) ? $this->conf['fileExtIconFolder'] : 'typo3/gfx/fileicons/' ),
+			'height' => ( !empty( $this->conf['fileExtIconHeight'] ) ? $this->conf['fileExtIconHeight'] : 16 ),
+			'width' => ( !empty( $this->conf['fileExtIconWidth'] ) ? $this->conf['fileExtIconWidth'] : 18 ),
+			'file' => ''
+		);
+		$icon['file'] = @is_file( $icon['path'] . $tmp['realFileext'].'.gif' ) ? $icon['path'] . $tmp['realFileext'].'.gif' : $icon['path'] . 'default.gif';
+		
 		if ( !empty( $fileName ) ) {
 			$tmp = t3lib_div::split_fileref( $fileName );
-			$iconPath = 't3lib/gfx/fileicons/';
-			$icon = @is_file($iconPath.$tmp['realFileext'].'.gif') ? $iconPath . $tmp['realFileext'].'.gif' : $iconPath . 'default.gif';
-			return '<img src="'.$icon.'" border="0" alt="'.$tmp['realFileext'].'" height="16px" width="18px" />';
+			return '<img src="'.$icon['file'].'" border="0" alt="'.$tmp['realFileext'].'" height="'.$icon['height'].'px" width="'.$icon['width'].'px" />';
 		} else {
 			return '';
 		}
@@ -857,7 +844,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 };
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS['FE']['XCLASS']['ext/dr_blob/pi1/class.tx_drblob_pi1.php'])	{
-	include_once($TYPO3_CONF_VARS['FE']['XCLASS']['ext/dr_blob/pi1/class.tx_drblob_pi1.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/pi1/class.tx_drblob_pi1.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/pi1/class.tx_drblob_pi1.php']);
 }
 ?>

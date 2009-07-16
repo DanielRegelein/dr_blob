@@ -2,62 +2,28 @@
 if ( !defined( 'TYPO3_MODE' ) ) {
 	die ( 'Access denied.' );
 }
-
-function user_inputFileName( $PA, $fobj ) {
-	return 	'<input ' .
-		'type="text" ' .
-		'name="' . $PA['itemFormElName'] . '" ' .
-		'value="' . $PA['itemFormElValue'] . '" ' .
-		'size="48" ' .
-		' / >';
-}
-
-function user_inputFileType( $PA, $fobj ) {
-	return 	$PA['itemFormElValue'] . '<input ' .
-		'type="hidden" ' .
-		'name="' . $PA['itemFormElName'] . '" ' .
-		'value="' . $PA['itemFormElValue'] . '" / >';
-}
-
-function user_inputFileSize( $PA, $fobj ) {
-	if ( $PA['itemFormElValue'] ) {
-		return 	t3lib_div::formatSize( $PA['itemFormElValue'], (' B| KB| MB| GB' ) ) . '<input ' .
-			'type="hidden" ' .
-			'name="' . $PA['itemFormElName'] . '" ' .
-			'value="' . $PA['itemFormElValue'] . '" / >';
-	} else {
-		return '0 B';
-	}
-}
-
-function user_inputFile( $PA, $fobj ) {
-	return 	'<input ' .
-		'type="file" ' .
-		'name="' . $PA['itemFormElName'] . '" ' .
-		'size="48" ' .
-		'onChange="" / >';
-}
+$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dr_blob']);
 
 $TCA['tx_drblob_content'] = array (
 	'ctrl' => array(
 		'title' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content',		
 		'label' => 'title',
-		'tstamp' => 'tstamp',
-		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
+		'sortby' => 'sorting',
 		'default_sortby' => 'ORDER BY title ASC',	
-		'delete' => 'deleted',	
-		'fe_group' => 'fe_group',
-		'starttime' => 'starttime',	
-		'endtime' => 'endtime',
 		'copyAfterDuplFields' => 'sys_language_uid',
 		'useColumnsForDefaultValues' => 'sys_language_uid',
 		'transOrigPointerField' => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'languageField' => 'sys_language_uid',
-		//'versioning' => true,//Compatibilty with T3.7 / T3.8
 		'versioningWS' => true,
 		'versioning_followPages' => true,
+		'delete' => 'deleted',	
+		'fe_group' => 'fe_group',
+		'starttime' => 'starttime',	
+		'endtime' => 'endtime',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
 		'enablecolumns' => array (		
 			'disabled' => 'hidden',	
 			'starttime' => 'starttime',	
@@ -68,7 +34,7 @@ $TCA['tx_drblob_content'] = array (
 	),
 
 	'interface' => array (
-		'showRecordFieldList' => 'title,crdate,blob_name,blob_size,blob_type,hidden,fe_group,starttime,endtime',
+		'showRecordFieldList' => 'title,crdate,blob_name,blob_size,blob_type,hidden,fe_group,starttime,endtime,download_count',
 		'maxDBListItems' => 20
 	),
 
@@ -128,6 +94,9 @@ $TCA['tx_drblob_content'] = array (
 				),
 				'foreign_table' => 'fe_groups'
 			)
+		),
+		'sorting' => array(
+			
 		),
 		'sys_language_uid' => array (
 			'exclude' => 1,
@@ -215,13 +184,21 @@ $TCA['tx_drblob_content'] = array (
 				'eval' => 'int'
 			)
 		),
+		'download_count' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.download_count',
+			'config' => array (
+				'type' => ( $extConf['enableCounterReset'] ? 'user' : 'passthrough' ),
+				'userFunc' => 'tx_drblob_FormFields->inputDownloadCounter'
+			)
+		),
 		'blob_name' => array (		
 			'exclude' => 0,	
 			'l10n_mode' => 'mergeIfNotBlank',
 			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.blob_name',		
 			'config' => array (
 				'type' => 'user',	
-				'userFunc' => 'user_inputFileName'	
+				'userFunc' => 'tx_drblob_FormFields->inputFileName',
 			)
 		),
 		'blob_size' => array (		
@@ -230,9 +207,7 @@ $TCA['tx_drblob_content'] = array (
 			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.blob_size',		
 			'config' => array (
 				'type' => 'user',
-				'userFunc' => 'user_inputFileSize',
-				//'type' => 'none',	
-				//'rows' => 1,
+				'userFunc' => 'tx_drblob_FormFields->inputFileSize',
 				
 			)
 		),
@@ -242,25 +217,24 @@ $TCA['tx_drblob_content'] = array (
 			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.blob_type',		
 			'config' => array (
 				'type' => 'user',
-				'userFunc' => 'user_inputFileType'				
-				//'type' => 'none',	
-				//'rows' => 1,
+				'userFunc' => 'tx_drblob_FormFields->inputFileType'				
 			)
 		),
 		
 		'blob_data' => array(
 			'exclude' => 0,
 			'l10n_mode' => 'mergeIfNotBlank',
+			'l10n_display' => 'hideDiff',
 			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.blob_data',
 			'config' => array(
 				'type' => 'user',
-				'userFunc' => 'user_inputFile'
+				'userFunc' => 'tx_drblob_FormFields->inputFile'
 			)
 		)
 	),
 
 	'types' => array (
-		'0' => array('showitem' => 'hidden;;1;;1-1-1, title;;;;2-2-2, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3, is_vip, blob_name, blob_size, blob_type, blob_data')
+		'0' => array('showitem' => 'hidden;;1;;1-1-1, title;;;;2-2-2, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3, is_vip, download_count, blob_name, blob_size, blob_type, blob_data')
 	),
 
 	'palettes' => array (

@@ -1,0 +1,56 @@
+2007-04-10  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
+
+	* Release of version 1.5.0	
+
+	* Feature: Added the possibility to reset the download counter of an attached file.
+	* Feature: Added specific sort sequence to the list mode.
+	* Small Feature: Added the TypoScript-Marker the define a folder for custom file extension-icons.
+	* Small Feature: Changed the date_stdWrap-Option in TS. „date_stdWrap“ now is a real stdWrap.
+	* Small Feature: Added the field-change-function to the custom TCA fields.
+
+	* Change: Migrated the locallang-files to the <T3locallang> XML-data-structure
+	* Change: Moved the definition of the custom input elements to an own class to avoid a naming conflict.
+	* Change: Replaced the XCLASS through a hook on TCEmain
+	
+	* Bugfix: Fixed the bug of the file-icons being displayed from the wrong folder (the one from T3 3.x)
+	* Bugfix: Enabled overwritting LocalLang-Labels via the TS Object [...]._LOCAL_LANG.
+	* Now hiding the default-language-version of localized records.
+
+2006-03-21  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
+
+	* Release of version 1.4.0
+	
+	* Feature: Added the personalizable list as well as the according configuration buttons and the flexform value.
+	* Feature: Added the template marker to display the number of times a record was downloaded yet
+	
+	* Bugfix: Fixed a bug that occured after attaching a file and pressing the Save&New Button and caused the loss of the file.
+	* Bugfix: Fixed a bug that occured in IE6 when sending CacheControl Headers. The downloaded file was not readable
+
+2005-12-12  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
+
+	* Release of version 1.3.0
+	
+	* Feature: Added the possibility to display fileicons according to the attached files
+	* Feature: Added the calculation for the filesize
+	* Feature: Did some changes in the record input mask
+	* Feature: Prepared for the versioning used by workspaces
+
+2005-11-29  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
+	
+	* Release of version 1.2.0
+
+	* Feature: Implemented the Typo3 Localization Features
+	* Feature: Added a cache controll header for downloadable files
+	* Feature: Added the TypoScript Variable to set a global template  as well as the template file priority.
+
+2005-10-27  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
+
+	* Release of version 1.1.0
+	
+	* Feature: Added the Search function
+
+	* Bugfix: Some bugfixes
+
+2005-10-20
+
+	* Release of the initial version 1.0.0

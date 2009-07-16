@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Language labels for the FE plugin Filelist (dr_blob) used to localize the plugin configuration mask and the TCA-Fields</description>
+		<type>module</type>
+		<labelContext type="array">
+			<label index="pi_title"></label>
+			<label index="pi_plus_wiz_description"></label>
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_drblob_content">Secure File</label>	
+			<label index="tx_drblob_content.title">Title</label>	
+			<label index="tx_drblob_content.description">Description</label>	
+			<label index="tx_drblob_content.cruser_id">Author</label>
+			<label index="tx_drblob_content.crdate">Create Date</label>
+			<label index="tx_drblob_content.tstamp">Last Change</label>
+			<label index="tx_drblob_content.blob_name">Filename</label>	
+			<label index="tx_drblob_content.blob_size">Filesize</label>	
+			<label index="tx_drblob_content.blob_type">Filetype</label>	
+			<label index="tx_drblob_content.blob_data">File</label>
+			<label index="tx_drblob_content.is_vip">VIP-Record?</label>
+			<label index="tx_drblob_content.is_vip.desc">Shall this record be shown in a vip-list?</label>
+			<label index="tx_drblob_content.download_count">Downloadcounter</label>
+			<label index="tx_drblob_content.download_count.desc">This file has been downloaded ###DOWNLOAD_COUNT### times</label>
+			<label index="tx_drblob_content.download_count.reset">Reset Counter</label>
+			<label index="tt_content.list_type_pi1">Filelist</label>	
+			<label index="tt_content.pi_flexform.sheet.datasource">Data Source</label>
+			<label index="tt_content.pi_flexform.sheet.settings">Settings</label>
+			<label index="tt_content.pi_flexform.whatToDisplay">What shall be displayed:</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.top">TOP: List of VIP-items</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.list">LIST: List of items</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.single">SINGLE: Single item</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.search">SEARCH: Search items</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.personal.list">PERSONAL: Personalizable list</label>
+			<label index="tt_content.pi_flexform.whatToDisplaypersonal.add">Show "Add to Personal Container" (LIST-Mode):</label>
+			<label index="tt_content.pi_flexform.limit">Number of items to list:</label>
+			<label index="tt_content.pi_flexform.recursive">Recursive:</label>
+			<label index="tt_content.pi_flexform.listOrderBy">"Order by" this field (LIST-Mode):</label>
+			<label index="tt_content.pi_flexform.listOrderBy.title">Title</label>
+			<label index="tt_content.pi_flexform.listOrderBy.createdate">Date of the creation</label>
+			<label index="tt_content.pi_flexform.listOrderBy.lastchange">Date of the last change</label>
+			<label index="tt_content.pi_flexform.listOrderBy.author">Author</label>
+			<label index="tt_content.pi_flexform.listOrderBy.sorting">Custom Backend Sorting</label>
+			<label index="tt_content.pi_flexform.listOrderDirection">Ascending or Descending:</label>
+			<label index="tt_content.pi_flexform.listOrderDirection.asc">Ascending</label>
+			<label index="tt_content.pi_flexform.listOrderDirection.desc">Descending</label>
+			<label index="tt_content.pi_flexform.template_file">Template file:</label>
+			<label index="tt_content.pi_flexform.singlePID">Page where to display single items:</label>
+			<label index="tt_content.pi_flexform.returnPID">Page where to return to:</label>
+			</languageKey>
+		<languageKey index="dk" type="array" />
+		<languageKey index="de" type="array">
+			<label index="tx_drblob_content">Gesicherte Datei</label>		
+			<label index="tx_drblob_content.title">Titel</label>	
+			<label index="tx_drblob_content.description">Beschreibung</label>
+			<label index="tx_drblob_content.cruser_id">Autor</label>
+			<label index="tx_drblob_content.crdate">Erstelldatum</label>
+			<label index="tx_drblob_content.tstamp">Letzte Änderung</label>
+			<label index="tx_drblob_content.blob_name">Dateiname</label>	
+			<label index="tx_drblob_content.blob_size">Dateigröße</label>
+			<label index="tx_drblob_content.blob_type">Dateityp</label>	
+			<label index="tx_drblob_content.blob_data">Datei auswählen</label>
+			<label index="tx_drblob_content.is_vip">VIP-Datei?</label>
+			<label index="tx_drblob_content.is_vip.desc">Soll der Datensatz in einer VIP-Liste aufgeführt werden?</label>
+			<label index="tx_drblob_content.download_count">Downloadzähler</label>
+			<label index="tx_drblob_content.download_count.desc">Diese Datei wurde bereits ###DOWNLOAD_COUNT### Mal heruntergeladen</label>
+			<label index="tx_drblob_content.download_count.reset">Zähler zurücksetzen</label>
+			<label index="tx_drblob_content.sort.asc">Aufsteigend</label>
+			<label index="tx_drblob_content.sort.desc">Absteigend</label>
+			<label index="tt_content.list_type_pi1">Dateiliste</label>
+			<label index="tt_content.pi_flexform.sheet.datasource">Datenquelle</label>
+			<label index="tt_content.pi_flexform.sheet.settings">Einstellungen</label>
+			<label index="tt_content.pi_flexform.whatToDisplay">Was soll angezeigt werden:</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.top">TOP: Liste bestehend aus VIP-Dokumenten</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.list">LIST: Liste aller Dokumente</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.single">SINGLE: Einzelnes Dokument</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.search">SEARCH: Suchen von Dokumenten</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.personal.list">PERSONAL: Personalisierbare Liste</label>
+			<label index="tt_content.pi_flexform.whatToDisplaypersonal.add">"Zu Persönlichen Container hinzufügen" anzeigen (LIST-Mode):</label>
+			<label index="tt_content.pi_flexform.limit">Anzahl der Dokumente im LIST-, PERSONAL-Modus und im TOP-Modus:</label>
+			<label index="tt_content.pi_flexform.recursive">Recursion:</label>
+			<label index="tt_content.pi_flexform.listOrderBy">"Sortiere nach" diesem Feld (LIST-Modus):</label>
+			<label index="tt_content.pi_flexform.listOrderBy.title">Titel</label>
+			<label index="tt_content.pi_flexform.listOrderBy.createdate">Erstelldatum</label>
+			<label index="tt_content.pi_flexform.listOrderBy.lastchange">Letzte Änderung</label>
+			<label index="tt_content.pi_flexform.listOrderBy.author">Autor</label>
+			<label index="tt_content.pi_flexform.listOrderBy.sorting">Spezielle Backend Sortierung</label>
+			<label index="tt_content.pi_flexform.listOrderDirection">Aufsteigend oder Absteigend:</label>
+			<label index="tt_content.pi_flexform.listOrderDirection.asc">Aufsteigend</label>
+			<label index="tt_content.pi_flexform.listOrderDirection.desc">Absteigend</label>
+			<label index="tt_content.pi_flexform.template_file">Template Datei:</label>
+			<label index="tt_content.pi_flexform.singlePID">Seite auf der der Datensatz angezeigt wird:</label>
+			<label index="tt_content.pi_flexform.returnPID">Seite zu der zurück gekehrt werden soll:</label>
+		</languageKey>
+		<languageKey index="no" type="array" />
+		<languageKey index="it" type="array" />
+		<languageKey index="fr" type="array" />
+		<languageKey index="es" type="array" />
+		<languageKey index="nl" type="array" />
+		<languageKey index="cz" type="array" />
+		<languageKey index="pl" type="array" />
+		<languageKey index="si" type="array" />
+		<languageKey index="fi" type="array" />
+		<languageKey index="tr" type="array" />
+		<languageKey index="se" type="array" />
+		<languageKey index="pt" type="array" />
+		<languageKey index="ru" type="array" />
+		<languageKey index="ro" type="array" />
+		<languageKey index="ch" type="array" />
+		<languageKey index="sk" type="array" />
+		<languageKey index="lt" type="array" />
+		<languageKey index="is" type="array" />
+		<languageKey index="hr" type="array" />
+		<languageKey index="hu" type="array" />
+		<languageKey index="gl" type="array" />
+		<languageKey index="th" type="array" />
+		<languageKey index="gr" type="array" />
+		<languageKey index="hk" type="array" />
+		<languageKey index="eu" type="array" />
+		<languageKey index="bg" type="array" />
+		<languageKey index="br" type="array" />
+		<languageKey index="et" type="array" />
+		<languageKey index="ar" type="array" />
+		<languageKey index="he" type="array" />
+		<languageKey index="ua" type="array" />
+		<languageKey index="lv" type="array" />
+		<languageKey index="jp" type="array" />
+		<languageKey index="vn" type="array" />
+		<languageKey index="ca" type="array" />
+		<languageKey index="ba" type="array" />
+		<languageKey index="kr" type="array" />
+	</data>
+</T3locallang>

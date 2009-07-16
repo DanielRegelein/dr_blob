@@ -22,10 +22,16 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @name	tx_drblob_pi1_wizicon
- * Class that adds the wizard icon.
+ * @name		tx_drblob_pi1_wizicon
+ * Backend configuration wizard for the file list plugin (dr_blob)
  *
- * @author	Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
+ * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
+ * @category 	Frontend Plugins
+ * @copyright 	Copyright &copy; 2005-past Daniel Regelein
+ * @package 	dr_blob
+ * @filesource 	pi1/class.tx_drblob_pi1_wizicon.php
+ * @version 	1.5.0
+ * 
  */
 class tx_drblob_pi1_wizicon {
 	function proc($wizardItems)	{
@@ -43,7 +49,8 @@ class tx_drblob_pi1_wizicon {
 		return $wizardItems;
 	}
 	function includeLocalLang()	{
-		include(t3lib_extMgm::extPath('dr_blob').'locallang.php');
+		$llFile = t3lib_extMgm::extPath('dr_blob').'locallang.xml';
+		$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
 		return $LOCAL_LANG;
 	}
 }
