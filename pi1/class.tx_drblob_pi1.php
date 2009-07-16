@@ -38,6 +38,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 	/*protected*/var $prefixId = 'tx_drblob_pi1';
 	/*protected*/var $scriptRelPath = 'pi1/class.tx_drblob_pi1.php';
 	/*protected*/var $extKey = 'dr_blob';
+	/*private*/var $searchFields = array( 'title','description','blob_name' );
 	/*
 	function __construct() {
 	}
@@ -52,13 +53,20 @@ class tx_drblob_pi1 extends tslib_pibase {
 		$this->conf = $conf;
 
 		if ( $this->piVars['downloadUid'] ) {
-			$this->pi_wrapInBaseClass( $this->vDownload() );
+			$this->vDownload();
 		}
 		switch(  $this->getCmd() ) {
 			case 'single':
 				return $this->pi_wrapInBaseClass( $this->vSingle() );
 			//break;
 
+			case 'search':
+				if ( strstr( $this->cObj->currentRecord, 'tt_content' ) ) {
+					$this->conf['pidList'] = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlPages', 'sDataSource' );
+					$this->conf['recursive'] = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlRecursive', 'sDataSource' );
+				}
+				return $this->pi_wrapInBaseClass( $this->vSearch( $content, true ) );
+			//break;
 			
 			case 'top':
 				if ( strstr( $this->cObj->currentRecord, 'tt_content' ) ) {
@@ -89,7 +97,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 	 * @return 	String $content
 	 * @access 	private
 	 */
-	/*private*/function vList( $content ) {
+	/*private*/function vList( $content, $searchMode=false ) {
 		//Extract the FlexForm Values
 		$ffQrySortBy = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderBy', 'sSettings' );
 		$ffQrySortDirection = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderDirection', 'sSettings' );
@@ -114,8 +122,8 @@ class tx_drblob_pi1 extends tslib_pibase {
 
 		//Number of results to show in a listing
 		$this->internal['results_at_a_time'] = t3lib_div::intInRange( $ffQryLimit, 1, 1000, 50 );
-			
-			
+		
+		
 		//Get number of records
 		$rsltNumRows = $this->pi_exec_query( 'tx_drblob_content', 1 );
 		list( $this->internal['res_count'] ) = $GLOBALS['TYPO3_DB']->sql_fetch_row( $rsltNumRows );
@@ -126,13 +134,26 @@ class tx_drblob_pi1 extends tslib_pibase {
 		if ( $rslt ) {
 			$tmpl['total'] = $this->cObj->fileResource( $tmplFile );			
 
-			if ( $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) > 0 ) {
+			if ( $this->internal['res_count'] > 0 ) {
 				$tmpl['total'] = $this->cObj->getSubpart( $tmpl['total'], '###TEMPLATE_LIST###' );
 				$tmpl['item'] = $this->getLayouts( $tmpl['total'], $this->conf['listView.']['alternatingLayouts'], 'BLOBITEM' );
 				
 				$arrItems = array();
 				$count = 0;
 				while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rslt ) )	{
+					$btnDownload = null;
+					if ( $this->blobExists( $this->internal['currentRow']['uid'] ) ) {
+						$btnDownload = $this->pi_linkTP( 
+							$this->conf['listView.']['downloadButtonValue'] ? $this->conf['listView.']['downloadButtonValue'] : $this->pi_getLL('list.button.download'), 
+							array( 
+								$this->prefixId => array( 
+									'downloadUid' => $this->internal['currentRow']['uid'] 
+								) 
+							), 
+							false, 
+							$GLOBALS['TSFE']->id 
+						);
+					}
 					$arrItems[] = $this->cObj->substituteMarkerArrayCached( 
 						$tmpl['item'][$count%count( $tmpl['item'] )],
 						array_merge( 
@@ -145,17 +166,8 @@ class tx_drblob_pi1 extends tslib_pibase {
 									array(), 
 									false, 
 									$singlePID 
-								),								
-								'###BLOB_DOWNLOAD_LINK###' => $this->pi_linkTP( 
-									$this->conf['listView.']['downloadButtonValue'] ? $this->conf['listView.']['downloadButtonValue'] : $this->pi_getLL('list.button.download'), 
-									array( 
-										$this->prefixId => array( 
-											'downloadUid' => $this->internal['currentRow']['uid'] 
-										) 
-									), 
-									false, 
-									$GLOBALS['TSFE']->id 
-								)
+								),
+								'###BLOB_DOWNLOAD_LINK###' => $btnDownload
 							)
 						)
 					);
@@ -291,6 +303,135 @@ class tx_drblob_pi1 extends tslib_pibase {
 		}
 	}
 	
+	
+
+	/**
+	 * @name vSearch
+	 * Generate a view containing a search bar and the list of results.
+	 * 
+	 * @param 	String $content
+	 * @return 	String $content
+	 * @access 	private
+	 */
+	/*private*/function vSearch( $content ) {
+		$ffQrySortBy = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderBy', 'sSettings' );
+		$ffQrySortDirection = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderDirection', 'sSettings' );
+		$ffQryLimit = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlLimitCount', 'sSettings' );
+		$ffSinglePID = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlSinglePID', 'sSettings' );
+		$ffTemplate = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlTemplate', 'sSettings' );
+		
+		$singlePID = ( $ffSinglePID ? $ffSinglePID : $GLOBALS['TSFE']->id );
+		$this->conf['listView.']['alternatingLayouts'] = intval( $this->conf['listView.']['alternatingLayouts'] ) > 0 ? intval( $this->conf['listView.']['alternatingLayouts'] ) : 2;
+		$tmplFile = ( $ffTemplate ? ( 'uploads/tx_drblob/' . $ffTemplate ) : 'typo3conf/ext/dr_blob/res/dr_blob.tmpl' );
+		$tmpl = $this->cObj->fileResource( $tmplFile );
+		$tmpl = $this->cObj->getSubpart( $tmpl, '###TEMPLATE_SEARCH###' );
+
+
+		//Prepare Searchfunctions		
+		if ( empty( $this->piVars['sort'] ) ) {
+			//default: title ASC
+			$ffQrySortDirection = $ffQrySortDirection ? $ffQrySortDirection : '0';
+			$this->piVars['sort'] = $ffQrySortBy ? $ffQrySortBy.':'.$ffQrySortDirection : 'title'.':'.$ffQrySortDirection; 
+		}
+		list($this->internal['orderBy'], $this->internal['descFlag']) = explode(':',$this->piVars['sort']);
+		$this->internal['orderByList'] = 'title,crdate,tstamp,cruser_id';
+
+
+		//Number of results to show in a listing
+		$this->internal['results_at_a_time'] = t3lib_div::intInRange( $ffQryLimit, 1, 1000, 50 );
+
+
+		//$content .= $this->pi_list_searchBox( null );
+		$content .= $this->cObj->substituteMarkerArrayCached( 
+			$tmpl, 
+			array(
+				'###FORM_URL###' => htmlspecialchars( t3lib_div::getIndpEnv( 'REQUEST_URI' ) ),
+				'###SEARCH_BUTTON###' => $this->pi_getLL( 'search.button.search' ),
+				'###SWORDS###' => $this->piVars['sword']
+			) 
+		);
+		
+		if ( $this->piVars['sword'] ) {
+			$whereClause = ' AND ( ';
+			foreach( $this->searchFields as $key=>$value ) {
+				if ( $key != 0 ) {
+					$whereClause .= ' OR'; 
+				}
+				$whereClause .= ' ' . $value . ' LIKE \'%' . htmlspecialchars( $this->piVars['sword'] ) . '%\'';
+			}
+			$whereClause .= ' ) ';
+
+			$rsltNumRows = $this->pi_exec_query( 'tx_drblob_content', 1, $whereClause );
+			list( $this->internal['res_count'] ) = $GLOBALS['TYPO3_DB']->sql_fetch_row( $rsltNumRows );
+
+			$rslt = $this->pi_exec_query( 'tx_drblob_content', 0, $whereClause );
+			if ( $rslt ) {
+				$tmpl = null;
+				$tmpl['total'] = $this->cObj->fileResource( $tmplFile );			
+	
+				if ( $this->internal['res_count'] > 0 ) {
+					$tmpl['total'] = $this->cObj->getSubpart( $tmpl['total'], '###TEMPLATE_LIST###' );
+					$tmpl['item'] = $this->getLayouts( $tmpl['total'], $this->conf['listView.']['alternatingLayouts'], 'BLOBITEM' );
+					
+					$arrItems = array();
+					$count = 0;
+					while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rslt ) )	{
+						$btnDownload = null;
+						if ( $this->blobExists( $this->internal['currentRow']['uid'] ) ) {
+							$btnDownload = $this->pi_linkTP( 
+								$this->conf['listView.']['downloadButtonValue'] ? $this->conf['listView.']['downloadButtonValue'] : $this->pi_getLL('list.button.download'), 
+								array( 
+									$this->prefixId => array( 
+										'downloadUid' => $this->internal['currentRow']['uid'] 
+									) 
+								), 
+								false, 
+								$GLOBALS['TSFE']->id 
+							);
+						}
+						$arrItems[] = $this->cObj->substituteMarkerArrayCached( 
+							$tmpl['item'][$count%count( $tmpl['item'] )],
+							array_merge( 
+								$this->getGlobalMarkerArray( 'list' ),
+								array(
+									'###BLOB_MORE_LINK###' => $this->pi_list_linkSingle ( 
+										$this->conf['listView.']['showButtonValue'] ? $this->conf['listView.']['showButtonValue'] : $this->pi_getLL('list.button.show'), 
+										$this->internal['currentRow']['uid'], 
+										true, 
+										array(), 
+										false, 
+										$singlePID 
+									),
+									'###BLOB_DOWNLOAD_LINK###' => $btnDownload
+								)
+							)
+						);
+						$count++;
+					}//End of while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rslt ) )
+					$markerArray = array(  
+						'###BLOB_SORTLINK_TITLE###'  => $this->pi_getLL( 'list.field.title'),
+						'###BLOB_SORTLINK_CRDATE###' => $this->pi_getLL( 'list.field.crdate'),
+						'###BLOB_SORTLINK_TSTAMP###' => $this->pi_getLL( 'list.field.tstamp'),
+						'###BLOB_SORTLINK_AUTHOR###' => $this->pi_getLL( 'list.field.cruser_id'),
+					);
+					$content .= $this->cObj->substituteMarkerArrayCached( 
+						$tmpl['total'],
+						$markerArray,
+						array(
+							'###CONTENT###'=> implode( '', $arrItems ),
+						)
+					);
+				} else {//End of if ( $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) > 0 )
+	
+					$tmpl['total'] = $this->cObj->getSubpart( $tmpl['total'], '###TEMPLATE_SEARCH_NOITEMS###' );
+					$content .= $this->cObj->substituteMarkerArrayCached( $tmpl['total'] );
+		
+				}//End of the Else-Part of if ( $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) > 0 )
+			}//End of if ( $rslt )
+		}
+		return $content;
+	} 
+	
 
 	/**
 	 * @name download
@@ -308,10 +449,10 @@ class tx_drblob_pi1 extends tslib_pibase {
 	    	$contentType = 'text/plain';
 	    }
 	    
-	    Header( 'Content-type: ' . $contentType );
-	    Header( 'Content-disposition: attachment; filename='.$this->getFieldContent( 'blob_name' ) );
-	    Header( 'Pragma: no-cache' );
-	    Header( 'Expires: 0' );
+	    header( 'Content-type: ' . $contentType );
+	    header( 'Content-disposition: attachment; filename='.$this->getFieldContent( 'blob_name' ) );
+	    header( 'Pragma: no-cache' );
+	    header( 'Expires: 0' );
 		echo stripslashes( $this->getFieldContent( 'blob_data' ) );
 
 		//Avoid Typo from displaying the page
@@ -425,12 +566,8 @@ class tx_drblob_pi1 extends tslib_pibase {
 				$toCut = intval( $this->conf['topView.']['lengthOfDescription'] ) > 0 ? intval( $this->conf['topView.']['lengthOfDescription'] ) : 150;
 				$arrMarker['###BLOB_DESCRIPTION###'] = strip_tags( $arrMarker['###BLOB_DESCRIPTION###'] );
 				if ( strlen( $arrMarker['###BLOB_DESCRIPTION###'] ) > $toCut ) {
-					$add = '...';
-				} else {
-					$add = null;
+					$arrMarker['###BLOB_DESCRIPTION###'] = substr( $arrMarker['###BLOB_DESCRIPTION###'], 0, -(strlen( $arrMarker['###BLOB_DESCRIPTION###'] ) - $toCut ) ) . '...';
 				}
-				$arrMarker['###BLOB_DESCRIPTION###'] = substr( $arrMarker['###BLOB_DESCRIPTION###'], 0, -(strlen( $arrMarker['###BLOB_DESCRIPTION###'] ) - $toCut ) ) . $add;
-				
 			break;
 		}
 		return $arrMarker;

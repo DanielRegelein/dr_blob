@@ -21,6 +21,7 @@ $LOCAL_LANG = Array (
 		'single.noItemFound' => 'No record-id given',
 		'top.button.download' => '[download]',
 		'top.button.show' => '[more]',
+		'search.button.search' => 'Search'
 	),
 	"dk" => Array (
 	),
@@ -40,6 +41,7 @@ $LOCAL_LANG = Array (
 		'single.noItemFound' => 'Keine Datensatznummer vorhanden',
 		'top.button.download' => '[download]',
 		'top.button.show' => '[mehr]',
+		'search.button.search' => 'Suchen'
 	),
 	"no" => Array (
 	),
