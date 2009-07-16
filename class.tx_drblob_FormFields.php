@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @name		user_txdrblobFormFields
+ * @name		tx_drblob_FormFields
  * Class provides methods to generate the extension's custom input fields.
  * A file's content cannot be displayed here, so the user needs some information about the stored file.
  * To avoid changes to these information some of these fields are hidden, and a simple output is returned. 
@@ -74,7 +74,7 @@ class tx_drblob_FormFields {
 	}
 	
 	function inputDownloadCounter( $PA, $fobj ) {
-		$desc = explode( '###DOWNLOAD_COUNT###', $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.download_count.desc') );
+		$desc = explode( '###DOWNLOAD_COUNT###', $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.download_count.desc') );
 		return $desc[0] . 
 			'<input ' .
 				'type="text" ' .
@@ -84,7 +84,7 @@ class tx_drblob_FormFields {
 				'readonly="readonly" /> ' .
 			$desc[1] . '. ' . 
 			'<input type="button" ' . 
-				'value="' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.download_count.reset') . '" ' . 
+				'value="' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_db.xml:tx_drblob_content.download_count.reset') . '" ' . 
 				'onClick="document.getElementsByName(\'' . $PA['itemFormElName'] . '\')[0].value = \'0\'; ' . implode( '',$PA['fieldChangeFunc'] ) . '" />';
 	}
 };

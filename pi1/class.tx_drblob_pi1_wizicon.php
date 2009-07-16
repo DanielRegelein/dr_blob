@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005 Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
+*  (c) 2005-past Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -48,7 +48,7 @@ class tx_drblob_pi1_wizicon {
 		return $wizardItems;
 	}
 	function includeLocalLang()	{
-		$llFile = t3lib_extMgm::extPath('dr_blob').'locallang.xml';
+		$llFile = t3lib_extMgm::extPath('dr_blob').'locallang_wiz.xml';
 		$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
 		return $LOCAL_LANG;
 	}

@@ -4,8 +4,54 @@
 		<description>Language labels for the FE plugin Filelist (dr_blob) used to localize the plugin configuration mask and the TCA-Fields</description>
 		<type>module</type>
 		<labelContext type="array">
-			<label index="pi_title"></label>
-			<label index="pi_plus_wiz_description"></label>
+			<label index="tx_drblob_content" />
+			<label index="tx_drblob_content.title" />
+			<label index="tx_drblob_content.description" />
+			<label index="tx_drblob_content.cruser_id" />
+			<label index="tx_drblob_content.crdate" />
+			<label index="tx_drblob_content.tstamp" />
+			<label index="tx_drblob_content.blob_name" />
+			<label index="tx_drblob_content.blob_size" />
+			<label index="tx_drblob_content.blob_type" />
+			<label index="tx_drblob_content.blob_data" />
+			<label index="tx_drblob_content.is_vip" />
+			<label index="tx_drblob_content.is_vip.desc" />
+			<label index="tx_drblob_content.download_count" />
+			<label index="tx_drblob_content.download_count.desc" />
+			<label index="tx_drblob_content.download_count.reset" />
+			<label index="tx_drblob_content.category" />
+			<label index="tx_drblob_category" />
+			<label index="tx_drblob_category.title" />
+			<label index="pages.folderIconsDescr" />
+			<label index="tt_content.list_type_pi1" />
+			<label index="tt_content.pi_flexform.sheet.datasource" />
+			<label index="tt_content.pi_flexform.categories" />
+			<label index="tt_content.pi_flexform.categories_mode" />
+			<label index="tt_content.pi_flexform.categories_showAll" />
+			<label index="tt_content.pi_flexform.categories_showSelected" />
+			<label index="tt_content.pi_flexform.sheet.settings" />
+			<label index="tt_content.pi_flexform.whatToDisplay" />
+			<label index="tt_content.pi_flexform.whatToDisplay.top" />
+			<label index="tt_content.pi_flexform.whatToDisplay.list" />
+			<label index="tt_content.pi_flexform.whatToDisplay.single" />
+			<label index="tt_content.pi_flexform.whatToDisplay.search" />
+			<label index="tt_content.pi_flexform.whatToDisplay.personal.list" />
+			<label index="tt_content.pi_flexform.whatToDisplaypersonal.add" />
+			<label index="tt_content.pi_flexform.limit" />
+			<label index="tt_content.pi_flexform.listOrderBy" />
+			<label index="tt_content.pi_flexform.listOrderBy.title" />
+			<label index="tt_content.pi_flexform.listOrderBy.createdate" />
+			<label index="tt_content.pi_flexform.listOrderBy.lastchange" />
+			<label index="tt_content.pi_flexform.listOrderBy.author" />
+			<label index="tt_content.pi_flexform.listOrderBy.sorting" />
+			<label index="tt_content.pi_flexform.listOrderBy.blob_size" />
+			<label index="tt_content.pi_flexform.listOrderBy.blob_type" />
+			<label index="tt_content.pi_flexform.listOrderDirection" />
+			<label index="tt_content.pi_flexform.listOrderDirection.asc" />
+			<label index="tt_content.pi_flexform.listOrderDirection.desc" />
+			<label index="tt_content.pi_flexform.template_file" />
+			<label index="tt_content.pi_flexform.singlePID" />
+			<label index="tt_content.pi_flexform.returnPID" />
 		</labelContext>
 	</meta>
 	<data type="array">
@@ -50,6 +96,8 @@
 			<label index="tt_content.pi_flexform.listOrderBy.lastchange">Date of the last change</label>
 			<label index="tt_content.pi_flexform.listOrderBy.author">Author</label>
 			<label index="tt_content.pi_flexform.listOrderBy.sorting">Custom Backend Sorting</label>
+			<label index="tt_content.pi_flexform.listOrderBy.blob_name">Filename</label>	
+			<label index="tt_content.pi_flexform.listOrderBy.blob_size">Filesize</label>	
 			<label index="tt_content.pi_flexform.listOrderDirection">Ascending or Descending:</label>
 			<label index="tt_content.pi_flexform.listOrderDirection.asc">Ascending</label>
 			<label index="tt_content.pi_flexform.listOrderDirection.desc">Descending</label>
@@ -86,8 +134,6 @@
 			<label index="tx_drblob_content.download_count.desc">Diese Datei wurde bereits ###DOWNLOAD_COUNT### Mal heruntergeladen</label>
 			<label index="tx_drblob_content.download_count.reset">Zähler zurücksetzen</label>
 			<label index="tx_drblob_content.category">Datei Kategorie</label>
-			<label index="tx_drblob_content.sort.asc">Aufsteigend</label>
-			<label index="tx_drblob_content.sort.desc">Absteigend</label>
 			<label index="tx_drblob_category">Dateikategorie</label>
 			<label index="tx_drblob_category.title">Titel</label>	
 			<label index="pages.folderIconsDescr">Dateien</label>
@@ -112,6 +158,8 @@
 			<label index="tt_content.pi_flexform.listOrderBy.lastchange">Letzte Änderung</label>
 			<label index="tt_content.pi_flexform.listOrderBy.author">Autor</label>
 			<label index="tt_content.pi_flexform.listOrderBy.sorting">Spezielle Backend Sortierung</label>
+			<label index="tt_content.pi_flexform.listOrderBy.blob_type">Dateityp</label>	
+			<label index="tt_content.pi_flexform.listOrderBy.blob_size">Dateigröße</label>
 			<label index="tt_content.pi_flexform.listOrderDirection">Aufsteigend oder Absteigend</label>
 			<label index="tt_content.pi_flexform.listOrderDirection.asc">Aufsteigend</label>
 			<label index="tt_content.pi_flexform.listOrderDirection.desc">Absteigend</label>

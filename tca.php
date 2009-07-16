@@ -102,9 +102,6 @@ $TCA['tx_drblob_content'] = array (
 				'foreign_table' => 'fe_groups'
 			)
 		),
-		'sorting' => array(
-			
-		),
 		'sys_language_uid' => array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',

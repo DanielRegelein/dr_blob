@@ -7,6 +7,7 @@
 		<languageKey index="default" type="array">
 			<label index="list_button_download">[download]</label>
 			<label index="list_button_show">[more]</label>
+			<label index="list_field_uid">Record No</label>	
 			<label index="list_field_title">Title</label>	
 			<label index="list_field_description">Description</label>	
 			<label index="list_field_blob_name">Filename</label>	
@@ -49,6 +50,7 @@
 		<languageKey index="de" type="array">
 			<label index="list_button_download">[download]</label>
 			<label index="list_button_show">[mehr]</label>
+			<label index="list_field_uid">Datensatznummer</label>	
 			<label index="list_field_title">Titel</label>	
 			<label index="list_field_description">Beschreibung</label>	
 			<label index="list_field_blob_name">Dateiname</label>	

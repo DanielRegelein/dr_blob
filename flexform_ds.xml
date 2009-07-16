@@ -242,6 +242,14 @@
 										<numIndex index="0">LLL:EXT:dr_blob/locallang_db.xml:tt_content.pi_flexform.listOrderBy.sorting</numIndex>
 										<numIndex index="1">sorting</numIndex>
 									</numIndex>
+									<numIndex index="6" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/locallang_db.xml:tt_content.pi_flexform.listOrderBy.blob_size</numIndex>
+										<numIndex index="1">blob_size</numIndex>
+									</numIndex>
+									<numIndex index="7" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/locallang_db.xml:tt_content.pi_flexform.listOrderBy.blob_type</numIndex>
+										<numIndex index="1">blob_type</numIndex>
+									</numIndex>
 								</items>
 								<maxitems>1</maxitems>
 								<size>1</size>

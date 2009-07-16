@@ -1,3 +1,15 @@
+2007-09-25  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
+
+	* Release of version 1.6.1
+	
+	* Feature: The eMail Link is now configurable using a stdWrap
+	* Feature: The filesize is now configurable using a stdWrap
+	* Feature: Added a SORTLINK-Marker for the filesize (blob_size) and filetype (blob_type)
+	
+	* Change: Removed the TS-Values fileExtIconHeight and fileExtIconWidth. They are now detected automaticlly
+	* Change: Changed the is_vip – field from type “enum” to type “tinyint” to increase dbal-compatibility
+	* Change: Changed the field blob_size from varchar to int to allow sorting
+
 2007-06-14  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
 
 	* Release of version 1.6.0

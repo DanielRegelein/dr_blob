@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2007 Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
+*  (c) 2005-past Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,7 +36,7 @@ require_once( PATH_tslib . 'class.tslib_pibase.php' );
  * @copyright 	Copyright &copy; 2005-past Daniel Regelein
  * @package 	dr_blob
  * @filesource 	pi1/class.tx_drblob_pi1.php
- * @version 	1.5.1
+ * @version 	1.6.1
  */
 class tx_drblob_pi1 extends tslib_pibase {
 
@@ -208,14 +208,13 @@ class tx_drblob_pi1 extends tslib_pibase {
 		$arrListSettings['singlePid'] = ( $ffSinglePID ? $ffSinglePID : $GLOBALS['TSFE']->id );
 		$arrListSettings['btnWrapShow'] = $this->pi_getLL( $listType . '_button_show' );
 		$arrListSettings['btnWrapDwnld'] = $this->pi_getLL( $listType . '_button_download' );
-
+		$arrListSettings['recLimit'] = ( $ffLimit ? $ffLimit : 5 );
 		
 			//Add Type-specific marker
 		switch( $listType ) {
 			case 'top':
 				$arrListSettings['tsObj'] = 'topView.';
 				$arrListSettings['tmplSubpart'] = 'TEMPLATE_TOP';
-				$arrListSettings['recLimit'] = ( $ffLimit ? $ffLimit : 5 );
 				$arrListSettings['sqlWhereClause'] = 'AND is_vip=\'1\' ';
 
 				$this->internal['orderBy'] = 'crdate';
@@ -225,7 +224,6 @@ class tx_drblob_pi1 extends tslib_pibase {
 			case 'personal':
 				
 				$arrListSettings['tsObj'] = 'personalView.';
-				$arrListSettings['recLimit'] = ( $ffLimit ? $ffLimit : 5 );
 				$arrListSettings['tmplSubpart'] = 'TEMPLATE_PERSONAL';
 				$this->internal['orderBy'] = 'tstamp';
 				$this->internal['descFlag'] = '1';
@@ -262,10 +260,14 @@ class tx_drblob_pi1 extends tslib_pibase {
 
 					//List-Header, used later
 				$listHeaderMarkerArray = array(
+					'###BLOB_SORTLINK_UID###'  => $this->getFieldHeader_sortLink('uid'),
 					'###BLOB_SORTLINK_TITLE###'  => $this->getFieldHeader_sortLink('title'),
 					'###BLOB_SORTLINK_CRDATE###' => $this->getFieldHeader_sortLink('crdate'),
 					'###BLOB_SORTLINK_TSTAMP###' => $this->getFieldHeader_sortLink('tstamp'),
 					'###BLOB_SORTLINK_LASTCHANGE###' => $this->getFieldHeader_sortLink('tstamp'),
+					'###BLOB_SORTLINK_FILESIZE###' => $this->getFieldHeader_sortLink('blob_size'),
+					'###BLOB_SORTLINK_DOWNLOADCOUNT###'  => $this->getFieldHeader_sortLink('downloadcount'),
+					'###BLOB_SORTLINK_FILETYPE###'  => $this->getFieldHeader_sortLink('blob_type'),
 					'###BLOB_SORTLINK_AUTHOR###' => $this->getFieldHeader_sortLink('cruser_id'),
 				);
 			break;
@@ -275,7 +277,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 			
 			//Prepare DB Queries
 		$this->internal['results_at_a_time'] = t3lib_div::intInRange( $arrListSettings['recLimit'], 1, 1000, 20 );
-		$this->internal['orderByList'] = 'sorting,title,crdate,tstamp,cruser_id';
+		$this->internal['orderByList'] = 'sorting,title,crdate,tstamp,cruser_id,blob_size,uid,download_count,blob_type';
 		$this->pi_listFields = 'uid,pid,title,description,crdate,tstamp,sys_language_uid,cruser_id,blob_name,blob_size,blob_type,download_count';
 		$arrListSettings['sqlWhereClauseLocal'] = ' AND ( ' . $this->dbVars['table_content'] . '.sys_language_uid = 0 OR ' . $this->dbVars['table_content'] . '.sys_language_uid = (-1) )';
 
@@ -304,7 +306,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 		list( $this->internal['res_count'] ) = $GLOBALS['TYPO3_DB']->sql_fetch_row( $rsltNumRows );
 		
 		
-			//Don't show a list if TS emptySearchAtStart is 0
+			//Don't show a list if TS emptySearchAtStart is not 0
 		if( ( $listType == 'search' && empty( $this->piVars['sword'] ) ) && ( $this->conf['emptySearchAtStart'] != '0' ) ) {
 			$this->internal['res_count'] = 0;
 		}
@@ -353,6 +355,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 					$LINK_FILE = array( 0 => '' , 1=> '' );
 					$specMarker['###BLOB_DOWNLOAD###'] = '';
 				} 
+				
 				$arrItems[] = $this->cObj->substituteMarkerArrayCached( 
 					$tmpl['item'][$count%count( $tmpl['item'] )],
 					array_merge( 
@@ -652,10 +655,10 @@ class tx_drblob_pi1 extends tslib_pibase {
 		header( 'Content-Transfer-Encoding: binary', true );
 		header( 'Content-Disposition: attachment; filename='.$this->getFieldContent( 'blob_name' ) );
 		
-			//This is the workaround of the IE6-SSL Bug.
+			//This is the workaround of the IE-X-SSL Bug.
 			//Thanks to Christoph Lorenz for that :-)
 		$client = t3lib_div::clientInfo();
-		if( ( $client['BROWSER'] == 'msie' ) && ( $client['VERSION'] == '6' ) ) {
+		if( ( $client['BROWSER'] == 'msie' ) && ( $client['VERSION'] == '6' || $client['VERSION'] == '7' ) ) {
 			header( 'Pragma: anytextexeptno-cache', true );
 		} else {
 			header( 'Pragma: no-cache', true );
@@ -711,27 +714,34 @@ class tx_drblob_pi1 extends tslib_pibase {
 	/*protected*/function getGlobalMarkerArray( $mode, $what='both' ) {
 		$mode = ($mode!='search' ? $mode : 'list');
 		if( $what != 'lang' ) {
-			$dateWrap = is_array( $this->conf[$mode.'View.']['date_stdWrap.'] ) ? $this->conf[$mode.'View.']['date_stdWrap.'] : array( 'date' => $this->pi_getLL( $mode.'_dateFormat' ) ) ;
+			
+			//Preparing stdWraps...
+			if( !is_array( $this->conf[$mode.'View.']['date_stdWrap.']  ) ) {
+				$this->conf[$mode.'View.']['date_stdWrap.']['date'] = $this->pi_getLL( $mode.'_dateFormat' );
+			}
 			$tmpVars['email'] = $this->getFieldContent('author_email');
+			$this->conf[$mode.'View.']['email_stdWrap.']['typolink.']['parameter'] = $tmpVars['email'];
+			
 			$arrMarker = array(
+				'###BLOB_UID###' => $this->getFieldContent('uid'),
 				'###BLOB_TITLE###' => $this->getFieldContent('title'),
 				'###BLOB_DESCRIPTION###' => $this->pi_RTEcssText( $this->getFieldContent('description') ),
 				'###BLOB_AUTHOR###' => $this->getFieldContent('author'),
-				'###BLOB_AUTHOR_EMAIL###' => $this->cObj->getMailTo( $tmpVars['email'], $tmpVars['email'] ),
-				'###BLOB_CRDATE###' => $this->cObj->stdWrap( $this->getFieldContent( 'crdate' ), $dateWrap ),
-				'###BLOB_LASTCHANGE###' => $this->cObj->stdWrap( $this->getFieldContent( 'tstamp' ), $dateWrap ),
+				'###BLOB_AUTHOR_EMAIL###' => $this->cObj->stdWrap( $tmpVars['email'], $this->conf[$mode.'View.']['email_stdWrap.'] ),
+				'###BLOB_CRDATE###' => $this->cObj->stdWrap( $this->getFieldContent( 'crdate' ), $this->conf[$mode.'View.']['date_stdWrap.'] ),
+				'###BLOB_LASTCHANGE###' => $this->cObj->stdWrap( $this->getFieldContent( 'tstamp' ), $this->conf[$mode.'View.']['date_stdWrap.'] ),
 				'###BLOB_DOWNLOADCOUNT###' => $this->getFieldContent('download_count'),
 				'###BLOB_FILENAME###' => $this->getFieldContent('blob_name'),
-				'###BLOB_FILESIZE###' => t3lib_div::formatSize( $this->getFieldContent('blob_size'), (' B| KB| MB| GB' ) ),
+				'###BLOB_FILESIZE###' => $this->cObj->stdWrap( $this->getFieldContent('blob_size'), $this->conf[$mode.'View.']['filesize_stdWrap.'] ),
 				'###BLOB_FILETYPE###' => $this->getFieldContent('blob_type'),
 				'###BLOB_FILEICON###' => $this->getFileIcon( $this->getFieldContent('blob_name') ),
 				'###BLOB_CATEGORIES###' => '',
 			);
 			
-			$cat = $this->getCategories( $this->getFieldContent('uid') );
-			if( !empty( $cat ) ) {
-				$lstCat = implode( ( $this->conf[$mode.'View.']['categoryDivider'] ? $this->conf[$mode.'View.']['categoryDivider'] : ',' ), $cat );
-				$arrMarker['###BLOB_CATEGORIES###'] = $this->cObj->stdWrap( $lstCat, $this->conf[$mode.'View.']['category_stdWrap.'] );
+			$tmp['cat'] = $this->getCategories( $this->getFieldContent('uid') );
+			if( !empty( $tmp['cat'] ) ) {
+				$tmp['lstCat'] = implode( ( $this->conf[$mode.'View.']['categoryDivider'] ? $this->conf[$mode.'View.']['categoryDivider'] : ',' ), $tmp['cat'] );
+				$arrMarker['###BLOB_CATEGORIES###'] = $this->cObj->stdWrap( $tmp['lstCat'], $this->conf[$mode.'View.']['category_stdWrap.'] );
 			}
 			
 				//Special Content Marker for the different modes
@@ -742,19 +752,20 @@ class tx_drblob_pi1 extends tslib_pibase {
 				case 'list':
 				case 'personal':
 				case 'top':
-					$toCut = intval( $this->conf[$mode.'View.']['lengthOfDescription'] ) > 0 ? intval( $this->conf[$mode.'View.']['lengthOfDescription'] ) : 150;
+					$tmp['toCut'] = intval( $this->conf[$mode.'View.']['lengthOfDescription'] ) > 0 ? intval( $this->conf[$mode.'View.']['lengthOfDescription'] ) : 150;
 					$arrMarker['###BLOB_DESCRIPTION###'] = strip_tags( $arrMarker['###BLOB_DESCRIPTION###'] );
-					if ( strlen( $arrMarker['###BLOB_DESCRIPTION###'] ) > $toCut ) {
-						$arrMarker['###BLOB_DESCRIPTION###'] = substr( $arrMarker['###BLOB_DESCRIPTION###'], 0, -(strlen( $arrMarker['###BLOB_DESCRIPTION###'] ) - $toCut ) ) . '...';
+					if ( strlen( $arrMarker['###BLOB_DESCRIPTION###'] ) > $tmp['toCut'] ) {
+						$arrMarker['###BLOB_DESCRIPTION###'] = substr( $arrMarker['###BLOB_DESCRIPTION###'], 0, -(strlen( $arrMarker['###BLOB_DESCRIPTION###'] ) - $tmp['toCut'] ) ) . '...';
 					}
 				break;
 			}
 		}
 
 		if( $what != 'content' ) {
-			$dwnLdCnt = preg_replace( '|(.?)###BLOB_DOWNLOADCOUNT###(.?)|', ' ' . $this->getFieldContent('download_count') . ' ', $this->pi_getLL( 'list_field_downloadcount' ), 1 );
+			$tmp['dwnLdCnt'] = preg_replace( '|(.?)###BLOB_DOWNLOADCOUNT###(.?)|', ' ' . $this->getFieldContent('download_count') . ' ', $this->pi_getLL( 'list_field_downloadcount' ), 1 );
 			
 			$arrLangMarker = array(
+				'###LANG_UID###' => $this->pi_getLL( 'field_uid' ),
 				'###LANG_TITLE###' => $this->pi_getLL( 'list_field_title' ),
 				'###LANG_DESCRIPTION###' => $this->pi_getLL( 'list_field_description' ),
 				'###LANG_FILENAME###' => $this->pi_getLL( 'list_field_blob_name' ),
@@ -764,7 +775,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 				'###LANG_CATEGORIES###' => $this->pi_getLL( 'list_field_categories' ),
 				'###LANG_LASTCHANGE###' => $this->pi_getLL( 'list_field_tstamp' ),
 				'###LANG_NOITEMS###' => $this->pi_getLL( 'noRecordsFound' ),
-				'###LANG_DOWNLOADCOUNT###' => $dwnLdCnt,
+				'###LANG_DOWNLOADCOUNT###' => $tmp['dwnLdCnt'],
 				'###BLOB_MORE###' => $this->pi_getLL( $mode .'_button_show' ),
 				'###BLOB_DOWNLOAD###' => $this->pi_getLL( $mode.'_button_download' ),
 				'###LANG_AUTHOR###' => $this->pi_getLL(  'list_field_author' ),
@@ -864,18 +875,16 @@ class tx_drblob_pi1 extends tslib_pibase {
 	 * @access 	protected
 	 */
 	/*protected*/function getFileIcon( $fileName ) {
-
-		$icon = array(
-			'path' => ( !empty( $this->conf['fileExtIconFolder'] ) ? $this->conf['fileExtIconFolder'] : 'typo3/gfx/fileicons/' ),
-			'height' => ( !empty( $this->conf['fileExtIconHeight'] ) ? $this->conf['fileExtIconHeight'] : 16 ),
-			'width' => ( !empty( $this->conf['fileExtIconWidth'] ) ? $this->conf['fileExtIconWidth'] : 18 ),
-			'file' => ''
-		);
-		$icon['file'] = @is_file( $icon['path'] . $tmp['realFileext'].'.gif' ) ? $icon['path'] . $tmp['realFileext'].'.gif' : $icon['path'] . 'default.gif';
-		
 		if ( !empty( $fileName ) ) {
 			$tmp = t3lib_div::split_fileref( $fileName );
-			return '<img src="'.$icon['file'].'" border="0" alt="'.$tmp['realFileext'].'" height="'.$icon['height'].'px" width="'.$icon['width'].'px" />';
+			$tmp['icoFolderPath'] = ( !empty( $this->conf['fileExtIconFolder'] ) ? $this->conf['fileExtIconFolder'] : 'typo3/sysext/cms/tslib/media/fileicons/' );
+
+			$tsConf = array(
+				'file' => ( @is_file( $tmp['icoFolderPath'] . $tmp['realFileext'].'.gif' ) ? $tmp['icoFolderPath'] . $tmp['realFileext'].'.gif' : $tmp['icoFolderPath'] . 'default.gif'),
+				'border' => '0',
+				'altText' => $tmp['realFileext']
+			);
+			return $this->cObj->cObjGetSingle( 'IMAGE', $tsConf );
 		} else {
 			return '';
 		}

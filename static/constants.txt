@@ -3,8 +3,6 @@
 ##
 
 plugin.dr_blob {
-  fileExtIconHeight = 16
-  fileExtIconWidth = 18
   stdDateWrap = d/m/Y
   alterningLayouts = 2
   lenghtOfDescription = 150

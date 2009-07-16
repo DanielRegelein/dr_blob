@@ -4,9 +4,7 @@ plugin.tx_drblob_pi1 {
   userFunc = tx_drblob_pi1->main
 
   templateFile = typo3conf/ext/dr_blob/res/dr_blob.tmpl
-  fileExtIconFolder = typo3/gfx/fileicons/
-  fileExtIconHeight = {$plugin.dr_blob.fileExtIconHeight}
-  fileExtIconWidth = {$plugin.dr_blob.fileExtIconWidth}
+  fileExtIconFolder = typo3/sysext/cms/tslib/media/fileicons/
   searchFieldList = title,description,blob_name
   emptySearchAtStart = 1
 
@@ -15,6 +13,11 @@ plugin.tx_drblob_pi1 {
     date_stdWrap.date = {$plugin.dr_blob.stdDateWrap} h:i a
     categoryDivider = </li><li>
     category_stdWrap.wrap = <ul><li>|</li></ul>
+    email_stdWrap.wrap = |
+    filesize_stdWrap {
+      bytes = 1
+      bytes.labels = Bytes| KiloBytes| MegaBytes| GigaBytes
+    }
   }
 
   //ListView
@@ -24,6 +27,11 @@ plugin.tx_drblob_pi1 {
     categoryDivider = ,
     category_stdWrap.wrap = |
     lenghtOfDescription = 100
+    email_stdWrap.wrap = |
+    filesize_stdWrap {
+      bytes = 1
+      bytes.labels = B| KB| MB| GB
+    }
   }
 
   //TopView
@@ -33,6 +41,11 @@ plugin.tx_drblob_pi1 {
     categoryDivider = ,
     category_stdWrap.wrap = |
     lenghtOfDescription = {$plugin.dr_blob.lenghtOfDescription}
+    email_stdWrap.wrap = |
+    filesize_stdWrap {
+      bytes = 1
+      bytes.labels = B| KB| MB| GB
+    }
   }
 
   //Personal
@@ -42,6 +55,11 @@ plugin.tx_drblob_pi1 {
     categoryDivider = ,
     category_stdWrap.wrap = |
     lenghtOfDescription = {$plugin.dr_blob.lenghtOfDescription}
+    email_stdWrap.wrap = |
+    filesize_stdWrap {
+      bytes = 1
+      bytes.labels = B| KB| MB| GB
+    }
   }
   
   _LOCAL_LANG {
