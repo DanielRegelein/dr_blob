@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004 Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
+*  (c) 2005 Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,93 +21,210 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+require_once( PATH_tslib . 'class.tslib_pibase.php' );
 /**
+ * @name tx_drblob_pi1
  * Plugin 'Binary Object List' for the 'dr_blob' extension.
  *
+ * @extends tslib_pibase
  * @author	Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
+ * @category Frontend Plugins
+ * @copyright Copyright &copy; 2005,Daniel Regelein
+ * @filesource pi1/class.tx_drblob_pi1.php
+ * @version 0.9.9
  */
-
-
-require_once(PATH_tslib."class.tslib_pibase.php");
-
 class tx_drblob_pi1 extends tslib_pibase {
-	var $prefixId = "tx_drblob_pi1";		// Same as class name
-	var $scriptRelPath = "pi1/class.tx_drblob_pi1.php";	// Path to this script relative to the extension dir.
-	var $extKey = "dr_blob";	// The extension key.
+	/*protected*/var $prefixId = 'tx_drblob_pi1';
+	/*protected*/var $scriptRelPath = 'pi1/class.tx_drblob_pi1.php';
+	/*protected*/var $extKey = 'dr_blob';
+	/*
+	function __construct() {
+	}
+	function __destruct() {
+	}
+	*/
+	
+	/*public*/function main( $content, $conf ) {
+		$this->pi_initPIflexForm();
+		$this->pi_setPiVarDefaults();
+		$this->pi_loadLL();
+		$this->conf = $conf;
 
+		if ( $this->piVars['downloadUid'] ) {
+			$this->pi_wrapInBaseClass( $this->vDownload() );
+		}
+		switch(  $this->getCmd() ) {
+			case 'single':
+				return $this->pi_wrapInBaseClass( $this->vSingle() );
+			//break;
 
-	/**
-	 * @name		main
-	 * -----------------
-	 * @internal	loads the plugin
-	 */
-	function main( $content, $conf ) {
-		switch( $this->cObj->data["select_key"] ) {
-			case "TOP":
-				$conf["pidList"] = $this->cObj->data["pages"];
-				$conf["recursive"] = $this->cObj->data["recursive"];
-				return $this->pi_wrapInBaseClass( $this->modeTopView($content,$conf) );
-			break;
 			
-			case "SINGLE":
-				list( $t ) = explode( ":",$this->cObj->currentRecord );
-				$this->internal["currentTable"]=$t;
-				$this->internal["currentRow"]=$this->cObj->data;
-				return $this->pi_wrapInBaseClass( $this->modeSingleView($content,$conf) );
-			break;
-			
-			case "DOWNLOAD":
-				$this->download();
-			break;
-			
-			case "LIST":
-			default:
-				if (strstr($this->cObj->currentRecord,"tt_content"))	{
-					$conf["pidList"] = $this->cObj->data["pages"];
-					$conf["recursive"] = $this->cObj->data["recursive"];
+			case 'top':
+				if ( strstr( $this->cObj->currentRecord, 'tt_content' ) ) {
+					$this->conf['pidList'] = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlPages', 'sDataSource' );
+					$this->conf['recursive'] = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlRecursive', 'sDataSource' );
 				}
-				return $this->pi_wrapInBaseClass( $this->modeListView( $content,$conf ) );
-			break;
+				return $this->pi_wrapInBaseClass( $this->vTop( $content ) );
+			//break;
+			
+			case 'list': 
+			default:
+				if ( strstr( $this->cObj->currentRecord, 'tt_content' ) ) {
+					
+					$this->conf['pidList'] = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlPages', 'sDataSource' );
+					$this->conf['recursive'] = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlRecursive', 'sDataSource' );
+				}
+				return $this->pi_wrapInBaseClass( $this->vList( $content ) );
+			//break;
 		}
 	}
-	
+
 
 	/**
-	 * @name		modeTopView
-	 * ------------------------
-	 * @internal	Generates a selection of Content Elements
+	 * @name vList
+	 * Generates a list-View of Recordsets contained on selected Pages / Sysfolders
+	 * 
+	 * @param 	String $content 
+	 * @return 	String $content
+	 * @access 	private
 	 */
-	function modeTopView( $content, $conf ) {
-		$this->conf=$conf;					// Setting the TypoScript passed to this function in $this->conf
-		$this->pi_setPiVarDefaults(); 
-		$this->pi_loadLL();					// Loading the LOCAL_LANG values
+	/*private*/function vList( $content ) {
+		//Extract the FlexForm Values
+		$ffQrySortBy = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderBy', 'sSettings' );
+		$ffQrySortDirection = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderDirection', 'sSettings' );
+		$ffQryLimit = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlLimitCount', 'sSettings' );
+		$ffSinglePID = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlSinglePID', 'sSettings' );
+		$ffTemplate = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlTemplate', 'sSettings' );
+		
+		$singlePID = ( $ffSinglePID ? $ffSinglePID : $GLOBALS['TSFE']->id );
+		$tmplFile = ( $ffTemplate ? ( 'uploads/tx_drblob/' . $ffTemplate ) : 'typo3conf/ext/dr_blob/res/dr_blob.tmpl' );
+		$this->conf['listView.']['alternatingLayouts'] = intval( $this->conf['listView.']['alternatingLayouts'] ) > 0 ? intval( $this->conf['listView.']['alternatingLayouts'] ) : 2;
+		
+		
+		//Prepare Searchfunctions		
+		if ( empty( $this->piVars['sort'] ) ) {
+			//default: title ASC
+			$ffQrySortDirection = $ffQrySortDirection ? $ffQrySortDirection : '0';
+			$this->piVars['sort'] = $ffQrySortBy ? $ffQrySortBy.':'.$ffQrySortDirection : 'title'.':'.$ffQrySortDirection; 
+		}
+		list($this->internal['orderBy'], $this->internal['descFlag']) = explode(':',$this->piVars['sort']);
+		$this->internal['orderByList'] = 'title,crdate,tstamp,cruser_id';
 
-		$this->internal['results_at_a_time'] = t3lib_div::intInRange($this->conf['topView.']['numDisplayedItems'],1,1000,50);
+
+		//Number of results to show in a listing
+		$this->internal['results_at_a_time'] = t3lib_div::intInRange( $ffQryLimit, 1, 1000, 50 );
+			
+			
+		//Get number of records
+		$rsltNumRows = $this->pi_exec_query( 'tx_drblob_content', 1 );
+		list( $this->internal['res_count'] ) = $GLOBALS['TYPO3_DB']->sql_fetch_row( $rsltNumRows );
+		
+		
+		//Exec Query- and Template
+		$rslt = $this->pi_exec_query( 'tx_drblob_content', 0 );
+		if ( $rslt ) {
+			$tmpl['total'] = $this->cObj->fileResource( $tmplFile );			
+
+			if ( $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) > 0 ) {
+				$tmpl['total'] = $this->cObj->getSubpart( $tmpl['total'], '###TEMPLATE_LIST###' );
+				$tmpl['item'] = $this->getLayouts( $tmpl['total'], $this->conf['listView.']['alternatingLayouts'], 'BLOBITEM' );
+				
+				$arrItems = array();
+				$count = 0;
+				while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rslt ) )	{
+					$arrItems[] = $this->cObj->substituteMarkerArrayCached( 
+						$tmpl['item'][$count%count( $tmpl['item'] )],
+						array_merge( 
+							$this->getGlobalMarkerArray( 'list' ),
+							array(
+								'###BLOB_MORE_LINK###' => $this->pi_list_linkSingle ( 
+									$this->conf['listView.']['showButtonValue'] ? $this->conf['listView.']['showButtonValue'] : $this->pi_getLL('list.button.show'), 
+									$this->internal['currentRow']['uid'], 
+									true, 
+									array(), 
+									false, 
+									$singlePID 
+								),								
+								'###BLOB_DOWNLOAD_LINK###' => $this->pi_linkTP( 
+									$this->conf['listView.']['downloadButtonValue'] ? $this->conf['listView.']['downloadButtonValue'] : $this->pi_getLL('list.button.download'), 
+									array( 
+										$this->prefixId => array( 
+											'downloadUid' => $this->internal['currentRow']['uid'] 
+										) 
+									), 
+									false, 
+									$GLOBALS['TSFE']->id 
+								)
+							)
+						)
+					);
+					$count++;
+				}//End of while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rslt ) )
+				$markerArray = array(  
+					'###BLOB_SORTLINK_TITLE###'  => $this->getFieldHeader_sortLink('title'),
+					'###BLOB_SORTLINK_CRDATE###' => $this->getFieldHeader_sortLink('crdate'),
+					'###BLOB_SORTLINK_TSTAMP###' => $this->getFieldHeader_sortLink('tstamp'),
+					'###BLOB_SORTLINK_AUTHOR###' => $this->getFieldHeader_sortLink('cruser_id'),
+				);
+				return $this->cObj->substituteMarkerArrayCached( 
+					$tmpl['total'],
+					$markerArray,
+					array(
+						'###CONTENT###'=> implode( '', $arrItems ),
+					)
+				);
+			} else {//End of if ( $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) > 0 )
+
+				$tmpl['total'] = $this->cObj->getSubpart( $tmpl['total'], '###TEMPLATE_LIST_NOITEMS###' );
+				return $this->cObj->substituteMarkerArrayCached( $tmpl['total'] );
+	
+			}//End of the Else-Part of if ( $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) > 0 )
+		}//End of if ( $rslt )
+	}
+
+
+	/**
+	 * @name vTop
+	 * Generates a list of Recordsets on selected Pages / Sysfolders where is_vip = 1
+	 * 
+	 * @param 	String $content 
+	 * @return 	String $content
+	 * @access 	private
+	 */
+	/*private*/function vTop ( $content ) {
+		$ffSinglePID = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlSinglePID', 'sSettings' );
+		$ffTemplate = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlTemplate', 'sSettings' );
+		$ffQryLimit = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlLimitCount', 'sSettings' );
+		
+		$singlePID = ( $ffSinglePID ? $ffSinglePID : $GLOBALS['TSFE']->id );
+		$tmplFile = ( $ffTemplate ? ( 'uploads/tx_drblob/' . $ffTemplate ) : 'typo3conf/ext/dr_blob/res/dr_blob.tmpl' );		
+
+		$this->internal['results_at_a_time'] = t3lib_div::intInRange( $ffQryLimit, 1, 100, 5 );
 		$this->pi_listFields = 'uid, title, description, crdate';
 
 		$rslt = $this->pi_exec_query( 'tx_drblob_content', 0, 'AND is_vip=\'1\'', '', '', 'crdate DESC, title ASC', '' );
 
-		$rtnValue = null;		
+		$rtnValue = null;
+		$tmpl['total'] = $this->cObj->fileResource( $tmplFile );		
 		if ( $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) > 0 ) {
-
-			$this->conf['topView']['alternatingLayouts'] = intval( $this->conf['topView']['alternatingLayouts'] ) > 0 ? intval( $this->conf['topView']['alternatingLayouts'] ) : 2;
-
-			$tmpl['total'] = $this->cObj->fileResource( 'typo3conf/ext/dr_blob/res/dr_blob.top.tmpl' );
+			$this->conf['topView.']['alternatingLayouts'] = intval( $this->conf['topView.']['alternatingLayouts'] ) > 0 ? intval( $this->conf['topView.']['alternatingLayouts'] ) : 2;
+			
 			$tmpl['total'] = $this->cObj->getSubpart( $tmpl['total'], '###TEMPLATE_TOP###' );
-			$tmpl['item'] = $this->getLayouts( $tmpl['total'], $this->conf['topView']['alternatingLayouts'], 'BLOBITEM' );
-
+			$tmpl['item'] = $this->getLayouts( $tmpl['total'], $this->conf['topView.']['alternatingLayouts'], 'BLOBITEM' );
 			$arrItems = array();
 			$count = 0;
 			while( $this->internal['currentRow'] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rslt ) )	{
 				$arrItems[] = $this->cObj->substituteMarkerArrayCached( 
-						$tmpl['item'][$count%count( $tmpl['item'] )],
-						array_merge( 
-							$this->getMarkerArray( 'top' ),
-							array(
-								'###BLOB_TITLE_VAL_LINK###' => $this->getLink( 'show', $this->getFieldContent('title'), $this->conf['topView.']['showSingle.']['showPid'] ),
-								'###BLOB_MORE_LINK###' => $this->getLink( 'show', $this->pi_getLL('topButtonShow'), $this->conf['topView.']['showSingle.']['showPid'] )
-							)
+					$tmpl['item'][$count%count( $tmpl['item'] )],
+					array_merge( 
+						$this->getGlobalMarkerArray( 'top' ),
+						array(
+							'###BLOB_TITLE_LINK###' => $this->pi_list_linkSingle( $this->getFieldContent('title'), $this->internal['currentRow']['uid'], true, array(), false, $singlePID ),
+							'###BLOB_MORE_LINK###' => $this->pi_list_linkSingle( $this->pi_getLL('top.button.show'), $this->internal['currentRow']['uid'], true, array(), false, $singlePID ),
+							'###BLOB_DOWNLOAD_LINK###' => $this->pi_linkTP( $this->pi_getLL('top.button.download'), array( $this->prefixId => array( 'downloadUid' => $this->internal['currentRow']['uid'] ) ), false, $GLOBALS['TSFE']->id )
 						)
+					)
 				);
 				$count++;
 			}
@@ -122,95 +239,58 @@ class tx_drblob_pi1 extends tslib_pibase {
 				$subpartArray,
 				$wrappedSubpartArray
 			);
-
+			
 		} else {
 
 			$tmpl['total'] = $this->cObj->getSubpart( $tmpl['total'], '###TEMPLATE_TOP_NOITEMS###' );
 			$rtnValue = $this->cObj->substituteMarkerArrayCached( $tmpl['total'] );
 
 		}
+
 		return $rtnValue;
 	}
 
 
-
 	/**
-	 * @name modeListView
-	 * Generates a listView of the records in the selected Pages / Sysfolders
-	 * 
-	 * @param String $content 
-	 * @param Array $conf TypoScript Connector
-	 * @return String $content
-	 */
-	function modeListView( $content, $conf ) {
-		$this->conf = $conf;
-		$lConf = $conf["listView."];
-		
-		$this->pi_setPiVarDefaults();
-		$this->pi_loadLL();
-		$this->pi_initPIflexForm();
-
-		$qrySortBy = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderBy' );
-		$qrySortDirection = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderDirection' );
-		$qryLimit = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListLimitCount' );
-
-
-		// If a single element should be displayed:
-		if ( $this->piVars["showUid"] )	{
-
-			return $this->modeSingleView($content,$conf);
-		
-		// If a single element should be downloaded:
-		} else if ( $this->piVars["downloadUid"] ) {
-			$this->download();
-		} else {
-			
-			//Initializing the Sort parameters:
-			if ( EMPTY( $this->piVars['sort'] ) ) {
-				//default: title ASC
-				$qrySortDirection = $qrySortDirection ? $qrySortDirection : '0';
-				$this->piVars['sort'] = $qrySortBy ? $qrySortBy.':'.$qrySortDirection : 'title'.':'.$qrySortDirection; 
-			}
-			list($this->internal['orderBy'], $this->internal['descFlag']) = explode(':',$this->piVars['sort']);
-			$this->internal['orderByList'] = 'title,sort,crdate,tstamp,cruser_id';
-
-
-			//Number of results to show in a listing
-			$this->internal['results_at_a_time'] = t3lib_div::intInRange( $qryLimit, 0, 1000, 50);
-			
-			
-			//Get number of records
-			$rsltNumRows = $this->pi_exec_query( 'tx_drblob_content', 1 );
-			list( $this->internal['res_count'] ) = $GLOBALS['TYPO3_DB']->sql_fetch_row( $rsltNumRows );
-
-
-			return $this->makelist( $this->pi_exec_query( 'tx_drblob_content', 0 ) );
-		}
-	}
-
-
-	/**
-	 * @name modeSingleView
+	 * @name vSingle
 	 * Generate the view for a single item
 	 * 
-	 * @param String $content
-	 * @param Array $conf TypoScript Connector
-	 * @return String $content
+	 * @param 	String $content
+	 * @return 	String $content
+	 * @access 	private
 	 */
-	function modeSingleView( $content, $conf ) {
-		$this->conf=$conf;
-		$this->pi_setPiVarDefaults();
-		$this->pi_loadLL();
-
-		$this->internal['currentTable'] = 'tx_drblob_content';
-		$this->internal['currentRow'] = $this->pi_getRecord( 'tx_drblob_content', $this->piVars['showUid'] );
-
-		$tmpl = $this->cObj->fileResource( 'typo3conf/ext/dr_blob/res/dr_blob.single.tmpl' );
-		$tmpl = $this->cObj->getSubpart( $tmpl, '###TEMPLATE_SINGLE###' );
+	/*private*/function vSingle() {
 		
-		return $this->cObj->substituteMarkerArrayCached( $tmpl, $this->getMarkerArray( 'single' ) ) . $this->pi_getEditPanel();
+		if ( !empty( $this->piVars['showUid'] ) ) {
+		
+			$ffReturnPID = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlReturnPID', 'sSettings' );
+			$ffTemplate = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlTemplate', 'sSettings' );
+			
+			$returnPID = ( $ffReturnPID ? $ffReturnPID : $GLOBALS['TSFE']->id );
+			$tmplFile = ( $ffTemplate ? ( 'uploads/tx_drblob/' . $ffTemplate ) : 'typo3conf/ext/dr_blob/res/dr_blob.tmpl' );
+			
+			$this->internal['currentTable'] = 'tx_drblob_content';
+			$this->internal['currentRow'] = $this->pi_getRecord( 'tx_drblob_content', $this->piVars['showUid'] );
+	
+			$tmpl = $this->cObj->fileResource( $tmplFile );
+			$tmpl = $this->cObj->getSubpart( $tmpl, '###TEMPLATE_SINGLE###' );
+			
+			return $this->cObj->substituteMarkerArrayCached( 
+				$tmpl, 
+				array_merge( 
+					$this->getGlobalMarkerArray( 'single' ),
+					array( 
+						'###BLOB_SINGLE_RTN-URL###' => $this->pi_getPageLink( $returnPID ), 
+						'###BLOB_DOWNLOAD_LINK###' => $this->pi_linkTP( $this->pi_getLL('single.button.download'), array( $this->prefixId => array( 'downloadUid' => $this->internal['currentRow']['uid'] ) ), false, $GLOBALS['TSFE']->id )
+					)
+				) 
+			);
+			
+		} else {
+			return $this->pi_getLL( 'single.noItemFound' );
+		}
 	}
-
+	
 
 	/**
 	 * @name download
@@ -219,242 +299,78 @@ class tx_drblob_pi1 extends tslib_pibase {
 	 * @see	RfC 2045, RfC 2046, RfC 2077 for Content Disposition
 	 * @access private
 	 */
-	function download() {
+	/*private*/function vDownload() {
 		$this->internal['currentTable'] = 'tx_drblob_content';
 		$this->internal['currentRow'] = $this->pi_getRecord( 'tx_drblob_content', $this->piVars['downloadUid'] );
 	    
-	    $contentType = $this->getFieldContent("blob_type");
-	    if (EMPTY($contentType)) {
+	    $contentType = $this->getFieldContent( 'blob_type' );
+	    if ( empty( $contentType ) ) {
 	    	$contentType = 'text/plain';
 	    }
 	    
-	    Header('Content-type: '.$contentType);
-	    Header('Content-disposition: attachment; filename='.$this->getFieldContent('blob_name'));
-	    Header('Pragma: no-cache');
-	    Header('Expires: 0');
-		
-		echo stripslashes( $this->getFieldContent('blob_data') );
+	    Header( 'Content-type: ' . $contentType );
+	    Header( 'Content-disposition: attachment; filename='.$this->getFieldContent( 'blob_name' ) );
+	    Header( 'Pragma: no-cache' );
+	    Header( 'Expires: 0' );
+		echo stripslashes( $this->getFieldContent( 'blob_data' ) );
 
 		//Avoid Typo from displaying the page
 		exit();
 	}
-	
+
 
 	/**
-	 * @name		makeList
-	 * ---------------------
-	 * @internal	Generates a List
+	 * @name getCmd
+	 * Returns the command that contains what to display.
+	 * 
+	 * @return 	String Command what to do 
+	 * @access 	private
 	 */
-	function makelist($res)	{
-		$items=Array();
-		while($this->internal["currentRow"] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			$items[]=$this->makeListItem();
-		}
-				
+	/*private*/function getCmd() {
 		
-		$out = '<table border="'.$this->conf["listView."]["tableProperties."]["border"].'"'.
-					 ' cellspacing="'.$this->conf["listView."]["tableProperties."]["cellspacing"].'"'.
-					 ' cellpadding="'.$this->conf["listView."]["tableProperties."]["cellpadding"].'"'.
-					 ' class="'.$this->conf["listView."]["tableProperties."]["class"].'"'.
-					 ' width="'.$this->conf["listView."]["tableProperties."]["width"].'">'.
-					$this->makeListHeader() . 
-					implode( chr(10), $items ) .
-					$this->makeListFooter() .
-			   '</table>';
-		return $out;
-	}
-
-
-	/**
-	 * @name		makeListHeader
-	 * ---------------------------
-	 * @internal	Generates a listHeader
-	 */
-	function makeListHeader() {
-		$out='<tr>
-				<th class="kopfzeile" align="left" width="84%">'.$this->getFieldHeader_sortLink("title").'</th>
-				<th class="kopfzeile" align="left" width="15%">'.$this->getFieldHeader_sortLink("crdate").'</th>
-				<th class="kopfzeile" align="left" width="1">&nbsp;</th>
-			</tr>';
-		return $out;
-	}
-
-
-	/**
-	 * @name		makeListItem
-	 * -------------------------
-	 * @internal	Generates a listRow
-	 */
-	function makeListItem()	{
-		$out='<tr class="inhalt_liste2">
-				<td>'.$this->getFieldContent("title").'</td>
-				<td>'.date( $this->conf["listView."]["date_stdWrap"], $this->getFieldContent("crdate") ).'</td>
-				<td>'.$this->getLink("show", $this->conf["listView."]["showButtonValue"]).'&nbsp;'.$this->getLink("download", $this->conf["listView."]["downloadButtonValue"]).'</td>
-			</tr>';
-		return $out;
-	}
-
-
-	/**
-	 * @name		makeListFooter
-	 * ---------------------------
-	 * @internal	Generiert eine Listenunterschrift
-	 */
-	function makeListFooter() {
-		return null;
-	}
-
-
-	/**
-	 * @name getFieldContent
-	 * displays a field's content identified by $fN
-	 * 
-	 * @access private
-	 * @param String $fn FieldName of the field to query
-	 * @return String
-	 */
-	function getFieldContent( $fN ) {
-		return $this->internal['currentRow'][$fN];
-	}
-	
-
-	/**
-	 * @name			getLink
-	 * --------------------------------
-	 * @internal		Displays a Link
-	 * @access 			public
-	 * @param			String		Link
-	 * @param			String		String to wrap the link around
-	 * @param			Int			PID to return to
-	 * @return 			String
-	 */
-	function getLink( $link='show', $linkWrap=null, $pid=0 ) {
-		$uid=$this->internal['currentRow']['uid'];
-		switch( $link ) {
-			case 'download':
-				if ( $this->blobExists($uid) ) {
-					return $this->pi_linkTP($linkWrap, array($this->prefixId=>array('downloadUid'=>$uid)), false, 0);
-				}
-			break;
-
-			case 'show':
-			default:
-				return $this->pi_list_linkSingle($linkWrap, $uid, 1, array(),false, $pid );
-		}//End of switch( $link )
-	}
-
-
-	/**
-	 * @name getFieldHeader
-	 * Displays a field's Title in LocalLang
-	 * 
-	 * @access private
-	 * @param String $fieldName Name of the field to display
-	 * @return String
-	 */
-	function getFieldHeader( $fieldName ) {
-		switch( $fieldName ) {
-			case 'crdate':
-				return $this->pi_getLL('listFieldHeader_date','Date');
-
-			case 'tstamp':
-				return $this->pi_getLL('listFieldHeader_date','Last Change');
-
-			default:
-				return $this->pi_getLL('listFieldHeader_'.$fieldName, $fieldName ); 
-		}//End of switch( $fieldName )
-	}
-
-
-	/**
-	 * @name getFieldHeader_sortLink
-	 * Displays a field's title in LocalLang wrapped in a sortlink
-	 * 
-	 * @access (should be) private
-	 * @param String Field
-	 * @return String Field with sortLink
-	 */
-	function getFieldHeader_sortLink( $fieldName ) {
-		return $this->pi_linkTP_keepPIvars( 
-					$this->getFieldHeader( $fieldName ),
-					array('sort' => $fieldName . ':' . ($this->internal['descFlag'] ? 0 : 1 ) ),
-					0,
-					$GLOBALS['TSFE']->id
-		);
-	}
-	
-	
-	
-	/**
-	 * @name getMarkerArray
-	 * 
-	 */
-	function getMarkerArray( $mode ) {
-		switch ( $mode ) {
-			case 'single':
-				$dateWrap = $this->conf['singleView.']['date_stdWrap'] ? $this->conf['singleView.']['date_stdWrap'] : 'm/d/Y';
-			break;
-			case 'top':
-				$dateWrap = $this->conf['topView.']['date_stdWrap'] ? $this->conf['topView.']['date_stdWrap'] : 'm/d/Y h:i';
-			break;
-			case 'list':
-				$dateWrap = $this->conf['listView.']['date_stdWrap'] ? $this->conf['listView.']['date_stdWrap'] : 'm/d/Y';
-			break;
+		$ffW2D = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlWhatToDisplay', 'sSettings' );
+		if ( $this->piVars['showUid'] ) {
+			return 'single';
 		}
+		return ( $ffW2D ? $ffW2D : 'list' );
+	}
 
-		$arrMarker = array(
-			'###BLOB_TITLE_LBL###' => $this->pi_getLL('listFieldHeader_title'),
-			'###BLOB_TITLE_VAL###' => $this->getFieldContent('title'),
-			'###BLOB_DESCRIPTION_LBL###' => $this->pi_getLL('listFieldHeader_description'),
-			'###BLOB_DESCRIPTION_VAL###' => $this->getFieldContent('description'),
-			'###BLOB_AUTHOR_LBL###' => $this->pi_getLL('listFieldHeader_author'),
-			'###BLOB_AUTHOR_VAL###' => $this->getFieldContent('author'),
-			'###BLOB_SORT_LBL###' => $this->pi_getLL('listFieldHeader_sort'),
-			'###BLOB_SORT_VAL###' => $this->getFieldContent('sort'),
-			'###BLOB_CRDATE_LBL###' => $this->pi_getLL('listFieldHeader_date_create'),
-			'###BLOB_CRDATE_VAL###' => date( $dateWrap, $this->getFieldContent('crdate')),
-			'###BLOB_TSTAMP_LBL###' => $this->pi_getLL('listFieldHeader_date_lastchange'),
-			'###BLOB_TSTAMP_VAL###' => date( $dateWrap, $this->getFieldContent('tstamp')),
-			'###BLOB_FILENAME_LBL###' => $this->pi_getLL('listFieldHeader_blob_name'),
-			'###BLOB_FILENAME_VAL###' => $this->getFieldContent('blob_name'),
-			'###BLOB_FILESIZE_LBL###' => $this->pi_getLL('listFieldHeader_blob_size'),										
-			'###BLOB_FILESIZE_VAL###' => $this->getFieldContent('blob_size'),
-			'###BLOB_FILETYPE_LBL###' => $this->pi_getLL('listFieldHeader_blob_type'),										
-			'###BLOB_FILETYPE_VAL###' => $this->getFieldContent('blob_type'),
-			'###BLOB_FILEDATA_VAL###' => $this->getLink('download', $this->pi_getLL('singleButton_download') ),
-			'###BLOB_SINGLE_RTN-URL###' => $this->pi_list_linkSingle( null,0,true,array(),true,$this->conf['topView.']['showSingle.']['returnPid'] ),
-			'###BLOB_SINGLE_RTN-LBL###' => $this->pi_getLL('singleButton_close', 'Close')
-		);
-		
-		switch( $mode ) {
-			case 'single':
-				$arrMarker['###BLOB_DATA_EXISTS_SWITCH_START###'] = $this->blobExists( $this->piVars['showUid'] ) ? '' : ' <!-- ';
-				$arrMarker['###BLOB_DATA_EXISTS_SWITCH_END###'] = $this->blobExists( $this->piVars['showUid'] ) ? '' : ' --> ';
-			break;
-			case 'top':
-				$toCut = 150;
-				if ( strlen($arrMarker['###BLOB_DESCRIPTION_VAL###']) > $toCut ) {
-					$add = "...";
-				} else {
-					$add = null;
-				}
-				$arrMarker['###BLOB_DESCRIPTION_VAL###'] = strip_tags( substr( $arrMarker['###BLOB_DESCRIPTION_VAL###'], 0, -(strlen( $arrMarker['###BLOB_DESCRIPTION_VAL###'] ) - $toCut ) ) ) . $add;
-				
-			break;
+
+	/**
+	 * @name getLayouts
+	 * Returns alternating layouts
+	 * 
+	 * @author	Rupert Germann <rupi@gmx.li>
+     * @package TYPO3
+     * @subpackage tt_news
+	 * @param	string		html code of the template subpart
+	 * @param	integer		number of alternatingLayouts
+	 * @param	string		name of the content-markers in this template-subpart
+	 * @return	array		html code for alternating content markers
+	 */
+	/*private*/function getLayouts($templateCode, $alternatingLayouts, $marker ) {
+		$out = array();
+		for($a = 0; $a < $alternatingLayouts; $a++) {
+			$m = '###'.$marker.($a?'_'.$a:'').'###';
+			if (strstr($templateCode, $m)) {
+				$out[] = $GLOBALS['TSFE']->cObj->getSubpart($templateCode, $m);
+			} else {
+				break;
+			}
 		}
-		return $arrMarker;
+		return $out;
 	}
 	
 	
 	/**
-	 * @name			blobExists
+	 * @name	blobExists
 	 * Checks wether a binary object exists- or not
 	 * 
 	 * @access (should be) private
-	 * @param			int			uid
-	 * @return 			bool
+	 * @param	int		uid
+	 * @return 	bool
 	 */
-	function blobExists( $item ) {
+	/*private*/function blobExists( $item ) {
 		$rslt = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'blob_data, blob_name',
 			'tx_drblob_content',
@@ -470,33 +386,122 @@ class tx_drblob_pi1 extends tslib_pibase {
 		}		
 	}
 	
+
+	/**
+	 * @name getMarkerArray
+	 * 
+	 */
+	function getGlobalMarkerArray( $mode ) {
+		switch ( $mode ) {
+			case 'single':
+				$dateWrap = $this->conf['singleView.']['date_stdWrap'] ? $this->conf['singleView.']['date_stdWrap'] : 'm/d/Y';
+			break;
+			case 'top':
+				$dateWrap = $this->conf['topView.']['date_stdWrap'] ? $this->conf['topView.']['date_stdWrap'] : 'm/d/Y h:i';
+			break;
+			case 'list':
+				$dateWrap = $this->conf['listView.']['date_stdWrap'] ? $this->conf['listView.']['date_stdWrap'] : 'm/d/Y';
+			break;
+		}
+
+		$arrMarker = array(
+			'###BLOB_TITLE###' => $this->getFieldContent('title'),
+			'###BLOB_DESCRIPTION###' => $this->getFieldContent('description'),
+			'###BLOB_AUTHOR###' => $this->getFieldContent('author'),
+			'###BLOB_AUTHOR_EMAIL###' => $this->getFieldContent('author_email'),
+			'###BLOB_CRDATE###' => date( $dateWrap, $this->getFieldContent('crdate')),
+			'###BLOB_LASTCHANGE###' => date( $dateWrap, $this->getFieldContent('tstamp')),
+			'###BLOB_FILENAME###' => $this->getFieldContent('blob_name'),
+			'###BLOB_FILESIZE###' => $this->getFieldContent('blob_size'),								
+			'###BLOB_FILETYPE###' => $this->getFieldContent('blob_type'),
+		);
+		
+		switch( $mode ) {
+			case 'single':
+				$arrMarker['###BLOB_DATA_EXISTS_SWITCH_START###'] = $this->blobExists( $this->piVars['showUid'] ) ? '' : ' <!-- ';
+				$arrMarker['###BLOB_DATA_EXISTS_SWITCH_END###'] = $this->blobExists( $this->piVars['showUid'] ) ? '' : ' --> ';
+			break;
+			case 'top':
+				$toCut = intval( $this->conf['topView.']['lengthOfDescription'] ) > 0 ? intval( $this->conf['topView.']['lengthOfDescription'] ) : 150;
+				$arrMarker['###BLOB_DESCRIPTION###'] = strip_tags( $arrMarker['###BLOB_DESCRIPTION###'] );
+				if ( strlen( $arrMarker['###BLOB_DESCRIPTION###'] ) > $toCut ) {
+					$add = '...';
+				} else {
+					$add = null;
+				}
+				$arrMarker['###BLOB_DESCRIPTION###'] = substr( $arrMarker['###BLOB_DESCRIPTION###'], 0, -(strlen( $arrMarker['###BLOB_DESCRIPTION###'] ) - $toCut ) ) . $add;
+				
+			break;
+		}
+		return $arrMarker;
+	}
+	
+
+	/**
+	 * @name getFieldContent
+	 * displays a field's content identified by $fN
+	 * 
+	 * @access private
+	 * @param String $fn FieldName of the field to query
+	 * @return String
+	 */
+	/*private*/function getFieldContent( $fN ) {
+		switch ( $fN ) {
+			case 'author': return $this->getAuthor( $this->internal['currentRow']['cruser_id'] ); break;
+			case 'author_email': return $this->getAuthor( $this->internal['currentRow']['cruser_id'], 'email' ); break;
+		}
+		
+		return $this->internal['currentRow'][$fN];
+	}
+
 	
 	/**
-	 * @name getLayouts
-	 * Returns alternating layouts
+	 * @name	getAuthor
+	 * Queries the be_users table for the Author of an record
 	 * 
-	 * @author	Rupert Germann <rupi@gmx.li>
-     * @package TYPO3
-     * @subpackage tt_news
-	 * @param	string		html code of the template subpart
-	 * @param	integer		number of alternatingLayouts
-	 * @param	string		name of the content-markers in this template-subpart
-	 * @return	array		html code for alternating content markers
+	 * @param	Integer	$item	Uid of the author
+	 * @return	String	Authorname
 	 */
-	function getLayouts($templateCode, $alternatingLayouts, $marker ) {
-		$out = array();
-		for($a = 0; $a < $alternatingLayouts; $a++) {
-			$m = '###'.$marker.($a?'_'.$a:'').'###';
-			if (strstr($templateCode, $m)) {
-				$out[] = $GLOBALS['TSFE']->cObj->getSubpart($templateCode, $m);
-			} else {
-				break;
+	/*private*/function getAuthor( $item, $what='author' ) {
+		$rslt = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'realname, email',
+			'be_users',
+			'uid=' . $item . '',
+			'',
+			'',
+			''
+		);
+		if ( $rslt ) {
+			if ( $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) == 1 ) {
+				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rslt );
+				
+				switch($what){
+					case 'email': return $row['email']; break;
+					case 'author':
+					default: return $row['realname']; break;
+				}
 			}
 		}
-		return $out;
+	}
+
+
+	/**
+	 * @name getFieldHeader_sortLink
+	 * Displays a field's title in LocalLang wrapped in a sortlink
+	 * 
+	 * @access 	private
+	 * @param 	String Field
+	 * @return 	String Field with sortLink
+	 */
+	/*private*/function getFieldHeader_sortLink( $fieldName ) {
+		return $this->pi_linkTP_keepPIvars( 
+			$this->pi_getLL( 'list.field.'.$fieldName ),
+			array('sort' => $fieldName . ':' . ($this->internal['descFlag'] ? 0 : 1 ) ),
+			0,
+			$GLOBALS['TSFE']->id
+		);
 	}
 };
-
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/pi1/class.tx_drblob_pi1.php'])	{

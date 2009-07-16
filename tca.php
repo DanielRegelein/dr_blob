@@ -9,7 +9,6 @@ function user_dispInputFileName( $PA, $fobj ) {
 				'value="' . $PA['itemFormElValue'] . '" ' .
 				'size="48" ' .
 				' / >';
-	
 }
 function user_dispInputFileType( $PA, $fobj ) {
 	return 	'<input ' .
@@ -59,7 +58,7 @@ $TCA["tx_drblob_content"] = Array (
 	),
 
 	"interface" => Array (
-		"showRecordFieldList" => "title,sort,crdate,blob_name,blob_size,blob_type,hidden,fe_group,starttime,endtime",
+		"showRecordFieldList" => "title,crdate,blob_name,blob_size,blob_type,hidden,fe_group,starttime,endtime",
 		"maxDBListItems" => 20
 	),
 
@@ -150,24 +149,8 @@ $TCA["tx_drblob_content"] = Array (
 				),
 			)
 		),
-		"sort" => Array (		
-			"exclude" => 0,		
-			"label" => "LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.sort",		
-			"config" => Array (
-				"type" => "input",
-				"size" => "3",
-				"max" => "3",
-				"eval" => "int",
-				"checkbox" => "0",
-				"range" => Array (
-					"upper" => "100",
-					"lower" => "0"
-				),
-				"default" => ""
-			)
-		),
 		"is_vip" => Array(
-			"exclude" => 0, 
+			"exclude" => 1, 
 			"label" => "LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.is_vip",
 			"config" => Array (
 				"type" => "check",
@@ -210,11 +193,14 @@ $TCA["tx_drblob_content"] = Array (
 	),
 
 	"types" => Array (
-		"0" => Array("showitem" => "hidden;;1;;1-1-1, title;;;;2-2-2, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3, sort, is_vip, blob_name, blob_size, blob_type, blob_data")
+		"0" => Array("showitem" => "hidden;;1;;1-1-1, title;;;;2-2-2, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3, is_vip, blob_name, blob_size, blob_type, blob_data")
 	),
 
 	"palettes" => Array (
 		"1" => Array("showitem" => "starttime,endtime,fe_group")
 	)
 );
+
+$TYPO3_CONF_VARS['BE']["XCLASS"]["typo3/alt_doc.php"] = PATH_typo3conf.'ext/dr_blob/class.ux_SC_alt_doc.php';
+
 ?>

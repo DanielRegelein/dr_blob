@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004 Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
+*  (c) 2005 Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,38 +22,33 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
+ * @name	tx_drblob_pi1_wizicon
  * Class that adds the wizard icon.
  *
  * @author	Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  */
-
-
-
 class tx_drblob_pi1_wizicon {
 	function proc($wizardItems)	{
 		global $LANG;
 
 		$LL = $this->includeLocalLang();
 
-		$wizardItems["plugins_tx_drblob_pi1"] = array(
-			"icon"=>t3lib_extMgm::extRelPath("dr_blob")."pi1/ce_wiz.gif",
-			"title"=>$LANG->getLLL("pi1_title",$LL),
-			"description"=>$LANG->getLLL("pi1_plus_wiz_description",$LL),
-			"params"=>"&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=dr_blob_pi1"
+		$wizardItems['plugins_tx_drblob_pi1'] = array(
+			'icon'=>t3lib_extMgm::extRelPath('dr_blob').'pi1/ce_wiz.gif',
+			'title'=>$LANG->getLLL('pi1_title',$LL),
+			'description'=>$LANG->getLLL('pi1_plus_wiz_description',$LL),
+			'params'=>'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=dr_blob_pi1'
 		);
 
 		return $wizardItems;
 	}
 	function includeLocalLang()	{
-		include(t3lib_extMgm::extPath("dr_blob")."locallang.php");
+		include(t3lib_extMgm::extPath('dr_blob').'locallang.php');
 		return $LOCAL_LANG;
 	}
 }
 
-
-
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/dr_blob/pi1/class.tx_drblob_pi1_wizicon.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/dr_blob/pi1/class.tx_drblob_pi1_wizicon.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/pi1/class.tx_drblob_pi1_wizicon.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/pi1/class.tx_drblob_pi1_wizicon.php']);
 }
-
 ?>

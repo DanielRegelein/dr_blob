@@ -1,32 +1,57 @@
+###BLOB_TITLE###
+###BLOB_DESCRIPTION###
+###BLOB_AUTHOR###
+###BLOB_AUTHOR_EMAIL###
+###BLOB_CRDATE###
+###BLOB_LASTCHANGE###
+###BLOB_FILENAME###
+###BLOB_FILESIZE###
+###BLOB_FILETYPE###
+###BLOB_MORE_LINK###
+###BLOB_DOWNLOAD_LINK###
+###BLOB_SINGLE_RTN-URL###
+###BLOB_DATA_EXISTS_SWITCH_START###
+###BLOB_DATA_EXISTS_SWITCH_END###
+
 <!-- ###TEMPLATE_SINGLE### begin -->
 	<div id="popup">
 		<table border="0" cellspacing="4" cellpadding="4" width="700">
 			<tr>
-				<td colspan="2" class="box"><b>###BLOB_TITLE_LBL###:</b> ###BLOB_TITLE_VAL###</td>
+				<th align="left" width="100%" colspan="2"><span style="font-size: 14px;"><b>###BLOB_TITLE###</b></span></th>
 			</tr>
 			<tr>
-				<td width="50%" class="box"><b>###BLOB_AUTHOR_LBL###:</b> ###BLOB_AUTHOR_VAL###</td>
-				<td width="50%" class="box"><b>###BLOB_SORT_LBL###:</b> ###BLOB_SORT_VAL###</td>
+				<td colspan="2">&nbsp;</td>
 			</tr>
 			<tr>
-				<td width="50%" class="box"><b>###BLOB_CRDATE_LBL###:</b> ###BLOB_CRDATE_VAL###</td>
-				<td width="50%" class="box"><b>###BLOB_TSTAMP_LBL###:</b> ###BLOB_TSTAMP_VAL###</td>
+				<td colspan="2" class="box"><b>Titel:</b> ###BLOB_TITLE###</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="box"><b>###BLOB_DESCRIPTION_LBL###:</b><br />###BLOB_DESCRIPTION_VAL###</td>
+				<td width="50%" class="box"><b>Autor:</b> ###BLOB_AUTHOR###</td>
+				<td width="50%" class="box"><b>eMail:</b> ###BLOB_AUTHOR_EMAIL###</td>
+			</tr>
+			<tr>
+				<td width="50%" class="box"><b>Erstelldatum:</b> ###BLOB_CRDATE###</td>
+				<td width="50%" class="box"><b>Letzte Änderung:</b> ###BLOB_LASTCHANGE###</td>
+			</tr>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="box"><b>Beschreibung:</b><br /><br />###BLOB_DESCRIPTION###</td>
 			</tr>
 		###BLOB_DATA_EXISTS_SWITCH_START###
 			<tr>
-				<td width="50%" class="box"><b>###BLOB_FILENAME_LBL###:</b> ###BLOB_FILENAME_VAL###</td>
-				<td width="50%" class="box"><b>###BLOB_FILESIZE_LBL###:</b> ###BLOB_FILESIZE_VAL### Bytes</td>
+				<td width="50%" class="box"><b>Dateiname:</b> ###BLOB_FILENAME###</td>
+				<td width="50%" class="box"><b>Dateigröße:</b> ###BLOB_FILESIZE### Bytes</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="box">###BLOB_FILEDATA_VAL###</td>
+				<td colspan="2" class="box">###BLOB_DOWNLOAD_LINK###</td>
 			</tr>
 		###BLOB_DATA_EXISTS_SWITCH_END###
 		</table>
+		<br />
 		<form action="###BLOB_SINGLE_RTN-URL###" method="post">
-			<input type="submit" value="###BLOB_SINGLE_RTN-LBL###" class="button1">
+			<input type="submit" value="Schließen" class="button1">
 		</form>
 	</div>
 <!-- ###TEMPLATE_SINGLE### end -->

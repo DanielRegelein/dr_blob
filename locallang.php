@@ -7,14 +7,14 @@
 
 $LOCAL_LANG = Array (
 	"default" => Array (
-		"pi1_title" => "Binary Object List",	
-		"pi1_plus_wiz_description" => "Adds a content element that can contain a binary object",	
+		"pi1_title" => "Filelist",	
+		"pi1_plus_wiz_description" => "Adds a list of downloadable files that are stored in the database to the page",	
 	),
 	"dk" => Array (
 	),
 	"de" => Array (
-		"pi1_title" => "Binary Object Liste",	
-		"pi1_plus_wiz_description" => "Fügt als Content Element eine Liste ein, die binäre Objekte enthalten kann.",
+		"pi1_title" => "Dateiliste",	
+		"pi1_plus_wiz_description" => "Fügt der Seite eine Liste downloadbarer Dateien hinzu die in der Datenbank gespeichert sind.",
 	),
 	"no" => Array (
 	),
