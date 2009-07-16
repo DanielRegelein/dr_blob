@@ -30,7 +30,7 @@ $TCA['tx_drblob_content'] = array (
 			'endtime' => 'endtime',
 			'fe_group' => 'fe_group'
 		),
-		'iconfile' => t3lib_extMgm::extRelPath( 'dr_blob' ).'ext_icon.gif',
+		'iconfile' => t3lib_extMgm::extRelPath( 'dr_blob' ).'ico/ext_icon_content.gif',
 	),
 
 	'interface' => array (
@@ -108,7 +108,7 @@ $TCA['tx_drblob_content'] = array (
 				'items' => array(
 					array('LLL:EXT:lang/locallang_general.php:LGL.allLanguages',-1),
 					array('LLL:EXT:lang/locallang_general.php:LGL.default_value',0)
-		 		)
+		 		),
 			)
 		),
 		'l18n_parent' => array (
@@ -121,19 +121,7 @@ $TCA['tx_drblob_content'] = array (
 					array('', 0),
 				),
 				'foreign_table' => 'tx_drblob_content',
-				'foreign_table_where' => 'AND tx_drblob_content.uid=###REC_FIELD_l18n_parent### AND tx_drblob_content.sys_language_uid IN (-1,0)',
-				'wizards' => array(
-					'_PADDING' => 2,
-					'_VERTICAL' => 1,
-			 		'edit' => array(
-						'type' => 'popup',
-						'title' => 'edit default language version of this record ',
-						'script' => 'wizard_edit.php',
-						'popup_onlyOpenIfSelected' => 1,
-						'icon' => 'edit2.gif',
-						'JSopenParams' => 'height=600,width=700,status=0,menubar=0,scrollbars=1,resizable=1',
-					),
-				),
+				'foreign_table_where' => 'AND tx_drblob_content.pid=###CURRENT_PID### AND tx_drblob_content.sys_language_uid IN (-1,0)',
 			)
 		),
 		'l18n_diffsource' => array(
@@ -166,7 +154,7 @@ $TCA['tx_drblob_content'] = array (
 						'notNewRecords' => 1,
 						'RTEonly' => 1,
 						'type' => 'script',
-						'title' => 'Full screen Rich Text Editing|Formatteret redigering i hele vinduet',
+						'title' => 'LLL:EXT:cms/locallang_ttc.php:bodytext.W.RTE',
 						'icon' => 'wizard_rte2.gif',
 						'script' => 'wizard_rte.php',
 					),
@@ -186,6 +174,7 @@ $TCA['tx_drblob_content'] = array (
 		),
 		'download_count' => array(
 			'exclude' => 1,
+			'l10n_mode' => 'mergeIfNotBlank',
 			'label' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.download_count',
 			'config' => array (
 				'type' => ( $extConf['enableCounterReset'] ? 'user' : 'passthrough' ),
@@ -234,11 +223,12 @@ $TCA['tx_drblob_content'] = array (
 	),
 
 	'types' => array (
-		'0' => array('showitem' => 'hidden;;1;;1-1-1, title;;;;2-2-2, description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3, is_vip, download_count, blob_name, blob_size, blob_type, blob_data')
+		'0' => array( 'showitem' => 'hidden;;1;;1-1-1,title;;;;2-2-2,sys_language_uid;;2;;,description;;;richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts];3-3-3,is_vip,download_count,blob_name,blob_size,blob_type,blob_data'),
 	),
 
 	'palettes' => array (
-		'1' => array('showitem' => 'starttime,endtime,fe_group')
+		'1' => array( 'showitem' => 'starttime,endtime,fe_group' ),
+		'2' => array( 'showitem' => 'l18n_parent' ),
 	)
 );
 ?>

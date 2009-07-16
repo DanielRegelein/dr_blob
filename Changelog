@@ -1,3 +1,16 @@
+2007-0X-XX  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
+
+	* Release of version 1.5.1
+	
+	* Feature: Added the template-markers BLOB_MORE, BLOB_DOWNLOAD, LINK_ITEM & LINK_FILE
+	* Feature: Added the foldericon
+	
+	* Change: Changed fieldnames in FE locallang to enable them to be set via TS
+	* Change: The template-markers BLOB_TITLE_LINK, BLOB_MORE_LINK & BLOB_DOWNLOAD_LINK are deprecated
+	* Change: The fields "sys_langugage_uid" and "l18n_parent" are now changeable using TCA
+	
+	* Bugfix: Re-wrote parts of the localization features. Now they finally should work ;-)
+
 2007-04-10  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
 
 	* Release of version 1.5.0	
@@ -5,7 +18,7 @@
 	* Feature: Added the possibility to reset the download counter of an attached file.
 	* Feature: Added specific sort sequence to the list mode.
 	* Small Feature: Added the TypoScript-Marker the define a folder for custom file extension-icons.
-	* Small Feature: Changed the date_stdWrap-Option in TS. „date_stdWrap“ now is a real stdWrap.
+	* Small Feature: Changed the date_stdWrap-Option in TS. date_stdWrap now is a real stdWrap.
 	* Small Feature: Added the field-change-function to the custom TCA fields.
 
 	* Change: Migrated the locallang-files to the <T3locallang> XML-data-structure

@@ -1,3 +1,43 @@
+d r _ b l o b
+-------------
+
+Example Template for the Extension dr_blob
+
+Have a look on the manual for details
+
+------8<------------------------------------------------------------------------------------------------------
+
+This is the template subpart for the LIST-Mode. 
+
+Available Marker:
+	###BLOB_TITLE###
+	###BLOB_DESCRIPTION###
+	###BLOB_AUTHOR###
+	###BLOB_AUTHOR_EMAIL###
+	###BLOB_CRDATE###
+	###BLOB_LASTCHANGE###
+	###BLOB_DOWNLOADCOUNT###
+	###BLOB_FILENAME###
+	###BLOB_FILESIZE###
+	###BLOB_FILETYPE###
+	###BLOB_FILEICON###
+
+	###BLOB_MORE###
+	###BLOB_DOWNLOAD###
+
+	###BLOB_LINK_ITEM###
+	###BLOB_LINK_FILE###
+	
+	(deprecated) ###BLOB_TITLE_LINK###
+	(deprecated) ###BLOB_MORE_LINK###
+	(deprecated) ###BLOB_DOWNLOAD_LINK###
+	
+	###BLOB_SORTLINK_TITLE###
+	###BLOB_SORTLINK_CRDATE###
+	###BLOB_SORTLINK_LASTCHANGE###
+	###BLOB_SORTLINK_AUTHOR###
+
+
 <!-- ###TEMPLATE_LIST### begin -->
 	<table border="0" cellspacing="2" cellpadding="2 class="" width="60%">
 		<tr>
@@ -11,7 +51,7 @@
 			<tr class="tx_drblob_item1">
 				<td nowrap>###BLOB_TITLE###</td>
 				<td>###BLOB_CRDATE###</td>
-				<td nowrap>###BLOB_MORE_LINK###&nbsp;###BLOB_DOWNLOAD_LINK###</td>
+				<td nowrap><!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###-->&nbsp;<!--###BLOB_LINK_FILE###--> ###BLOB_DOWNLOAD### <!--###BLOB_LINK_FILE###--></td>
 			</tr>
 		<!-- ###BLOBITEM### end -->
 			
@@ -19,7 +59,7 @@
 			<tr class="tx_drblob_item2">
 				<td nowrap>###BLOB_TITLE###</td>
 				<td>###BLOB_CRDATE###</td>
-				<td nowrap>###BLOB_MORE_LINK###&nbsp;###BLOB_DOWNLOAD_LINK###</td>
+				<td nowrap><!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###-->&nbsp;<!--###BLOB_LINK_FILE###--> ###BLOB_DOWNLOAD### <!--###BLOB_LINK_FILE###--></td>
 			</tr>
 
 		<!-- ###BLOBITEM_1### end -->
@@ -28,7 +68,7 @@
 			<tr class="tx_drblob_item3">
 				<td>###BLOB_TITLE###</td>
 				<td>###BLOB_CRDATE###</td>
-				<td nowrap>###BLOB_MORE_LINK###&nbsp;###BLOB_DOWNLOAD_LINK###</td>
+				<td nowrap><!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###-->&nbsp;<!--###BLOB_LINK_FILE###--> ###BLOB_DOWNLOAD### <!--###BLOB_LINK_FILE###--></td>
 			</tr>
 
 		<!-- ###BLOBITEM_2### end -->
@@ -55,6 +95,35 @@
 
 
 
+------8<------------------------------------------------------------------------------------------------------
+
+This is the template subpart for the TOP-Mode. 
+
+Available Marker:
+	###BLOB_TITLE###
+	###BLOB_DESCRIPTION###
+	###BLOB_AUTHOR###
+	###BLOB_AUTHOR_EMAIL###
+	###BLOB_CRDATE###
+	###BLOB_LASTCHANGE###
+	###BLOB_DOWNLOADCOUNT###
+	###BLOB_FILENAME###
+	###BLOB_FILESIZE###
+	###BLOB_FILETYPE###
+	###BLOB_FILEICON###
+
+	###BLOB_MORE###
+	###BLOB_DOWNLOAD###
+
+	###BLOB_LINK_ITEM###
+	###BLOB_LINK_FILE###
+	
+	(deprecated) ###BLOB_TITLE_LINK###
+	(deprecated) ###BLOB_MORE_LINK###
+	(deprecated) ###BLOB_DOWNLOAD_LINK###
+
+
+
 <!-- ###TEMPLATE_TOP### begin -->
 	<table cellpadding="4" cellspacing="1" border="0" width="300">
 		<tr>
@@ -67,9 +136,9 @@
 				<td class="tx_drblob_vipitem1">
 					<font face="verdana" size="1" color="black">
 						###BLOB_CRDATE###<br />
-						###BLOB_TITLE_LINK###
+						<!--###BLOB_LINK_ITEM###--> ###BLOB_TITLE### <!--###BLOB_LINK_ITEM###-->
 						<p style="margin:0 0 0 0;">###BLOB_DESCRIPTION###</p>
-						###BLOB_MORE_LINK###<br />
+						<!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###--><br />
 					</font><br />
 				</td>
 			</tr>
@@ -80,9 +149,9 @@
 				<td class="tx_drblob_vipitem2">
 					<font face="verdana" size="1" color="black">
 						###BLOB_CRDATE###<br />
-						###BLOB_TITLE_LINK###
+						<!--###BLOB_LINK_ITEM###--> ###BLOB_TITLE### <!--###BLOB_LINK_ITEM###-->
 						<p style="margin:0 0 0 0;">###BLOB_DESCRIPTION###</p>
-						###BLOB_MORE_LINK###<br />
+						<!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###--><br />
 					</font><br />
 				</td>
 			</tr>
@@ -93,9 +162,9 @@
 				<td class="tx_drblob_vipitem3">
 					<font face="verdana" size="1" color="black">
 						###BLOB_CRDATE###<br />
-						###BLOB_TITLE_LINK###
+						<!--###BLOB_LINK_ITEM###--> ###BLOB_TITLE### <!--###BLOB_LINK_ITEM###-->
 						<p style="margin:0 0 0 0;">###BLOB_DESCRIPTION###</p>
-						###BLOB_MORE_LINK###<br />
+						<!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###--><br />
 					</font><br />
 				</td>
 			</tr>
@@ -118,6 +187,40 @@
 
 
 
+------8<------------------------------------------------------------------------------------------------------
+
+This is the template subpart for the PERSONAL-Mode. 
+
+Available Marker:
+	###BLOB_TITLE###
+	###BLOB_DESCRIPTION###
+	###BLOB_AUTHOR###
+	###BLOB_AUTHOR_EMAIL###
+	###BLOB_CRDATE###
+	###BLOB_LASTCHANGE###
+	###BLOB_DOWNLOADCOUNT###
+	###BLOB_FILENAME###
+	###BLOB_FILESIZE###
+	###BLOB_FILETYPE###
+	###BLOB_FILEICON###
+
+	###BLOB_MORE###
+	###BLOB_DOWNLOAD###
+
+	###BLOB_LINK_ITEM###
+	###BLOB_LINK_FILE###
+	
+	(deprecated) ###BLOB_TITLE_LINK###
+	(deprecated) ###BLOB_MORE_LINK###
+	(deprecated) ###BLOB_DOWNLOAD_LINK###
+
+Special Marker for the ADD-/REMOVE-Part
+	###FORM_METHOD###
+	###FORM_TARGET###
+	###ACTION###
+	###ITEMS###
+
+
 <!-- ###TEMPLATE_PERSONAL### begin -->
 	<table cellpadding="4" cellspacing="1" border="0" width="300">
 		<tr>
@@ -130,9 +233,9 @@
 				<td class="tx_drblob_personalitem1">
 					<font face="verdana" size="1" color="black">
 						###BLOB_LASTCHANGE###<br />
-						###BLOB_TITLE_LINK###
+						<!--###BLOB_LINK_ITEM###--> ###BLOB_TITLE### <!--###BLOB_LINK_ITEM###-->
 						<p style="margin:0 0 0 0;">###BLOB_DESCRIPTION###</p>
-						###BLOB_MORE_LINK###<br />
+						<!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###--><br />
 					</font><br />
 				</td>
 			</tr>
@@ -143,9 +246,9 @@
 				<td class="tx_drblob_personalitem2">
 					<font face="verdana" size="1" color="black">
 						###BLOB_LASTCHANGE###<br />
-						###BLOB_TITLE_LINK###
+						<!--###BLOB_LINK_ITEM###--> ###BLOB_TITLE### <!--###BLOB_LINK_ITEM###-->
 						<p style="margin:0 0 0 0;">###BLOB_DESCRIPTION###</p>
-						###BLOB_MORE_LINK###<br />
+						<!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###--><br />
 					</font><br />
 				</td>
 			</tr>
@@ -156,9 +259,9 @@
 				<td class="tx_drblob_personalitem3">
 					<font face="verdana" size="1" color="black">
 						###BLOB_LASTCHANGE###<br />
-						###BLOB_TITLE_LINK###
+						<!--###BLOB_LINK_ITEM###--> ###BLOB_TITLE### <!--###BLOB_LINK_ITEM###-->
 						<p style="margin:0 0 0 0;">###BLOB_DESCRIPTION###</p>
-						###BLOB_MORE_LINK###<br />
+						<!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###--><br />
 					</font><br />
 				</td>
 			</tr>
@@ -199,8 +302,33 @@
 
 
 
+------8<------------------------------------------------------------------------------------------------------
 
 
+This is the template subpart for the SINGLE-Mode. 
+
+Available Marker:
+	###BLOB_TITLE###
+	###BLOB_DESCRIPTION###
+	###BLOB_AUTHOR###
+	###BLOB_AUTHOR_EMAIL###
+	###BLOB_CRDATE###
+	###BLOB_LASTCHANGE###
+	###BLOB_DOWNLOADCOUNT###
+	###BLOB_FILENAME###
+	###BLOB_FILESIZE###
+	###BLOB_FILETYPE###
+	###BLOB_FILEICON###
+
+	###BLOB_DOWNLOAD###
+	###BLOB_LINK_FILE###
+
+	(deprecated) ###BLOB_DOWNLOAD_LINK###
+
+	###BLOB_SINGLE_RTN-URL###
+	
+	###BLOB_DATA_EXISTS_SWITCH_START###
+	###BLOB_DATA_EXISTS_SWITCH_END###
 
 
 <!-- ###TEMPLATE_SINGLE### begin -->
@@ -235,7 +363,7 @@
 				<td width="50%" class="box"><b>Filesize:</b> ###BLOB_FILESIZE###</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="box">###BLOB_FILEICON### ###BLOB_DOWNLOAD_LINK###</td>
+				<td colspan="2" class="box">###BLOB_FILEICON### <!--###BLOB_LINK_FILE###--> ###BLOB_DOWNLOAD### <!--###BLOB_LINK_FILE###--></td>
 			</tr>
 			<tr>
 				<td colspan="2" class="box">This file was downloaded ###BLOB_DOWNLOADCOUNT### times.</td>
@@ -253,6 +381,15 @@
 
 
 
+------8<------------------------------------------------------------------------------------------------------
+
+This is the template subpart for the SEARCH-Mode. 
+The SEARCH-Mode uses the LIST-Mode-Template to show the records
+
+Available Marker:
+	###FORM_URL###
+	###SWORDS###
+	###SEARCH_BUTTON###
 
 
 
@@ -274,4 +411,3 @@
 		</tr>
 	</table>
 <!-- ###TEMPLATE_SEARCH_NOITEMS### end -->
-

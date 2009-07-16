@@ -14,8 +14,6 @@ plugin.tx_drblob_pi1.singleView.date_stdWrap.date = m/d/Y
 
 //ListView
 plugin.tx_drblob_pi1.listView.date_stdWrap.date = m/d/Y
-plugin.tx_drblob_pi1.listView.showButtonValue = [ more ]
-plugin.tx_drblob_pi1.listView.downloadButtonValue = [ download ]
 plugin.tx_drblob_pi1.listView.alternatingLayouts = 2
 
 //TopView

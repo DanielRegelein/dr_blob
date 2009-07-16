@@ -29,10 +29,13 @@
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  * @package 	dr_blob
  * @filesource	class.tx_drblob_tcemain.php
- * @version		1.5.0
- * @since 		1.5.0
+ * @version		1.5.1
+ * @since 		1.5.0, 2007-04-10
  */
 class tx_drblob_tcemain {
+	
+	var $dbVars = array( 'table' => 'tx_drblob_content' );
+
 	
 	/**
 	 * @name		processDatamap_afterDatabaseOperations
@@ -48,15 +51,15 @@ class tx_drblob_tcemain {
 	 */
 	/*public*/function processDatamap_afterDatabaseOperations( $status, $table, $id, $fieldArray, $obj ){
 
-		if( $table == 'tx_drblob_content' ) {
+		if( $table == $this->dbVars['table'] ) {
 			
 			if ( !is_int( $id ) ) {
 				$item = $obj->substNEWwithIDs[$id];
 			} else {
 				$item = $id;
 			}
-			if ( is_array( $_FILES['data']['tmp_name']['tx_drblob_content'] ) ) {
-				$fileName = $_FILES['data']['tmp_name']['tx_drblob_content'][$id]['blob_data'];
+			if ( is_array( $_FILES['data']['tmp_name'][$this->dbVars['table']] ) ) {
+				$fileName = $_FILES['data']['tmp_name'][$this->dbVars['table']][$id]['blob_data'];
 				if ( ( !empty( $fileName ) ) && ( $fileName != 'none' ) ) {
 						//Open File and Quote it
 					$filePointer = fopen( $fileName, 'r' );
@@ -67,11 +70,11 @@ class tx_drblob_tcemain {
 						//the method $GLOBALS['TYPO3_DB']->UPDATEquery that is called from $GLOBALS['TYPO3_DB']->exec_UPDATEquery
 					$arrValues = array(
 						'blob_data' => $data,
-						'blob_name' => $_FILES['data']['name']['tx_drblob_content'][$id]['blob_data'],
-						'blob_size' => $_FILES['data']['size']['tx_drblob_content'][$id]['blob_data'],
-						'blob_type' => $_FILES['data']['type']['tx_drblob_content'][$id]['blob_data']
+						'blob_name' => $_FILES['data']['name'][$this->dbVars['table']][$id]['blob_data'],
+						'blob_size' => $_FILES['data']['size'][$this->dbVars['table']][$id]['blob_data'],
+						'blob_type' => $_FILES['data']['type'][$this->dbVars['table']][$id]['blob_data']
 					);
-					$rslt = $GLOBALS['TYPO3_DB']->exec_UPDATEquery( 'tx_drblob_content', 'uid='.$item, $arrValues );
+					$rslt = $GLOBALS['TYPO3_DB']->exec_UPDATEquery( $this->dbVars['table'], 'uid='.$item, $arrValues );
 				}
 			}
 		}
@@ -80,7 +83,7 @@ class tx_drblob_tcemain {
 	
 	/**
 	 * @name		__toString
-	 * Output the class makes when callung <code>echo $obj;</code>
+	 * Output the class makes when calling <code>echo $obj;</code>
 	 * 
 	 * @access		public
 	 * @return		String		"tx_drblob_tcemain"

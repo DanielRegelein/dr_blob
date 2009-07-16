@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005 Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
+*  (c) 2007 Daniel Regelein (Daniel.Regelein@diehl-informatik.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,12 +33,11 @@
  * @package 	dr_blob
  * @filesource	class.user_txdrblobFormFields.php
  * @since		Version 1.5.0, 2007-04-10
- * @version 	1.5.0
+ * @version 	1.5.1
  */
 class tx_drblob_FormFields {
+
 	function inputFileName( $PA, $fobj ) {
-		
-		
 		return 	'<input ' .
 			'type="text" ' .
 			'name="' . $PA['itemFormElName'] . '" ' .
@@ -71,12 +70,13 @@ class tx_drblob_FormFields {
 			'type="file" ' .
 			'name="' . $PA['itemFormElName'] . '" ' .
 			'size="48" ' .
-			'onChange="' . implode( '',$PA['fieldChangeFunc'] ) . '" / >';
+			'onChange="' . implode( '',$PA['fieldChangeFunc'] ) . ';" / >';
 	}
 	
 	function inputDownloadCounter( $PA, $fobj ) {
 		$desc = explode( '###DOWNLOAD_COUNT###', $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content.download_count.desc') );
-		return $desc[0] . '<input ' .
+		return $desc[0] . 
+			'<input ' .
 				'type="text" ' .
 				'name="' . $PA['itemFormElName'] . '" ' . 
 				'value="' . $PA['itemFormElValue'] . '" ' . 
