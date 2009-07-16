@@ -1,33 +1,30 @@
 <?php
-if (!defined ("TYPO3_MODE")) {
-	die ("Access denied.");
+if ( !defined( 'TYPO3_MODE' ) ) {
+	die ( 'Access denied.' );
 }
 
 function user_inputFileName( $PA, $fobj ) {
 	return 	'<input ' .
-				'type="text" ' .
-				'name="' . $PA['itemFormElName'] . '" ' .
-				'value="' . $PA['itemFormElValue'] . '" ' .
-				'size="48" ' .
-				' / >';
+		'type="text" ' .
+		'name="' . $PA['itemFormElName'] . '" ' .
+		'value="' . $PA['itemFormElValue'] . '" ' .
+		'size="48" ' .
+		' / >';
 }
 
 function user_inputFileType( $PA, $fobj ) {
-	return 	$PA['itemFormElValue'] . 
-			'<input ' .
-				'type="hidden" ' .
-				'name="' . $PA['itemFormElName'] . '" ' .
-				'value="' . $PA['itemFormElValue'] . '" / >';
+	return 	$PA['itemFormElValue'] . '<input ' .
+		'type="hidden" ' .
+		'name="' . $PA['itemFormElName'] . '" ' .
+		'value="' . $PA['itemFormElValue'] . '" / >';
 }
 
 function user_inputFileSize( $PA, $fobj ) {
 	if ( $PA['itemFormElValue'] ) {
-		return 	t3lib_div::formatSize( $PA['itemFormElValue'], (' B| KB| MB| GB' ) ) . 
-				'<input ' .
-					'type="hidden" ' .
-					'name="' . $PA['itemFormElName'] . '" ' .
-					'value="' . $PA['itemFormElValue'] . '" ' .
-				'/ >';
+		return 	t3lib_div::formatSize( $PA['itemFormElValue'], (' B| KB| MB| GB' ) ) . '<input ' .
+			'type="hidden" ' .
+			'name="' . $PA['itemFormElName'] . '" ' .
+			'value="' . $PA['itemFormElValue'] . '" / >';
 	} else {
 		return '0 B';
 	}
@@ -35,14 +32,13 @@ function user_inputFileSize( $PA, $fobj ) {
 
 function user_inputFile( $PA, $fobj ) {
 	return 	'<input ' .
-				'type="file" ' .
-				'name="' . $PA['itemFormElName'] . '" ' .
-				'size="48" ' .
-				'onChange="" ' .
-			'/ >';
+		'type="file" ' .
+		'name="' . $PA['itemFormElName'] . '" ' .
+		'size="48" ' .
+		'onChange="" / >';
 }
 
-$TCA['tx_drblob_content'] = Array (
+$TCA['tx_drblob_content'] = array (
 	'ctrl' => array(
 		'title' => 'LLL:EXT:dr_blob/locallang_db.php:tx_drblob_content',		
 		'label' => 'title',
@@ -156,7 +152,7 @@ $TCA['tx_drblob_content'] = Array (
 					array('', 0),
 				),
 				'foreign_table' => 'tx_drblob_content',
-				'foreign_table_where' => 'AND tt_news.uid=###REC_FIELD_l18n_parent### AND tx_drblob_content.sys_language_uid IN (-1,0)',
+				'foreign_table_where' => 'AND tx_drblob_content.uid=###REC_FIELD_l18n_parent### AND tx_drblob_content.sys_language_uid IN (-1,0)',
 				'wizards' => array(
 					'_PADDING' => 2,
 					'_VERTICAL' => 1,
@@ -251,6 +247,7 @@ $TCA['tx_drblob_content'] = Array (
 				//'rows' => 1,
 			)
 		),
+		
 		'blob_data' => array(
 			'exclude' => 0,
 			'l10n_mode' => 'mergeIfNotBlank',
@@ -270,7 +267,4 @@ $TCA['tx_drblob_content'] = Array (
 		'1' => array('showitem' => 'starttime,endtime,fe_group')
 	)
 );
-
-$TYPO3_CONF_VARS['BE']['XCLASS']['typo3/alt_doc.php'] = PATH_typo3conf.'ext/dr_blob/class.ux_SC_alt_doc.php';
-
 ?>
