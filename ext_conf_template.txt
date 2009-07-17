@@ -10,5 +10,8 @@ useIndexedSearchIntegration = 0
   #cat=basic/security/50;type=options[Both,Database,FileSystem];label="File Storage Locations": Define which Record types are possible
 fileStorageLocation = 
 
-  #cat=basic/security/;type=text;label="File System Storage Folder": Select the folder where to store the files if filesystem storage is enabled.
-fileStorageFolder = [document root]/uploads/tx_drblob/storage
+  #cat=basic/security/60;type=text;label="File System Storage Folder": Select the folder where to store the files if filesystem storage is enabled.
+fileStorageFolder = [document root]/uploads/tx_drblob/storage/
+
+  #cat=basic//70;type=boolean; label="(Really) Delete files": Define whether files are really deleted, and not just be marked as when a record is deleted. Thus files cannot be restored when a record is restored.
+reallyDeleteFiles = 0

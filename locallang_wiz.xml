@@ -4,12 +4,22 @@
 		<description>Language labels for the FE plugin Filelist (dr_blob) used to describe the plugin in the Plugin Wizard</description>
 		<type>module</type>
 		<labelContext type="array">
+			<label index="err_uploadFolderAccesibleViaWeb"></label>
+			<label index="err_uploadFolderNotWriteable"></label>
+			<label index="cms_layout.mode"></label>
+			<label index="cms_layout.mode.usingAdd2Fav"></label>
+			<label index="cms_layout.mode.usingVFolderTree"></label>
 			<label index="pi_title"></label>
 			<label index="pi_plus_wiz_description"></label>
 		</labelContext>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="err_uploadFolderAccesibleViaWeb">The dr_blob upload folder "%s" is a subfolder of the Typo3 Document Root Directory, so it may be accessible over the web</label>
+			<label index="err_uploadFolderNotWriteable">The dr_blob upload folder "%s" does not exist or is not writeable.</label>
+			<label index="cms_layout.mode">Plugin Mode: %s</label>
+			<label index="cms_layout.mode.usingAdd2Fav">and a "Personalize"-Button</label>
+			<label index="cms_layout.mode.usingVFolderTree">with a vFolderTree</label>
 			<label index="pi1_title">Filelist</label>
 			<label index="pi1_plus_wiz_description">Adds a list of downloadable files that are stored in the database to the page</label>
 		</languageKey>

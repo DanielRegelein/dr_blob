@@ -30,7 +30,7 @@
  * @copyright 	Copyright &copy; 2005-present Daniel Regelein
  * @package 	dr_blob
  * @filesource 	pi1/class.tx_drblob_pi1_wizicon.php
- * @version 	2.0.0
+ * @version 	2.0.1
  */
 class tx_drblob_pi1_wizicon {
 	function proc($wizardItems)	{

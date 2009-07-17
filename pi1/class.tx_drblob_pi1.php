@@ -93,7 +93,11 @@ class tx_drblob_pi1 extends tslib_pibase {
 			$this->vDownload();
 		}
 		
-		switch( $cmd = $this->getCmd() ) {
+		switch( $cmd = $this->getConfParam( 'code' ) ) {
+			case 'dummy':
+				return '';
+			break;
+			
 			case 'single':
 				return $this->pi_wrapInBaseClass( $this->vSingle() );
 			//break;
@@ -124,9 +128,10 @@ class tx_drblob_pi1 extends tslib_pibase {
 			case 'list':
 			default:
 				if ( strstr( $this->cObj->currentRecord, 'tt_content' ) ) {
-					
-					$this->conf['pidList'] = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlPages', 'sDataSource' );
-					$this->conf['recursive'] = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlRecursive', 'sDataSource' );
+					$ffPidList = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlPages', 'sDataSource' );
+					$ffRecursive = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlRecursive', 'sDataSource' );
+					$this->conf['pidList'] = ( $ffPidList ? $ffPidList : $this->conf['pidList'] ); 
+					$this->conf['recursive'] = ( $ffRecursive ? $ffRecursive : $this->conf['recursive'] );
 				}
 				return $this->pi_wrapInBaseClass( $this->makeList( $cmd ) );
 		}
@@ -176,11 +181,44 @@ class tx_drblob_pi1 extends tslib_pibase {
 	 */
 	/*private*/function getCmd() {
 		
-		$ffW2D = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlWhatToDisplay', 'sSettings' );
-		if ( $this->piVars['showUid'] ) {
-			return 'single';
+
+	}
+	
+	
+	/**
+	 * Just a test for now
+	 */
+	/*private*/ function getConfParam( $paramName, $default = null, $mode=null ) {
+		$value = null;
+		
+		switch( $paramName ) {
+			case 'templateFile': $value = $this->getTemplateFile(); break;
+			
+			case 'singlePID':
+				$tmpFFval = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlSinglePID', 'sSettings' );
+				$tmpTSval = $this->conf['singlePID'];
+				$value = $tmpFFval ? $tmpFFval : ( $tmpTSval ? $tmpTSval : $GLOBALS['TSFE']->id );
+			break;
+			
+			case 'showAdd2Fav': 
+				$tmpFFval = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlAdd2Fav', 'sSettings' );
+				$tmpTSval = $this->conf['listView.']['showAdd2Fav'];
+				$value = (bool)$tmpFFval ? (bool)$tmpFFval : ( (bool)$tmpTSval ? (bool)$tmpTSval : false );
+			break;
+			
+			case 'code':
+				$tmpFFval = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlWhatToDisplay', 'sSettings' );
+				$tmpTSval = ( !empty( $this->conf['code'] ) ) ? strtolower( $this->conf['code'] ) : 'list';
+				$value = ( $tmpFFval ? $tmpFFval : $tmpTSval );
+				if ( $this->piVars['showUid'] && $mode != 'dummy' ) {
+					$value = 'single';
+				}
+			break;
 		}
-		return ( $ffW2D ? $ffW2D : 'list' );
+		
+		unset( $tmpFFval );
+		unset( $tmpTSval );
+		return $value;
 	}
 	
 	
@@ -198,21 +236,20 @@ class tx_drblob_pi1 extends tslib_pibase {
 		if( !in_array( $listType, $arrListType ) ) {
 			$listType = 'list';
 		}
-		
+
+
 			//Extract FlexForm Configuration Values
 		$ffCategoriesShowWhat = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlCategoriesShowWhat', 'sDataSource' );
 		$ffCategories = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlCategories', 'sDataSource' );
-		$ffSinglePID = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlSinglePID', 'sSettings' );
 		$ffLimit = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlLimitCount', 'sSettings' );
 		
 		
 			//Array Containing the Settings for the list, depending on the selected list type
 		$arrListSettings = array();
 		$arrListSettings['tmplFile'] = $this->getTemplateFile();
-		$arrListSettings['singlePid'] = ( $ffSinglePID ? $ffSinglePID : $GLOBALS['TSFE']->id );
 		$arrListSettings['btnWrapShow'] = $this->pi_getLL( $listType . '_button_show' );
 		$arrListSettings['btnWrapDwnld'] = $this->pi_getLL( $listType . '_button_download' );
-		$arrListSettings['recLimit'] = ( $ffLimit ? $ffLimit : 5 );
+		$arrListSettings['recLimit'] = ( $ffLimit ? $ffLimit : ( $this->conf[$listType.'View.']['limit'] ? $this->conf[$listType.'View.']['limit'] : 5 ) );
 		
 		$listHeaderMarkerArray = array();
 		$vFolderMarker = '';
@@ -239,19 +276,21 @@ class tx_drblob_pi1 extends tslib_pibase {
 			case 'list':
 			
 				$arrListSettings['tsObj'] = 'listView.';
-				$arrListSettings['recLimit'] = ( $ffLimit ? $ffLimit : 25 );
 				$arrListSettings['tmplSubpart'] = 'TEMPLATE_LIST';
 				
 
 				#############################################################################################
 				### Sorting records ( default: title ASC )                                                ###
 				#############################################################################################
-				$ffQrySortBy = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderBy', 'sSettings' );
-				$ffQrySortDirection = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderDirection', 'sSettings' );
-
 				if ( empty( $this->piVars['sort'] ) ) {
-					$ffQrySortDirection = $ffQrySortDirection ? $ffQrySortDirection : '0';
-					$this->piVars['sort'] = $ffQrySortBy ? $ffQrySortBy.':'.$ffQrySortDirection : 'title'.':'.$ffQrySortDirection; 
+					//Extract FF Sorting vars
+					$ffQrySortBy = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderBy', 'sSettings' );
+					$ffQrySortDirection = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlListOrderDirection', 'sSettings' );
+					
+					$sortBy = $ffQrySortBy ? $ffQrySortBy : ( $this->conf[$arrListSettings['tsObj']]['listOrderBy'] ? $this->conf[$arrListSettings['tsObj']]['listOrderBy'] : 'title' );
+					$sortDir = $ffQrySortDirection ? $ffQrySortDirection : ( $this->conf[$arrListSettings['tsObj']]['listOrderDir'] ? $this->conf[$arrListSettings['tsObj']]['listOrderDir'] : '0' );
+
+					$this->piVars['sort'] = $sortBy.':'.$sortDir; 
 				}
 				list( $this->internal['orderBy'], $this->internal['descFlag'] ) = explode( ':',$this->piVars['sort'] );
 
@@ -302,6 +341,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 		### Template-Related stuff                                                                ###
 		#############################################################################################
 		$arrListSettings['altLayouts'] = intval( $this->conf[$arrListSettings['tsObj']]['alternatingLayouts'] ) > 0 ? intval( $this->conf[$arrListSettings['tsObj']]['alternatingLayouts'] ) : 2;
+		$arrListSettings['tmplSubpart'] = $this->conf[$arrListSettings['tsObj']]['altSubpartMarker'] ? $this->conf[$arrListSettings['tsObj']]['altSubpartMarker'] : $arrListSettings['tmplSubpart'];
 
 		$tmpl = array();
 		$tmpl['total'] = $this->cObj->fileResource( $arrListSettings['tmplFile'] );
@@ -362,7 +402,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 					//generate listtype-specific marker
 				$this->conf[$arrListSettings['tsObj']]['moreLink_stdWrap.']['typolink.']['useCacheHash'] = 1;
 				$this->conf[$arrListSettings['tsObj']]['moreLink_stdWrap.']['typolink.']['no_cache'] = 0;
-				$this->conf[$arrListSettings['tsObj']]['moreLink_stdWrap.']['typolink.']['parameter'] = $arrListSettings['singlePid'];
+				$this->conf[$arrListSettings['tsObj']]['moreLink_stdWrap.']['typolink.']['parameter'] = $this->getConfParam( 'singlePID' );
 				$this->conf[$arrListSettings['tsObj']]['moreLink_stdWrap.']['typolink.']['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('',array( $this->prefixId => array( 'showUid' => $this->internal['currentRow']['uid'] ) ),'',1).$this->pi_moreParams;
 				$LINK_ITEM = explode('|', $this->cObj->stdWrap( '|', $this->conf[$arrListSettings['tsObj']]['moreLink_stdWrap.']) );
 				
@@ -431,10 +471,8 @@ class tx_drblob_pi1 extends tslib_pibase {
 		if( $listType == 'search' ) {
 			$rtnVal = $this->pi_list_searchBox() . $rtnVal;
 		}
-		if( $listType == 'list' ) {
-			if ( $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlAdd2Fav', 'sSettings' ) ) {
+		if( $listType == 'list' && $this->getConfParam( 'showAdd2Fav' ) ) {
 				$rtnVal .= $this->vPersonal_Config();
-			}		
 		}
 		return $rtnVal;
 	}
@@ -529,12 +567,33 @@ class tx_drblob_pi1 extends tslib_pibase {
 	 * @access 	private
 	 */
 	/*private*/function vSingle() {
-			$ffReturnPID = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlReturnPID', 'sSettings' );
+
+		#############################################################################################
+		### Generate Back PID                                                                     ###
+		#############################################################################################
+			/* Return PID prio:
+				1. URL-Param "backpid"
+				2. Flexform-Value
+				3. TS-Value
+				4. $GLOBALS['TSFE']->id
+			 */
+			$tmp_ffReturnPID = $this->pi_getFFvalue( $this->cObj->data['pi_flexform'], 'xmlReturnPID', 'sSettings' );
+			$tmp_tsReturnPID = $this->conf['backPID'];
+			$tmp_urlReturnPID = intval( $this->piVars['backPID'] );
 			
-			$returnPID = ( $ffReturnPID ? $ffReturnPID : $GLOBALS['TSFE']->id );
+			if( true ) 							{ $returnPID = $GLOBALS['TSFE']->id; }
+			if( !empty( $tmp_tsReturnPID ) ) 	{ $returnPID = $tmp_tsReturnPID; } 
+			if( !empty( $tmp_ffReturnPID ) )	{ $returnPID = $tmp_ffReturnPID; }
+			if( !empty( $tmp_urlReturnPID ) )	{ $returnPID = $tmp_urlReturnPID; }
+			
+
+		#############################################################################################
+		### Template-Related stuff                                                                ###
+		#############################################################################################
 			$tmplFile = $this->getTemplateFile();
+			$tmplSubpart = $this->conf['singleView.']['altSubpartMarker'] ? $this->conf['singleView.']['altSubpartMarker'] : 'TEMPLATE_SINGLE';
 			$tmpl = $this->cObj->fileResource( $tmplFile );
-			$tmpl = $this->cObj->getSubpart( $tmpl, '###TEMPLATE_SINGLE###' );
+			$tmpl = $this->cObj->getSubpart( $tmpl, '###'.$tmplSubpart.'###' );
 
 		
 		if ( !empty( $this->piVars['showUid'] ) ) {
@@ -552,7 +611,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 				$GLOBALS['TSFE']->page['title'] = $this->internal['currentRow']['title'];	
 			}
 					
-				//substitute Pagetitle
+				//substitute Indextitle
 			if( (bool)$this->conf['singleView.']['substituteIndextitle'] == true ) {
 				$GLOBALS['TSFE']->indexedDocTitle = $this->internal['currentRow']['title'];
 			}
@@ -563,7 +622,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 			if ( $this->blobExists( $blobUID ) ) {
 				$this->conf['singleView.']['downloadLink_stdWrap.']['typolink.']['useCacheHash'] = 0;
 				$this->conf['singleView.']['downloadLink_stdWrap.']['typolink.']['no_cache'] = 1;
-				$this->conf['singleView.']['downloadLink_stdWrap.']['typolink.']['parameter'] = $GLOBALS['TSFE']->id;
+				$this->conf['singleView.']['downloadLink_stdWrap.']['typolink.']['parameter'] = $this->getFieldContent( 'downloadPID' );
 				$this->conf['singleView.']['downloadLink_stdWrap.']['typolink.']['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('',array( $this->prefixId => array( 'downloadUid' => $this->internal['currentRow']['uid'] ) ),'',1).$this->pi_moreParams;
 				$LINK_FILE = explode('|', $this->cObj->stdWrap( '|', $this->conf['singleView.']['downloadLink_stdWrap.']) );
 				$btnDownload = $this->pi_getLL('single_button_download');
@@ -826,8 +885,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 			if( !is_array( $this->conf[$mode.'View.']['date_stdWrap.']  ) ) {
 				$this->conf[$mode.'View.']['date_stdWrap.']['date'] = $this->pi_getLL( $mode.'_dateFormat' );
 			}
-			$this->conf[$mode.'View.']['downloadcount_stdWrap.']['wrap3'] = $this->pi_getLL( 'list_field_downloadcount_wrap' );
-			$this->conf[$mode.'View.']['downloadcount_stdWrap.']['wrap3.']['splitChar'] = '###TIMES###';
+			$downloadCount = sprintf( $this->pi_getLL( 'list_field_downloadcount_wrap' ), $this->getFieldContent('download_count') );
 			$this->conf[$mode.'View.']['email_stdWrap.']['typolink.']['parameter'] = $this->getFieldContent('author_email');
 			
 			$arrMarker = array(
@@ -840,7 +898,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 				'###BLOB_LASTCHANGE###' => $this->cObj->stdWrap( $this->getFieldContent( 'tstamp' ), $this->conf[$mode.'View.']['date_stdWrap.'] ),
 				'###BLOB_VERSION###' => $this->cObj->stdWrap( $this->getFieldContent( 't3ver_label' ), $this->conf[$mode.'View.']['version_stdWrap.'] ),
 				'###BLOB_AGE###' => $this->cObj->stdWrap( $this->getFieldContent( 'crdate' ), $this->conf[$mode.'View.']['age_stdWrap.'] ),
-				'###BLOB_DOWNLOADCOUNT###' => $this->cObj->stdWrap( $this->getFieldContent('download_count'), $this->conf[$mode.'View.']['downloadcount_stdWrap.'] ),
+				'###BLOB_DOWNLOADCOUNT###' => $this->cObj->stdWrap( $downloadCount, $this->conf[$mode.'View.']['downloadcount_stdWrap.'] ),
 				'###BLOB_CHECKSUM###' => $this->cObj->stdWrap( $this->getFieldContent('blob_checksum'), $this->conf[$mode.'View.']['filechecksum_stdWrap.'] ),
 				'###BLOB_FILENAME###' => $this->cObj->stdWrap( $this->getFieldContent('blob_name'), $this->conf[$mode.'View.']['filename_stdWrap.'] ),
 				'###BLOB_FILESIZE###' => $this->cObj->stdWrap( $this->getFieldContent('blob_size'), $this->conf[$mode.'View.']['filesize_stdWrap.'] ),
@@ -914,6 +972,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 		switch ( $fN ) {
 			case 'author': return $this->getAuthor( $this->internal['currentRow']['cruser_id'] ); break;
 			case 'author_email': return $this->getAuthor( $this->internal['currentRow']['cruser_id'], 'email' ); break;
+			case 'downloadPID': return intval( $this->conf['downloadPID'] ) ? intval( $this->conf['downloadPID'] ) : $GLOBALS['TSFE']->id; break;
 		}
 		return $this->internal['currentRow'][$fN];
 	}

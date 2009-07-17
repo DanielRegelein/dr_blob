@@ -9,4 +9,6 @@ plugin.tx_drblob {
   alternatingLayouts = 2
     # cat=plugin.tx_drblob/20; type=int+; label=Lenght of the description-fields
   lenghtOfDescription = 150
+    #cat=plugin.tx_drblob/30; type=int+; label=PageID where to redireced dr_blob download links to
+  downloadPID = 0
 }

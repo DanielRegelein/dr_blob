@@ -1,4 +1,23 @@
+2009-07-
+	* Release of version 2.1.0
+
+	* Feature: List is now also sortable by the download counter
+	* Feature: You can override the default template subparts (f.e. TEMPLATE_LIST) with a custom value
+	* Feature: Added warning-messages for admins shown if something is not configured well.
+	* Feature: Added plugin-descriptions in the page module
+	* Feature: You can now choose to delete files really (Not just to mark them as deleted)
+	* Feature: The folder containing the vFolderTree-Graphics can now be changed using TS
+	* Feature: Integrated dr_blob with linkhandler
+	* Feature: The FlexForm-Values “code”, “pidList”, “recursive”, “listOrderBy”, “listOrderDirection”,”singlePID”, “backPID”, “limit” & “showAdd2Fav” are now also configurable using TS
+	
+	* Bugfix: Fixed a bug in the indexer-xclass preventing files from being indexed when using realurl
+	* Bugfix: Files stored in the filesystem are now versionized correctly
+	* Bugfix: Integrated the vFolderTree-Graphics into the extension
+	* Bugfix: Fixed a bug that caused a loss of blank spaces in the download counter wrapper
+
 2009-01-25
+	* Release of version 2.0.0
+	
 	* Feature: Added PageTS-Conf-Vars and a Hook to enable Save&Preview-Function
 	* Feature: Integrated the Files with the indexed_search-engine.
 	* Feature: Added the vFolder-Option, currently in an experimental-state

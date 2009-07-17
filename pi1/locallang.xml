@@ -57,7 +57,7 @@
 			<label index="list_field_age">Age</label>
 			<label index="list_field_categories">Categories</label>
 			<label index="list_field_downloadcount">Popularity</label>
-			<label index="list_field_downloadcount_wrap">This record has been downloaded ###TIMES### times</label>
+			<label index="list_field_downloadcount_wrap">This record has been downloaded %s times</label>
 			<label index="list_field_author">Author</label>
 			<label index="list_field_author_mail">eMail address</label>
 			<label index="list_dateFormat">m/d/Y</label>

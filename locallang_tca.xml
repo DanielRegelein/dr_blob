@@ -39,7 +39,8 @@
 			<label index="tt_content.pi_flexform.whatToDisplay.list"></label>
 			<label index="tt_content.pi_flexform.whatToDisplay.single"></label>
 			<label index="tt_content.pi_flexform.whatToDisplay.search"></label>
-			<label index="tt_content.pi_flexform.whatToDisplay.personal.list"></label>
+			<label index="tt_content.pi_flexform.whatToDisplay.personal_list"></label>
+			<label index="tt_content.pi_flexform.whatToDisplay.dummy"></label>
 			<label index="tt_content.pi_flexform.whatToDisplaypersonal.add"></label>
 			<label index="tt_content.pi_flexform.limit"></label>
 			<label index="tt_content.pi_flexform.listOrderBy"></label>
@@ -48,6 +49,7 @@
 			<label index="tt_content.pi_flexform.listOrderBy.lastchange"></label>
 			<label index="tt_content.pi_flexform.listOrderBy.author"></label>
 			<label index="tt_content.pi_flexform.listOrderBy.sorting"></label>
+			<label index="tt_content.pi_flexform.listOrderBy.download_count"></label>
 			<label index="tt_content.pi_flexform.listOrderBy.blob_size"></label>
 			<label index="tt_content.pi_flexform.listOrderBy.blob_name"></label>
 			<label index="tt_content.pi_flexform.listOrderBy.blob_type"></label>
@@ -65,9 +67,10 @@
 			<label index="tx_drblob_content.title">Title</label>
 			<label index="tx_drblob_content.description">Description</label>
 			<label index="tx_drblob_content.type">Record storage type</label>
-			<label index="tx_drblob_content.type.db">Store file in the Database</label>
-			<label index="tx_drblob_content.type.fs">Store file in the Filesystem</label>
-			<label index="tx_drblob_content.type.dam">Associate with a DAM file</label>
+			<label index="tx_drblob_content.type.db">Store file in the Database (secure)</label>
+			<label index="tx_drblob_content.type.fs">Store file in the Filesystem (secure)</label>
+			<label index="tx_drblob_content.type.fsus">Store file in the Filesystem (unsecure)</label>
+			<label index="tx_drblob_content.type.dam">Associate with a DAM file (unsecure)</label>
 			<label index="tx_drblob_content.cruser_id">Author</label>
 			<label index="tx_drblob_content.crdate">Create Date</label>
 			<label index="tx_drblob_content.tstamp">Last Change</label>
@@ -94,11 +97,12 @@
 			<label index="tt_content.pi_flexform.categories_showAll">Show all (don't use selection below)</label>
 			<label index="tt_content.pi_flexform.categories_showSelected">Show only categories selected below</label>
 			<label index="tt_content.pi_flexform.whatToDisplay">What shall be displayed:</label>
-			<label index="tt_content.pi_flexform.whatToDisplay.top">TOP: List of VIP-items</label>
-			<label index="tt_content.pi_flexform.whatToDisplay.list">LIST: List of items</label>
-			<label index="tt_content.pi_flexform.whatToDisplay.single">SINGLE: Single item</label>
-			<label index="tt_content.pi_flexform.whatToDisplay.search">SEARCH: Search items</label>
-			<label index="tt_content.pi_flexform.whatToDisplay.personal.list">PERSONAL: Personalizable list</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.top">TOP (List of VIP-items)</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.list">LIST (List of items)</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.single">SINGLE (Single item)</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.search">SEARCH (Search items)</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.personal_list">PERSONAL (Personalizable list)</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.dummy">DUMMY (No Output)</label>
 			<label index="tt_content.pi_flexform.whatToDisplaypersonal.add">Show &quot;Add to Personal Container&quot; (only in LIST-Mode):</label>
 			<label index="tt_content.pi_flexform.showVFolderTree">Show the Virtual Folder Tree (only in LIST-Mode):</label>
 			<label index="tt_content.pi_flexform.limit">Number of items to list:</label>
@@ -108,6 +112,7 @@
 			<label index="tt_content.pi_flexform.listOrderBy.lastchange">Date of the last change</label>
 			<label index="tt_content.pi_flexform.listOrderBy.author">Author</label>
 			<label index="tt_content.pi_flexform.listOrderBy.sorting">Custom Backend Sorting</label>
+			<label index="tt_content.pi_flexform.listOrderBy.download_count">Download Counter</label>
 			<label index="tt_content.pi_flexform.listOrderBy.blob_name">Filename</label>
 			<label index="tt_content.pi_flexform.listOrderBy.blob_size">Filesize</label>
 			<label index="tt_content.pi_flexform.listOrderBy.blob_type">Mimetype</label>

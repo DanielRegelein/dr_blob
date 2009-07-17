@@ -29,7 +29,7 @@
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  * @package 	dr_blob
  * @filesource	class.tx_drblob_tcemain.php
- * @version		2.0.0
+ * @version		2.1.0
  * @since 		1.5.0, 2007-04-10
  */
 class tx_drblob_tcemain {
@@ -85,7 +85,7 @@ class tx_drblob_tcemain {
 						$folder = $extConf['fileStorageFolder'] ? $extConf['fileStorageFolder'] : $this->defaultUploadFolder;
 						
 						//The target filename has a random number in it's name to ensure unique filenames when versioning records.
-						$targetFileName = $item . '_' . rand() . '.blob';
+						$targetFileName = $this->generateFileName( $item );
 						t3lib_div::writeFile( t3lib_div::dirname( $folder ) . '/' . $targetFileName, $data );
 						$data = $targetFileName;
 					}
@@ -116,7 +116,7 @@ class tx_drblob_tcemain {
 	 * @return	void
 	 * @access public
 	 */
-	function processDatamap_preProcessFieldArray(&$fieldArray, $table, $id, &$pObj) {
+	function processDatamap_preProcessFieldArray( &$fieldArray, $table, $id, &$pObj ) {
 		
 		if( $table == $this->dbVars['table'] ) {
 			if ( isset( $GLOBALS['_POST']['_savedokview_x'] ) ) {
@@ -130,6 +130,100 @@ class tx_drblob_tcemain {
 				}	
 			}
 		}
+	}
+	
+	
+	function processCmdmap_postProcess( $command, $table, $srcId, $destId, &$pObj ) {
+
+		if( $table == $this->dbVars['table'] ) {
+			
+			$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = true;
+			$rslt = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 
+				'`type`, `blob_data`', 
+				'`'.$this->dbVars['table'].'`', 
+				'`uid`=' . intval( $srcId ) 
+			);
+			
+			if( $rslt ) {
+				if( $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) == 1 ) {
+
+					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rslt );
+					
+					$extConf = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dr_blob'] );
+					$folder = $extConf['fileStorageFolder'] ? $extConf['fileStorageFolder'] : $this->defaultUploadFolder;					
+					
+					switch( $command ) {
+						case 'delete':
+							if( ( !empty( $row['blob_data'] ) ) && intval( $extConf['reallyDeleteFiles'] ) == 1 ) {
+								
+								if( $row['type'] == 2 ) {
+									$target = t3lib_div::dirname( $folder ) . '/' . $row['blob_data'];
+									unlink( $target );
+								}
+								
+								//Now update the deleted record to ensure integrity
+								$rslt = $GLOBALS['TYPO3_DB']->exec_UPDATEquery( 
+									'`'.$this->dbVars['table'].'`',	
+									'`uid`=' . $srcId,
+								 	array(
+								 		'blob_name' => null,
+								 		'blob_checksum ' => null,
+								 		'blob_size' => 0,
+								 		'blob_type' => null,
+								 		'blob_data' => null,
+								 	)
+								);
+							}
+						break;
+						
+						case 'version':
+
+							if( $row['type'] == 2 && $destId['action'] == 'new' ) {
+								//Duplicate File on versioning and store it using a new name...
+								
+								$newVersionID = $pObj->copyMappingArray[$this->dbVars['table']][$srcId];
+								$newFileName = $this->generateFileName( $newVersionID );
+								
+								$sourceFile = t3lib_div::dirname( $folder ) . '/' . $row['blob_data'];
+								$targetFile = t3lib_div::dirname( $folder ) . '/' . $newFileName;
+								
+								if( copy( $sourceFile, $targetFile ) ) {
+									$rslt = $GLOBALS['TYPO3_DB']->exec_UPDATEquery( 
+										'`'.$this->dbVars['table'].'`',	
+										'`uid`=' . $newVersionID,
+									 	array(
+									 		'blob_data' => $newFileName,
+									 	)
+									);
+								}
+								
+							} else if ( $destId['action'] == 'swap' ) {
+
+								//Currently there is no need to swap the files
+								//The filename in the blob_data-field is still unique
+
+							}
+							
+						break;
+						
+						default:
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * @name	generateFileName
+	 * This method generates the filename for files stored in the filesystem
+	 *
+	 * @param Integer $item
+	 * @return String
+	 */
+	function generateFileName( $item ) {
+		return $item.'_'.rand().'.blob';
 	}
 	
 	

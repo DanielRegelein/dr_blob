@@ -4,4 +4,9 @@ plugin.tx_drblob_pi1 {
   userFunc = tx_drblob_pi1->main
 
   templateFile = typo3conf/ext/dr_blob/res/dr_blob.tmpl
+  
+  listView.vFolderIcon = IMAGE
+  listView.vFolderIcon {
+    file = EXT:dr_blob/res/folder.gif
+  }
 }

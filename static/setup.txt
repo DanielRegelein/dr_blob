@@ -1,5 +1,5 @@
 ###
-# This is the default TS-setup for dr_blob, Version 1.8.0
+# This is the default TS-setup for dr_blob, Version 2.1.0
 ##
 
 plugin.tx_drblob_pi1 = USER
@@ -18,7 +18,7 @@ plugin.tx_drblob_pi1 {
     alternatingLayouts = {$plugin.tx_drblob.alternatingLayouts}
     categoryDivider = ,
     lenghtOfDescription = {$plugin.tx_drblob.lenghtOfDescription}
-    
+    limit = 
     
     age_stdWrap {
       age = 1
@@ -98,6 +98,8 @@ plugin.tx_drblob_pi1 {
   
   listView < .dummyView 
   listView {
+    limit = 25
+    
     vFolderTree_stdWrap {
       wrap = <div class="tx_drblob_list-vFolderTree">|</div>
     }
@@ -112,15 +114,18 @@ plugin.tx_drblob_pi1 {
     
     vFolderIcon = IMAGE
     vFolderIcon {
-      file = typo3/sysext/t3skin/icons/gfx/i/sysf.gif
+      file = EXT:dr_blob/res/folder.gif
       border = 0
-      params = style="vertical-align: bottom;" align="top" class="c-recIcon"
+      params = style="vertical-align: bottom; margin-right: 2px; " align="top" class="c-recIcon"
     }
+    
+    vFolderGfxFolder = 
   }
 
   //TopView
   topView < .dummyView
   topView {
+    limit = 5
     category_stdWrap {
       wrap = <p>|</p>
     }
@@ -128,7 +133,7 @@ plugin.tx_drblob_pi1 {
     description_stdWrap {
       wrap = <p>|</p>
       stripHtml = 1
-      crop < .lenghtOfDescription
+      crop = {$plugin.tx_drblob.lenghtOfDescription}
     }
   }
   
@@ -136,6 +141,7 @@ plugin.tx_drblob_pi1 {
   //PersonalView
   personalView < .dummyView
   personalView {
+    limit = 5
     category_stdWrap {
       wrap = <p>|</p>
     }
@@ -143,7 +149,7 @@ plugin.tx_drblob_pi1 {
     description_stdWrap {
       wrap = <p>|</p>
       stripHtml = 1
-      crop < .lenghtOfDescription
+      crop = {$plugin.tx_drblob.lenghtOfDescription}
     }
   }
 
@@ -196,4 +202,14 @@ plugin.tx_drblob_pi1 {
     
     .tx_drblob_single {}
   )
+}
+
+
+plugin.tx_linkhandler.tx_drblob_content {
+  forceLink = 0
+  parameter = {$plugin.tx_drblob.downloadPID}
+  no_cache = 1
+  additionalParams = &tx_drblob_pi1[downloadUid]={field:uid}
+  additionalParams.insertData = 1 
+  useCacheHash = 0
 }

@@ -33,7 +33,7 @@
  * @package 	dr_blob
  * @filesource	class.user_txdrblobFormFields.php
  * @since		Version 1.5.0, 2007-04-10
- * @version 	1.7.0
+ * @version 	2.1.0
  */
 class tx_drblob_FormFields {
 
@@ -74,13 +74,15 @@ class tx_drblob_FormFields {
 
 
 	function inputFile( $PA, $fobj ) {
-		return 	'<input ' .
+		return 'TEST'.$PA['pObj']->getSingleField_typeGroup( 'tx_drblob_content', 'blob_data', $PA['row'], $PA );
+		return 'Type: ' . $PA['row']['type'] . '<hr /><input ' .
 			'type="file" ' .
 			'name="' . $PA['itemFormElName'] . '" ' .
 			'size="48" ' .
 			'onChange="' . implode( '',$PA['fieldChangeFunc'] ) . ';" / >';
 	}
-	
+
+
 	function inputDownloadCounter( $PA, $fobj ) {
 		$desc = explode( '###DOWNLOAD_COUNT###', $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.download_count.desc') );
 		return $desc[0] . 

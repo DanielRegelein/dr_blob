@@ -60,7 +60,6 @@ class ux_tx_indexedsearch_indexer extends tx_indexedsearch_indexer {
 
 				// Parse URL:
 			$qParts = parse_url($linkSource);
-			
 			// Check for jumpurl (TYPO3 specific thing...)
 			if ($qParts['query'] && strstr($qParts['query'],'jumpurl='))	{
 				parse_str($qParts['query'],$getP);
@@ -69,7 +68,10 @@ class ux_tx_indexedsearch_indexer extends tx_indexedsearch_indexer {
 			}
 			
 			//Search for dr_blob
-			if ($qParts['query'] && strstr($qParts['query'],'tx_drblob_pi1[downloadUid]='))	{
+			if ($qParts['query'] && (
+				strstr($qParts['query'], rawurlencode( 'tx_drblob_pi1[downloadUid]' ) . '=' )  ||
+				strstr($qParts['query'], 'tx_drblob_pi1[downloadUid]=' )
+			) )	{
 				parse_str( $qParts['query'], $tmp );
 				$qParts['tx_drblob'] = $tmp['tx_drblob_pi1']['downloadUid'];
 			}

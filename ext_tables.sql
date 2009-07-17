@@ -8,7 +8,7 @@
 # Table structure for table "tx_drblob_content"
 #
 CREATE TABLE tx_drblob_content (
-  uid int(11) auto_increment,
+  uid int(11) NOT NULL auto_increment,
   pid int(11) default '0',
   tstamp int(11) unsigned default '0',
   crdate int(11) unsigned default '0',
@@ -19,7 +19,7 @@ CREATE TABLE tx_drblob_content (
   endtime int(11) unsigned default '0',
   fe_group int(11) unsigned default '0',
   sorting int(11) unsigned default '0',
-  type tinyint(4) DEFAULT '1' NOT NULL,
+  type tinyint(4) NOT NULL default '1',
   sys_language_uid int(11) default '0',
   l18n_parent int(11) default '0',
   l18n_diffsource mediumblob,
@@ -42,8 +42,9 @@ CREATE TABLE tx_drblob_content (
   blob_checksum varchar(255) default '',
   blob_data longblob,
   PRIMARY KEY (uid),
+  KEY title (title),
   KEY parent (pid),
-  KEY title (title)
+  KEY t3ver_oid (t3ver_oid,t3ver_wsid)
 );
 
 
@@ -60,7 +61,7 @@ CREATE TABLE tx_drblob_personal (
 # Table structure for table "tx_drblob_category"
 #
 CREATE TABLE tx_drblob_category (
-  uid int(11) unsigned auto_increment,
+  uid int(11) unsigned NOT NULL auto_increment,
   pid int(11) default '0',
   tstamp int(11) unsigned default '0',
   crdate int(11) unsigned default '0',

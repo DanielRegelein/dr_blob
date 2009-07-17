@@ -30,7 +30,7 @@
  * @copyright 	Copyright &copy; 2005-present Daniel Regelein
  * @package 	dr_blob
  * @filesource 	pi1/class.tx_drblob_pi1_vFolderTree.php
- * @version 	2.0.0
+ * @version 	2.0.1
  */
 
 require_once( PATH_t3lib.'class.t3lib_treeview.php' );
@@ -80,6 +80,104 @@ class tx_drblob_pi1_vFolderTree extends t3lib_treeview {
 	}
 	
 	
+	/********************************
+	 *
+	 * tree data buidling
+	 *
+	 ********************************/
+
+	/**
+	 * Fetches the data for the tree
+	 *
+	 * @param	integer		item id for which to select subitems (parent id)
+	 * @param	integer		Max depth (recursivity limit)
+	 * @param	string		HTML-code prefix for recursive calls.
+	 * @param	string		? (internal)
+	 * @param	string		CSS class to use for <td> sub-elements
+	 * @return	integer		The count of items on the level
+	 */
+	function getTree($uid, $depth=999, $depthData='',$blankLineCode='',$subCSSclass='')	{
+
+			// Buffer for id hierarchy is reset:
+		$this->buffer_idH=array();
+
+			// Init vars
+		$depth=intval($depth);
+		$HTML='';
+		$a=0;
+
+		$res = $this->getDataInit($uid,$subCSSclass);
+		$c = $this->getDataCount($res);
+		$crazyRecursionLimiter = 999;
+
+			// Traverse the records:
+		while ($crazyRecursionLimiter>0 && $row = $this->getDataNext($res,$subCSSclass))	{
+			$a++;
+			$crazyRecursionLimiter--;
+
+			$newID = $row['uid'];
+
+			if ($newID==0)	{
+				t3lib_BEfunc::typo3PrintError ('Endless recursion detected', 'TYPO3 has detected an error in the database. Please fix it manually (e.g. using phpMyAdmin) and change the UID of '.$this->table.':0 to a new value.<br /><br />See <a href="http://bugs.typo3.org/view.php?id=3495" target="_blank">bugs.typo3.org/view.php?id=3495</a> to get more information about a possible cause.',0);
+				exit;
+			}
+
+			$this->tree[]=array();		// Reserve space.
+			end($this->tree);
+			$treeKey = key($this->tree);	// Get the key for this space
+			$LN = ($a==$c)?'blank':'line';
+
+				// If records should be accumulated, do so
+			if ($this->setRecs)	{
+				$this->recs[$row['uid']] = $row;
+			}
+
+				// Accumulate the id of the element in the internal arrays
+			$this->ids[] = $idH[$row['uid']]['uid'] = $row['uid'];
+			$this->ids_hierarchy[$depth][] = $row['uid'];
+			$this->orig_ids_hierarchy[$depth][] = $row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid'];
+
+				// Make a recursive call to the next level
+			$HTML_depthData = $depthData.'<img'.t3lib_iconWorks::skinImg($this->backPath,$this->getTreeGfxFolder().$LN.'.gif','width="18" height="16"').' alt="" />';
+			if ($depth>1 && $this->expandNext($newID) && !$row['php_tree_stop'])	{
+				$nextCount=$this->getTree(
+						$newID,
+						$depth-1,
+						$this->makeHTML ? $HTML_depthData : '',
+						$blankLineCode.','.$LN,
+						$row['_SUBCSSCLASS']
+					);
+				if (count($this->buffer_idH))	$idH[$row['uid']]['subrow']=$this->buffer_idH;
+				$exp=1;	// Set "did expand" flag
+			} else {
+				$nextCount=$this->getCount($newID);
+				$exp=0;	// Clear "did expand" flag
+			}
+
+				// Set HTML-icons, if any:
+			if ($this->makeHTML)	{
+				$HTML = $depthData.$this->PMicon($row,$a,$c,$nextCount,$exp);
+				$HTML.=$this->wrapStop($this->getIcon($row),$row);
+				#	$HTML.=$this->wrapStop($this->wrapIcon($this->getIcon($row),$row),$row);
+			}
+
+				// Finally, add the row/HTML content to the ->tree array in the reserved key.
+			$this->tree[$treeKey] = Array(
+				'row'=>$row,
+				'HTML'=>$HTML,
+				'HTML_depthData' => $this->makeHTML==2 ? $HTML_depthData : '',
+				'invertedDepth'=>$depth,
+				'blankLineCode'=>$blankLineCode,
+				'bank' => $this->bank
+			);
+		}
+
+		$this->getDataFree($res);
+		$this->buffer_idH=$idH;
+		return $c;
+	}
+	
+	
 	/**
 	 * Will create and return the HTML code for a browsable tree
 	 * Is based on the mounts found in the internal array ->MOUNTS (set in the constructor)
@@ -109,7 +207,7 @@ class tx_drblob_pi1_vFolderTree extends t3lib_treeview {
 
 				// Set PM icon for root of mount:
 			$cmd=$this->bank.'_'.($isOpen?"0_":"1_").$uid.'_'.$this->treeName;
-			$icon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.($isOpen?'minus':'plus').'only.gif','width="18" height="16"').' alt="" />';
+			$icon='<img'.t3lib_iconWorks::skinImg($this->backPath,$this->getTreeGfxFolder().($isOpen?'minus':'plus').'only.gif','width="18" height="16"').' alt="" />';
 			$firstHtml= $this->PM_ATagWrap($icon,$cmd);
 
 				// Preparing rootRec for the mount
@@ -131,7 +229,7 @@ class tx_drblob_pi1_vFolderTree extends t3lib_treeview {
 					// If the mount is expanded, go down:
 				if ($isOpen && ( $this->recursive > 0 ) ) {
 						// Set depth:
-					$depthD='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/blank.gif','width="18" height="16"').' alt="" />';
+					$depthD='<img'.t3lib_iconWorks::skinImg($this->backPath,$this->getTreeGfxFolder().'blank.gif','width="18" height="16"').' alt="" />';
 					if ($this->addSelfId)	$this->ids[] = $uid;
 					
 					$this->getTree($uid, $this->recursive, $depthD,'',$rootRec['_SUBCSSCLASS']);
@@ -163,12 +261,47 @@ class tx_drblob_pi1_vFolderTree extends t3lib_treeview {
 	}
 	
 	
-	function getIcon($row) {
-		return $this->cObj->cObjGetSingle( 'IMAGE', $this->conf['listView.']['vFolderIcon.'] );
+	/**
+	 * Generate the plus/minus icon for the browsable tree.
+	 *
+	 * @param	array		record for the entry
+	 * @param	integer		The current entry number
+	 * @param	integer		The total number of entries. If equal to $a, a "bottom" element is returned.
+	 * @param	integer		The number of sub-elements to the current element.
+	 * @param	boolean		The element was expanded to render subelements if this flag is set.
+	 * @return	string		Image tag with the plus/minus icon.
+	 * @access private
+	 * @see t3lib_pageTree::PMicon()
+	 */
+	function PMicon($row,$a,$c,$nextCount,$exp)	{
+		$PM = $nextCount ? ($exp?'minus':'plus') : 'join';
+		$BTM = ($a==$c)?'bottom':'';
+		$icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,$this->getTreeGfxFolder().$PM.$BTM.'.gif','width="18" height="16"').' alt="" />';
+
+		if ($nextCount)	{
+			$cmd=$this->bank.'_'.($exp?'0_':'1_').$row['uid'].'_'.$this->treeName;
+			$bMark=($this->bank.'_'.$row['uid']);
+			$icon = $this->PM_ATagWrap($icon,$cmd,$bMark);
+		}
+		return $icon;
 	}
 	
 	
+	function getIcon($row) {
+		return $this->cObj->cObjGetSingle( 'IMAGE', $this->conf['listView.']['vFolderIcon.'] );
+	}
+
+	
+	function getTreeGfxFolder() {
+		if( !empty( $this->conf['listView.']['vFolderGfxFolder'] ) ) {
+			return $this->conf['listView.']['vFolderGfxFolder'];
+		}
+		return t3lib_extmgm::siteRelPath( 'dr_blob' ) . 'res/vFolderTree/';
+	}
+
+
 }
+
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/pi1/class.tx_drblob_pi1_vFolderTree.php']) {
     include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/pi1/class.tx_drblob_pi1_vFolderTree.php']);
