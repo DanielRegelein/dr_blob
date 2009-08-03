@@ -159,8 +159,8 @@ $TCA['tx_drblob_content'] = array (
 				'items' => array (
 					array( 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.type.db', 1 ),
 					array( 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.type.fs', 2 ),
-					array( 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.type.fsus', 3 ),
-					array( 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.type.dam', 4 ),
+					#array( 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.type.fsus', 3 ),
+					#array( 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.type.dam', 4 ),
 				),
 				'default' => $extConf['defaultTypeValue'],
 				'eval' => 'required',
@@ -266,9 +266,9 @@ $TCA['tx_drblob_content'] = array (
 			'config' => array(
 				'type' => 'user',
 				'userFunc' => 'tx_drblob_FormFields->inputFile',
-				'internal_type' => 'file',
-				'size' => '1',
-				'uploadfolder' => 'uploads/tx_drblob/storage/'
+				#'internal_type' => 'file',
+				#'size' => '1',
+				#'uploadfolder' => 'uploads/tx_drblob/storage/'
 			)
 		)
 	),

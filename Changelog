@@ -1,4 +1,9 @@
-2009-07-
+2009-08-03
+	* Release of version 2.1.1
+	
+	* Bugfix: Fixed the illegal merge of development- and live-version causing a wrong BE record interface
+
+2009-07-16
 	* Release of version 2.1.0
 
 	* Feature: List is now also sortable by the download counter

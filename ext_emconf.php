@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext: "dr_blob"
 #
-# Auto generated 17-07-2009 09:10
+# Auto generated 03-08-2009 13:35
 #
 # Manual updates:
 # Only the data in the array - anything else is removed by next write.

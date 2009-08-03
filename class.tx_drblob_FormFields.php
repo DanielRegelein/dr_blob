@@ -33,7 +33,7 @@
  * @package 	dr_blob
  * @filesource	class.user_txdrblobFormFields.php
  * @since		Version 1.5.0, 2007-04-10
- * @version 	2.1.0
+ * @version 	2.1.1
  */
 class tx_drblob_FormFields {
 
@@ -74,8 +74,7 @@ class tx_drblob_FormFields {
 
 
 	function inputFile( $PA, $fobj ) {
-		return 'TEST'.$PA['pObj']->getSingleField_typeGroup( 'tx_drblob_content', 'blob_data', $PA['row'], $PA );
-		return 'Type: ' . $PA['row']['type'] . '<hr /><input ' .
+		return '<input ' .
 			'type="file" ' .
 			'name="' . $PA['itemFormElName'] . '" ' .
 			'size="48" ' .
