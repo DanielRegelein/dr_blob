@@ -37,8 +37,8 @@ $TCA['tx_drblob_content'] = array(
 		'typeicons' => array (
 			'1' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'ico/ext_icon_content_db.gif',
 			'2' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'ico/ext_icon_content_fs.gif',
-			'3' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'ico/ext_icon_content_fsus.gif',
-			'4' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'ico/ext_icon_content_dam.gif',
+			#'3' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'ico/ext_icon_content_fsus.gif',
+			#'4' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'ico/ext_icon_content_dam.gif',
 		),
 	),
 );
