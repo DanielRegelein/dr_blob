@@ -1,3 +1,8 @@
+2009-12-02
+	* Release of version 2.1.2
+	
+	* Security Fix: The extension was vulnurable to Cross-Site Scriptiong
+
 2009-08-03
 	* Release of version 2.1.1
 	

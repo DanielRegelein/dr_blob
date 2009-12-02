@@ -38,7 +38,7 @@ require_once( t3lib_extMgm::extPath( 'dr_blob' ) . '/pi1/class.tx_drblob_pi1_vFo
  * @copyright 	Copyright &copy; 2005-present Daniel Regelein
  * @package 	dr_blob
  * @filesource 	pi1/class.tx_drblob_pi1.php
- * @version 	2.0.0
+ * @version 	2.1.2
  */
 class tx_drblob_pi1 extends tslib_pibase {
 
@@ -496,11 +496,11 @@ class tx_drblob_pi1 extends tslib_pibase {
 				$rsltDelete = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
 					'tx_drblob_personal',
 					'uid_feusers = \'' . $GLOBALS['TSFE']->fe_user->user['uid'] . '\' AND ' .
-						'uid_pages IN ( ' . $this->piVars['dr_blob']['items'] . ' ) '
+						'uid_pages IN ( ' . t3lib_div::cleanIntList( $this->piVars['dr_blob']['items'] ) . ' ) '
 				);
 				
 				//Prepare Insert Values
-				$arrItems = explode( ',', $this->piVars['dr_blob']['items'] );
+				$arrItems = explode( ',', t3lib_div::cleanIntList( $this->piVars['dr_blob']['items'] ) );
 				for( $i=0; $i < count($arrItems); $i++ ) {
 					$rsltInsert= $GLOBALS['TYPO3_DB']->exec_INSERTquery(
 						'tx_drblob_personal',
@@ -516,7 +516,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 				$rsltDelete = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
 					'tx_drblob_personal',
 					'uid_feusers = \'' . $GLOBALS['TSFE']->fe_user->user['uid'] . '\' AND ' .
-						'uid_pages IN ( ' . $this->piVars['dr_blob']['items'] . ' ) '
+						'uid_pages IN ( ' . t3lib_div::cleanIntList( $this->piVars['dr_blob']['items'] ) . ' ) '
 				);
 			}
 			unset( $this->piVars['dr_blob'] );
@@ -711,7 +711,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 			array(
 				'###FORM_URL###' => htmlspecialchars( t3lib_div::getIndpEnv( 'REQUEST_URI' ) ),
 				'###SEARCH_BUTTON###' => $this->pi_getLL( 'search_button_search' ),
-				'###SWORDS###' => $this->piVars['sword']
+				'###SWORDS###' => htmlspecialchars( $this->piVars['sword'] )
 			) 
 		);
 		return $content;
@@ -729,7 +729,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 	 * @internal IE6 SSL Bug: http://support.microsoft.com/default.aspx?scid=kb;EN-US;q297822
 	 */
 	/*protected*/function vDownload( $sendHeaders = true, $uid=0 ) {
-		$rowUID = ( $uid ? $uid : $this->piVars['downloadUid'] );
+		$rowUID = ( $uid ? $uid : intval( $this->piVars['downloadUid'] ) );
 	
 		$this->internal['currentTable'] = $this->dbVars['table_content'];
 		$this->internal['currentRow'] = $this->pi_getRecord( $this->dbVars['table_content'], $rowUID );
