@@ -29,12 +29,10 @@
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  * @package 	dr_blob
  * @filesource	class.tx_drblob_tcemain.php
- * @version		2.0.1
+ * @version		2.2.0
  * @since 		2.0.1, 2009-02-24
  */
 class tx_drblob_befunc {
-	var $defaultUploadFolder = 'uploads/tx_drblob/storage/';
-	
 	
 	/**
 	 * Display some warning messages if this installation is obviously insecure!!
@@ -48,8 +46,7 @@ class tx_drblob_befunc {
 
 		if( $extConf['fileStorageLocation'] == 'Both' || $extConf['fileStorageLocation'] == 'FileSystem' ) {
 		
-			$folder = $extConf['fileStorageFolder'] ? $extConf['fileStorageFolder'] : $this->defaultUploadFolder;
-
+			$folder = tx_drblob_div::getStorageFolder();
 			
 			$warning['tx_drblob_uploadFolderNotWriteable'] = sprintf(
 				$GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/locallang_wiz.xml:err_uploadFolderNotWriteable' ),
@@ -91,7 +88,7 @@ class tx_drblob_befunc {
 };
 
 
-if ( defined( 'TYPO3_MODE' ) && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_befunc.php'] ) {
-    include_once( $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_befunc.php'] );
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_befunc.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_befunc.php']);
 }
 ?>

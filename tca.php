@@ -266,9 +266,9 @@ $TCA['tx_drblob_content'] = array (
 			'config' => array(
 				'type' => 'user',
 				'userFunc' => 'tx_drblob_FormFields->inputFile',
-				#'internal_type' => 'file',
-				#'size' => '1',
-				#'uploadfolder' => 'uploads/tx_drblob/storage/'
+				'internal_type' => 'file',
+				'size' => '1',
+				'uploadfolder' => 'uploads/tx_drblob/storage/'
 			)
 		)
 	),

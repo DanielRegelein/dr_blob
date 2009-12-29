@@ -21,7 +21,7 @@
 			<label index="cms_layout.mode.usingAdd2Fav">and a "Personalize"-Button</label>
 			<label index="cms_layout.mode.usingVFolderTree">with a vFolderTree</label>
 			<label index="pi1_title">Filelist</label>
-			<label index="pi1_plus_wiz_description">Adds a list of downloadable files that are stored in the database to the page</label>
+			<label index="pi1_plus_wiz_description">Adds a list of downloadable files to the page</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

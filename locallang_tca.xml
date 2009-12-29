@@ -63,7 +63,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="tx_drblob_content">Secure File</label>
+			<label index="tx_drblob_content">Download</label>
 			<label index="tx_drblob_content.title">Title</label>
 			<label index="tx_drblob_content.description">Description</label>
 			<label index="tx_drblob_content.type">Record storage type</label>
@@ -82,7 +82,7 @@
 			<label index="tx_drblob_content.is_vip">VIP-Record?</label>
 			<label index="tx_drblob_content.is_vip.desc">Shall this record be shown in a vip-list?</label>
 			<label index="tx_drblob_content.download_count">Downloadcounter</label>
-			<label index="tx_drblob_content.download_count.desc">This file has been downloaded ###DOWNLOAD_COUNT### times</label>
+			<label index="tx_drblob_content.download_count.desc">This file has been downloaded %s times</label>
 			<label index="tx_drblob_content.download_count.reset">Reset Counter</label>
 			<label index="tx_drblob_content.category">File categories</label>
 			<label index="tx_drblob_category">File Category</label>
@@ -96,6 +96,11 @@
 			<label index="tt_content.pi_flexform.categories_mode">Category mode:</label>
 			<label index="tt_content.pi_flexform.categories_showAll">Show all (don't use selection below)</label>
 			<label index="tt_content.pi_flexform.categories_showSelected">Show only categories selected below</label>
+			<label index="tt_content.pi_flexform.categories_showSelected.and">Show only records that match all of the following categories (AND)</label>
+			<label index="tt_content.pi_flexform.categories_showSelected.or">Show only records that match one of the following categories (OR)</label>
+			<label index="tt_content.pi_flexform.vFolderTree_FolderSubscriptionMode">Folder Subscription Mode (Only necessary if personalize-option is set)</label>
+			<label index="tt_content.pi_flexform.vFolderTree_FolderSubscriptionMode.all">Subscribe all folders of the vFolder tree</label>
+			<label index="tt_content.pi_flexform.vFolderTree_FolderSubscriptionMode.selected">Subscribe only selected folder</label>
 			<label index="tt_content.pi_flexform.whatToDisplay">What shall be displayed:</label>
 			<label index="tt_content.pi_flexform.whatToDisplay.top">TOP (List of VIP-items)</label>
 			<label index="tt_content.pi_flexform.whatToDisplay.list">LIST (List of items)</label>
@@ -105,8 +110,12 @@
 			<label index="tt_content.pi_flexform.whatToDisplay.dummy">DUMMY (No Output)</label>
 			<label index="tt_content.pi_flexform.whatToDisplaypersonal.add">Show &quot;Add to Personal Container&quot; (only in LIST-Mode):</label>
 			<label index="tt_content.pi_flexform.showVFolderTree">Show the Virtual Folder Tree (only in LIST-Mode):</label>
+			<label index="tt_content.pi_flexform.vFolderTreeInitialState">Initial State of the vFolder Tree:</label>
+			<label index="tt_content.pi_flexform.vFolderTreeInitialState.all">Show the records of all folders</label>
+			<label index="tt_content.pi_flexform.vFolderTreeInitialState.first">Show the records the first folder</label>
+			<label index="tt_content.pi_flexform.vFolderTreeInitialState.none">Don't show any records initially</label>
 			<label index="tt_content.pi_flexform.limit">Number of items to list:</label>
-			<label index="tt_content.pi_flexform.listOrderBy">&quot;Order by&quot; this field (only in LIST-Mode):</label>
+			<label index="tt_content.pi_flexform.listOrderBy">&quot;Order by&quot; this field:</label>
 			<label index="tt_content.pi_flexform.listOrderBy.title">Title</label>
 			<label index="tt_content.pi_flexform.listOrderBy.createdate">Date of the creation</label>
 			<label index="tt_content.pi_flexform.listOrderBy.lastchange">Date of the last change</label>

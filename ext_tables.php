@@ -71,6 +71,7 @@ t3lib_extMgm::addStaticFile( $_EXTKEY, 'static/', 'File List (dr_blob)' );
 t3lib_extMgm::addPiFlexFormValue( $_EXTKEY.'_pi1', 'FILE:EXT:dr_blob/flexform_ds.xml' );
 t3lib_extMgm::addLLrefForTCAdescr( 'tx_drblob_content','EXT:dr_blob/locallang_csh_txdrblobcontent.xml' );
 t3lib_extMgm::addLLrefForTCAdescr( 'tx_drblob_category','EXT:dr_blob/locallang_csh_txdrblobcategory.xml' );
+t3lib_extMgm::allowTableOnStandardPages( 'tx_drblob_content' );
 
 
 	//Including the class containing the nessesary custom input elements

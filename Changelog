@@ -1,7 +1,30 @@
+2009-12-30
+	* Release of version 2.2.0
+	
+	* Feature: Sorting is possible in all modes now (Feature #4127)
+	* Feature: Added an update mechanism (Currently used for updating records without a checksum-value) (Feature #5712)
+	* Feature: Register "blobDescription" added (Feature #5741)
+	* Feature: Implemented the possibility to set the vFolderTree initial mode (Feature #5084)
+	* Feature: Added the TypoScript configuration spots for the cateorization features
+	* Feature: Added category AND-combinaion (Feature #5039)
+	* Feature: Added the API-SpotdownloadFilenameUserFunc (Feature #5685)
+	* Feature: Added four hooks (Feature #5445)
+	* Feature: vFolder Subscription Mode for the PERSONAL settings (Feature #5692)
+	
+	* Change: stdWraps are now wrapped using their own cObject (Feature #5681)
+	* Change: The fileicon is now wrapped by its own TypoScript directive (Feature #5695)
+	* Change: Removed the default TypoScript (ext_typoscript_setup.txt) (Feature #5713)
+    * Change: Download-Objects are now allowed on standard pages (Feature #4452)
+    * Change: Render the BackLink from SingleMode using a stdWrap (Feature #5779)
+	
+    * Bugfix: Fixed the template marker for ###LANG_CHECKSUM### in the default template (Issue #4996)
+    * Bugfix: File-Upload fails in workspaces on new records (Issue #4213)
+    * Bugfix: piVars are lost when sorting in vFolderTree- or in Search-Mode (Issue #5714)
+
 2009-12-02
 	* Release of version 2.1.2
 	
-	* Security Fix: The extension was vulnurable to Cross-Site Scriptiong
+	* Security Fix: The extension was vulnurable to Cross-Site Scripting
 
 2009-08-03
 	* Release of version 2.1.1

@@ -51,8 +51,8 @@
 	
 	<h3>Language Markers:</h3>
 	<p>
-	###BLOB_MORE###
-	###BLOB_DOWNLOAD###
+	###LANG_MORE###
+	###LANG_DOWNLOAD###
 	###LANG_UID###
 	###LANG_TITLE###
 	###LANG_DESCRIPTION###
@@ -107,7 +107,7 @@ This is the template subpart for the LIST-Mode.
 			<td class="tx_drblob_list-row1">###BLOB_TITLE###</td>
 			<td class="tx_drblob_list-row1">###BLOB_CRDATE###</td>
 			<td class="tx_drblob_list-row1">###BLOB_CATEGORIES###</td>
-			<td class="tx_drblob_list-row1" nowrap="nowrap"><!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###-->&nbsp;<!--###BLOB_LINK_FILE###--> ###BLOB_DOWNLOAD### <!--###BLOB_LINK_FILE###--></td>
+			<td class="tx_drblob_list-row1" nowrap="nowrap"><!--###BLOB_LINK_ITEM###--> ###LANG_MORE### <!--###BLOB_LINK_ITEM###-->&nbsp;<!--###BLOB_LINK_FILE###--> ###LANG_DOWNLOAD### <!--###BLOB_LINK_FILE###--></td>
 		</tr>
 	<!-- ###BLOBITEM### end -->
 		
@@ -116,7 +116,7 @@ This is the template subpart for the LIST-Mode.
 			<td class="tx_drblob_list-row2">###BLOB_TITLE###</td>
 			<td class="tx_drblob_list-row2">###BLOB_CRDATE###</td>
 			<td class="tx_drblob_list-row2">###BLOB_CATEGORIES###</td>
-			<td class="tx_drblob_list-row2" nowrap="nowrap"><!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###-->&nbsp;<!--###BLOB_LINK_FILE###--> ###BLOB_DOWNLOAD### <!--###BLOB_LINK_FILE###--></td>
+			<td class="tx_drblob_list-row2" nowrap="nowrap"><!--###BLOB_LINK_ITEM###--> ###LANG_MORE### <!--###BLOB_LINK_ITEM###-->&nbsp;<!--###BLOB_LINK_FILE###--> ###LANG_DOWNLOAD### <!--###BLOB_LINK_FILE###--></td>
 		</tr>
 	<!-- ###BLOBITEM_1### end -->
 
@@ -180,7 +180,7 @@ This is the template subpart for the TOP-Mode.
 					<!--###BLOB_LINK_ITEM###--> ###BLOB_TITLE### <!--###BLOB_LINK_ITEM###-->
 					###BLOB_DESCRIPTION###
 					###BLOB_CATEGORIES###
-					<!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###--><br />
+					<!--###BLOB_LINK_ITEM###--> ###LANG_MORE### <!--###BLOB_LINK_ITEM###--><br />
 					<br />
 				</td>
 			</tr>
@@ -193,7 +193,7 @@ This is the template subpart for the TOP-Mode.
 					<!--###BLOB_LINK_ITEM###--> ###BLOB_TITLE### <!--###BLOB_LINK_ITEM###-->
 					###BLOB_DESCRIPTION###
 					###BLOB_CATEGORIES###
-					<!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###--><br />
+					<!--###BLOB_LINK_ITEM###--> ###LANG_MORE### <!--###BLOB_LINK_ITEM###--><br />
 					<br />
 				</td>
 			</tr>
@@ -242,7 +242,7 @@ Special Marker for the ADD-/REMOVE-Part
 					<!--###BLOB_LINK_ITEM###--> ###BLOB_TITLE### <!--###BLOB_LINK_ITEM###-->
 					###BLOB_DESCRIPTION###
 					###BLOB_CATEGORIES###
-					<!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###--><br />
+					<!--###BLOB_LINK_ITEM###--> ###LANG_MORE### <!--###BLOB_LINK_ITEM###--><br />
 					<br />
 				</td>
 			</tr>
@@ -255,7 +255,7 @@ Special Marker for the ADD-/REMOVE-Part
 					<!--###BLOB_LINK_ITEM###--> ###BLOB_TITLE### <!--###BLOB_LINK_ITEM###-->
 					###BLOB_DESCRIPTION###
 					###BLOB_CATEGORIES###
-					<!--###BLOB_LINK_ITEM###--> ###BLOB_MORE### <!--###BLOB_LINK_ITEM###--><br />
+					<!--###BLOB_LINK_ITEM###--> ###LANG_MORE### <!--###BLOB_LINK_ITEM###--><br />
 					<br />
 				</td>
 			</tr>
@@ -306,13 +306,6 @@ Special Marker for the ADD-/REMOVE-Part
 
 This is the template subpart for the SINGLE-Mode. 
 
-Special Marker for this subpart:
-	###BLOB_SINGLE_RTN-URL###
-	
-	###BLOB_DATA_EXISTS_SWITCH_START###
-	###BLOB_DATA_EXISTS_SWITCH_END###
-
-
 <!-- ###TEMPLATE_SINGLE### begin -->
 	<div class="tx_drblob_single">
 		<table border="0">
@@ -343,28 +336,20 @@ Special Marker for this subpart:
 			<tr>
 				<td colspan="2"><b>###LANG_DESCRIPTION###:</b><br /><br />###BLOB_DESCRIPTION###</td>
 			</tr>
-		###BLOB_DATA_EXISTS_SWITCH_START###
 			<tr>
 				<td width="50%"><b>###LANG_FILENAME###:</b> ###BLOB_FILENAME###</td>
 				<td width="50%"><b>###LANG_FILESIZE###:</b> ###BLOB_FILESIZE###</td>
 			</tr>
 			<tr>
-				<td colspan="2">###BLOB_FILEICON### <!--###BLOB_LINK_FILE###--> ###BLOB_DOWNLOAD### <!--###BLOB_LINK_FILE###--></td>
+				<td colspan="2">###BLOB_FILEICON### <!--###BLOB_LINK_FILE###--> ###LANG_DOWNLOAD### <!--###BLOB_LINK_FILE###--></td>
 			</tr>
 			<tr>
 				<td>###BLOB_DOWNLOADCOUNT###</td>
-				<td><b>###LANG_CHECKSUM</b>: ###BLOB_CHECKSUM###</td>
+				<td><b>###LANG_CHECKSUM###</b>: ###BLOB_CHECKSUM###</td>
 			</tr>
-		###BLOB_DATA_EXISTS_SWITCH_END###
 		</table>
 		<br />
-		<a href="###BLOB_SINGLE_RTN-URL###" class="" title="###LANG_BACK###">###LANG_BACK###</a>
-		
-		<!--
-		<form action="###BLOB_SINGLE_RTN-URL###" method="post">
-			<input type="submit" class="" value="###LANG_BACK###" />
-		</form>
-		-->
+		<!--###BLOB_LINK_BACK###-->###LANG_BACK###<!--###BLOB_LINK_BACK###-->
 	</div>
 <!-- ###TEMPLATE_SINGLE### end -->
 

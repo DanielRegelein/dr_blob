@@ -29,14 +29,12 @@
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  * @package 	dr_blob
  * @filesource	class.tx_drblob_tcemain.php
- * @version		2.1.0
+ * @version		2.2.0
  * @since 		1.5.0, 2007-04-10
  */
 class tx_drblob_tcemain {
 	
 	var $dbVars = array( 'table' => 'tx_drblob_content' );
-	var $defaultUploadFolder = 'uploads/tx_drblob/storage';
-
 	
 	/**
 	 * @name		processDatamap_afterDatabaseOperations
@@ -51,12 +49,12 @@ class tx_drblob_tcemain {
 	 * @return		void
 	 */
 	/*public*/function processDatamap_afterDatabaseOperations( $status, $table, $id, $fieldArray, $obj ){
-		$this->defaultUploadFolder = PATH_site . $this->defaultUploadFolder;
-		
 		if( $table == $this->dbVars['table'] ) {
 			
+		//Fix for issue #4213
 			if ( !is_int( $id ) ) {
-				$item = $obj->substNEWwithIDs[$id];
+				$tmpWSID = t3lib_befunc::getWorkspaceVersionOfRecord( $fieldArray['t3ver_wsid'], $table, $obj->substNEWwithIDs[$id], 'uid' );
+				$item = !$tmpWSID['uid'] ? $obj->substNEWwithIDs[$id] : $tmpWSID['uid'];
 			} else {
 				$item = $id;
 			}
@@ -64,10 +62,12 @@ class tx_drblob_tcemain {
 			if ( is_array( $_FILES['data']['tmp_name'][$this->dbVars['table']] ) ) {
 				$fileName = $_FILES['data']['tmp_name'][$this->dbVars['table']][$id]['blob_data'];
 				if ( ( !empty( $fileName ) ) && ( $fileName != 'none' ) ) {
+						//Generate Checksum
+					$md5_checksum = md5_file( $fileName );
+
 						//Open File and Quote it
 					$filePointer = fopen( $fileName, 'r' );
 						$data = fread( $filePointer, filesize( $fileName ) );
-						$md5_checksum = md5( $data );
 						$data = addslashes( $data );
 					fclose( $filePointer );
 					
@@ -79,14 +79,13 @@ class tx_drblob_tcemain {
 
 					//Store file in the filesystem
 					if( $obj->checkValue_currentRecord['type'] == '2' ) {
-						$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dr_blob']);
 						
 						//Generate Filename
-						$folder = $extConf['fileStorageFolder'] ? $extConf['fileStorageFolder'] : $this->defaultUploadFolder;
+						$folder = tx_drblob_div::getStorageFolder();
 						
 						//The target filename has a random number in it's name to ensure unique filenames when versioning records.
 						$targetFileName = $this->generateFileName( $item );
-						t3lib_div::writeFile( t3lib_div::dirname( $folder ) . '/' . $targetFileName, $data );
+						t3lib_div::writeFile( $folder . $targetFileName, $data );
 						$data = $targetFileName;
 					}
 					
@@ -148,16 +147,14 @@ class tx_drblob_tcemain {
 				if( $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) == 1 ) {
 
 					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rslt );
-					
-					$extConf = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dr_blob'] );
-					$folder = $extConf['fileStorageFolder'] ? $extConf['fileStorageFolder'] : $this->defaultUploadFolder;					
+					$folder = tx_drblob_div::getStorageFolder();
 					
 					switch( $command ) {
 						case 'delete':
 							if( ( !empty( $row['blob_data'] ) ) && intval( $extConf['reallyDeleteFiles'] ) == 1 ) {
 								
 								if( $row['type'] == 2 ) {
-									$target = t3lib_div::dirname( $folder ) . '/' . $row['blob_data'];
+									$target = $folder . $row['blob_data'];
 									unlink( $target );
 								}
 								
@@ -184,8 +181,8 @@ class tx_drblob_tcemain {
 								$newVersionID = $pObj->copyMappingArray[$this->dbVars['table']][$srcId];
 								$newFileName = $this->generateFileName( $newVersionID );
 								
-								$sourceFile = t3lib_div::dirname( $folder ) . '/' . $row['blob_data'];
-								$targetFile = t3lib_div::dirname( $folder ) . '/' . $newFileName;
+								$sourceFile = $folder . $row['blob_data'];
+								$targetFile = $folder . $newFileName;
 								
 								if( copy( $sourceFile, $targetFile ) ) {
 									$rslt = $GLOBALS['TYPO3_DB']->exec_UPDATEquery( 

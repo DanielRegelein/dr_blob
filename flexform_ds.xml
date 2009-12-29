@@ -74,8 +74,12 @@
 										<numIndex index="1">0</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.categories_showSelected</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.categories_showSelected.or</numIndex>
 										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.categories_showSelected.and</numIndex>
+										<numIndex index="1">2</numIndex>
 									</numIndex>
 								</items>
 								<maxitems>1</maxitems>
@@ -295,6 +299,51 @@
 							</config>
 						</TCEforms>
 					</xmlShowVFolderTree>
+					<ff_vFolderTreeInitialState>
+						<TCEforms>
+							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTreeInitialState</label>
+							<config>
+								<type>radio</type>
+								<default>none</default>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTreeInitialState.none</numIndex>
+										<numIndex index="1">none</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTreeInitialState.first</numIndex>
+										<numIndex index="1">first</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTreeInitialState.all</numIndex>
+										<numIndex index="1">all</numIndex>
+									</numIndex>
+								</items>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</ff_vFolderTreeInitialState>
+					<ff_vFolderTree_FolderSubscriptionMode>
+						<TCEforms>
+							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTree_FolderSubscriptionMode</label>
+							<config>
+								<type>radio</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTree_FolderSubscriptionMode.all</numIndex>
+										<numIndex index="1">all</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTree_FolderSubscriptionMode.selected</numIndex>
+										<numIndex index="1">selected</numIndex>
+									</numIndex>
+								</items>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</ff_vFolderTree_FolderSubscriptionMode>
 				</el>
 			</ROOT>
 		</sVFolderTree>

@@ -11,4 +11,6 @@ plugin.tx_drblob {
   lenghtOfDescription = 150
     #cat=plugin.tx_drblob/30; type=int+; label=PageID where to redireced dr_blob download links to
   downloadPID = 0
+    #cat=plugin.tx_drblob/40; type=text; label=Folder containing the filetype-icons
+  fileExtIconFolder = typo3/sysext/cms/tslib/media/fileicons/
 }
