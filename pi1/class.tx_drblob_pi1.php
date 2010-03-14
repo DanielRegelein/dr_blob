@@ -38,7 +38,7 @@ require_once( t3lib_extMgm::extPath( 'dr_blob' ) . '/pi1/class.tx_drblob_pi1_vFo
  * @copyright 	Copyright &copy; 2005-present Daniel Regelein
  * @package 	dr_blob
  * @filesource 	pi1/class.tx_drblob_pi1.php
- * @version 	2.2.0
+ * @version 	2.2.1
  */
 class tx_drblob_pi1 extends tslib_pibase {
 
@@ -447,13 +447,13 @@ class tx_drblob_pi1 extends tslib_pibase {
 					//populate detail- and downloadlinks with contents
 				$lConf['moreLink_stdWrap.']['typolink.']['parameter'] = $this->getNamedConfigParameter( 'singlePID' );
 				$lConf['moreLink_stdWrap.']['typolink.']['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('',array( $this->prefixId => array( 'showUid' => $this->internal['currentRow']['uid'] ) ),'',1).$this->pi_moreParams;
-				$LINK_ITEM = explode('|', $this->cObj->stdWrap( '|', $lConf['moreLink_stdWrap.']) );
+				$LINK_ITEM = explode('|', $this->local_cObj->stdWrap( '|', $lConf['moreLink_stdWrap.']) );
 				
 				$lConf['downloadLink_stdWrap.']['typolink.']['useCacheHash'] = 0;
 				$lConf['downloadLink_stdWrap.']['typolink.']['no_cache'] = 1;
 				$lConf['downloadLink_stdWrap.']['typolink.']['parameter'] = $GLOBALS['TSFE']->id;
 				$lConf['downloadLink_stdWrap.']['typolink.']['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('',array( $this->prefixId => array( 'downloadUid' => $this->internal['currentRow']['uid'] ) ),'',1).$this->pi_moreParams;
-				$LINK_FILE = explode('|', $this->cObj->stdWrap( '|', $lConf['downloadLink_stdWrap.'] ) );
+				$LINK_FILE = explode('|', $this->local_cObj->stdWrap( '|', $lConf['downloadLink_stdWrap.'] ) );
 
 					//hide the download-link if no file is attached
 				$blobUID = ( array_key_exists( '_LOCALIZED_UID', $this->internal['currentRow'] ) ? $this->internal['currentRow']['_LOCALIZED_UID'] : $this->internal['currentRow']['uid'] );
@@ -689,7 +689,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 				$this->conf['singleView.']['downloadLink_stdWrap.']['typolink.']['no_cache'] = 1;
 				$this->conf['singleView.']['downloadLink_stdWrap.']['typolink.']['parameter'] = $this->getFieldContent( 'downloadPID' );
 				$this->conf['singleView.']['downloadLink_stdWrap.']['typolink.']['additionalParams'] = $this->conf['parent.']['addParams'].t3lib_div::implodeArrayForUrl('',array( $this->prefixId => array( 'downloadUid' => $this->internal['currentRow']['uid'] ) ),'',1).$this->pi_moreParams;
-				$LINK_FILE = explode('|', $this->cObj->stdWrap( '|', $this->conf['singleView.']['downloadLink_stdWrap.']) );
+				$LINK_FILE = explode('|', $this->local_cObj->stdWrap( '|', $this->conf['singleView.']['downloadLink_stdWrap.']) );
 				$btnDownload = $this->pi_getLL('single_button_download');
 			} else {
 				$LINK_FILE = array( 0, 1 );
@@ -697,7 +697,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 			
 				//Generate Backlink
 			$this->conf['singleView.']['backLink_stdWrap.']['typolink.']['parameter'] = $tmp_returnPID;
-			$LINK_BACK = explode('|', $this->cObj->stdWrap( '|', $this->conf['singleView.']['backLink_stdWrap.'] ) );
+			$LINK_BACK = explode('|', $this->local_cObj->stdWrap( '|', $this->conf['singleView.']['backLink_stdWrap.'] ) );
 
 			return $this->cObj->substituteMarkerArrayCached( 
 				$tmpl, 
@@ -881,7 +881,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 				//This is the workaround of the IE-X-SSL Bug.
 				//Thanks to Christoph Lorenz for that :-)
 			$client = t3lib_div::clientInfo();
-			if( ( $client['BROWSER'] == 'msie' ) && ( $client['VERSION'] == '6' || $client['VERSION'] == '7' ) ) {
+			if( ( $client['BROWSER'] == 'msie' ) && ( $client['VERSION'] == '6' || $client['VERSION'] == '7'  || $client['VERSION'] == '8' ) ) {
 				header( 'Pragma: anytextexeptno-cache', true );
 			} else {
 				header( 'Pragma: no-cache', true );
@@ -950,7 +950,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 			$treeContent = null;
 			$treeContent .= $treeClass->getBrowsableTree();
 			
-			return $this->cObj->stdWrap( $treeContent, $this->conf['listView.']['vFolderTree_stdWrap.'] );
+			return $this->local_cObj->stdWrap( $treeContent, $this->conf['listView.']['vFolderTree_stdWrap.'] );
 		}
 	}
 	
@@ -1093,7 +1093,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 		$tmp['cat'] = $this->getCategories( $this->getFieldContent('uid') );
 		if( !empty( $tmp['cat'] ) ) {
 			$tmp['lstCat'] = implode( ( $lConf['categoryDivider'] ? $lConf['categoryDivider'] : ',' ), $tmp['cat'] );
-			$arrMarker['###BLOB_CATEGORIES###'] = $this->cObj->stdWrap( $tmp['lstCat'], $lConf['category_stdWrap.'] );
+			$arrMarker['###BLOB_CATEGORIES###'] = $this->local_cObj->stdWrap( $tmp['lstCat'], $lConf['category_stdWrap.'] );
 		}
 			
 		$row = $this->internal['currentRow'];

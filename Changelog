@@ -1,3 +1,10 @@
+2010-03-14
+	* Release of version 2.2.1
+
+	* Bugfix: Support for internet explorer 8 (Issue #5878)
+	* Bugfix: Starttime- and endtime limitations (Issue #6690)
+	* Bugfix: Usage of $this->cObj (Issue #6703)
+
 2009-12-30
 	* Release of version 2.2.0
 	
