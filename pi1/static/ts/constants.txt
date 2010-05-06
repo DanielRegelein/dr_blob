@@ -3,8 +3,9 @@
 ##
 
 plugin.tx_drblob {
-    # cat=plugin.tx_drblob/10; type=text; label=Standard Format for Date-Fields (Create Date / Change Date)
   stdDateWrap = d/m/Y
+    # cat=plugin.tx_drblob/10; type=text; label=Standard Format for Date-Fields (Create Date / Change Date)
+  dateFormat = %d/%m/%Y
     # cat=plugin.tx_drblob/20; type=int+; label=Number of alternating layouts
   alternatingLayouts = 2
     # cat=plugin.tx_drblob/20; type=int+; label=Lenght of the description-fields

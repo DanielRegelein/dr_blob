@@ -5,12 +5,15 @@ plugin.tx_drblob_pi1 = USER
 plugin.tx_drblob_pi1 {
   userFunc = tx_drblob_pi1->main
 
-  templateFile = EXT:dr_blob/res/dr_blob.tmpl
+  templateFile = EXT:dr_blob/res/dr_blob_v2.tmpl
   fileExtIconFolder = {$plugin.tx_drblob.fileExtIconFolder}
-  searchFieldList = title,description,blob_name,t3ver_label
+  searchFieldList = title,description,author,blob_name,t3ver_label
   emptySearchAtStart = 1
   tryToOpenFileInline = 1
   downloadFilenameUserFunc = 
+  renderAsXML = 0
+  
+  stdWrap.wrap = <div class="tx-drblob-pi1">|</div>
   
   listView {
     limit = 25
@@ -21,6 +24,7 @@ plugin.tx_drblob_pi1 {
     categoryDivider = ,
     categoryMode = 0
     categorySelection = 
+    showAdd2Fav = 0
     
     age_stdWrap {
       age = 1
@@ -28,6 +32,9 @@ plugin.tx_drblob_pi1 {
 
     author_stdWrap {
       wrap = |
+      typolink {
+        parameter.field = author_email
+      }
     }
 
     category_stdWrap {
@@ -35,16 +42,17 @@ plugin.tx_drblob_pi1 {
     }
 
     date_stdWrap {
-      date = {$plugin.tx_drblob.stdDateWrap}
+      strftime = {$plugin.tx_drblob.dateFormat}
     }
     
     description_stdWrap {
       stripHtml = 1
-      crop < {$plugin.tx_drblob.lenghtOfDescription}
+      crop = {$plugin.tx_drblob.lenghtOfDescription} | ... | 1
     }
     
     downloadLink_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
       typolink {
         ATagBeforeWrap = 1
         ATagParams = class="tx_drblob_downloadlink"
@@ -53,45 +61,70 @@ plugin.tx_drblob_pi1 {
     
     downloadcount_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
     }
 
     email_stdWrap {
       wrap = |
       typolink {
+        parameter.field = author_email
         ATagParams = class="tx_drblob_emaillink"
       }
     }
     
     fileicon_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
       cObject = IMAGE
-      cObject.file.import < plugin.tx_drblob_pi1.fileExtIconFolder
+      cObject.file.import = {$plugin.tx_drblob.fileExtIconFolder}
       cObject.file.import.field = blob_filext
       cObject.file.import.wrap = |.gif
       cObject.altText.field = blob_filext
       cObject.titleText.field = blob_filext
 
       cObject.stdWrap.ifEmpty.cObject = IMAGE
-      cObject.stdWrap.ifEmpty.cObject.file.import < plugin.tx_drblob_pi1.fileExtIconFolder
+      cObject.stdWrap.ifEmpty.cObject.file.import = {$plugin.tx_drblob.fileExtIconFolder}
       cObject.stdWrap.ifEmpty.cObject.file.import.wrap = default.gif
     }
     
     filename_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
     }
     
     filesize_stdWrap {
       bytes = 1
       bytes.labels = B| KB| MB| GB
       wrap = |
+      if.isTrue.field = blob_size
     }
     
     filechecksum_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
     }
     
     filetype_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
+    }
+
+
+    images_stdWrap {
+      wrap = |
+      
+      cObject = IMGTEXT
+      cObject {
+        imgList.field = images
+        imgPath = uploads/pics/
+        
+        imgStart = 0
+        imgMax = 1      
+        imgObjNum = 1
+        1 = IMAGE
+        1.file.import.current = 1
+        1.file.maxW = 50
+      }
     }
     
     moreLink_stdWrap {
@@ -161,17 +194,18 @@ plugin.tx_drblob_pi1 {
     }
     
     date_stdWrap {
-      date = {$plugin.tx_drblob.stdDateWrap}
+      strftime = {$plugin.tx_drblob.dateFormat}
     }
     
     description_stdWrap {
       wrap = <p>|</p>
       stripHtml = 1
-      crop = {$plugin.tx_drblob.lenghtOfDescription}
+      crop = {$plugin.tx_drblob.lenghtOfDescription} | ... | 1
     }
         
     downloadLink_stdWrap {
-      wrap = |      
+      wrap = |  
+      if.isTrue.field = blob_size    
       typolink {
         ATagBeforeWrap = 1
         ATagParams = class="tx_drblob_downloadlink"
@@ -180,45 +214,69 @@ plugin.tx_drblob_pi1 {
     
     downloadcount_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
     }
 
     email_stdWrap {
       wrap = |
       typolink {
+        parameter.field = author_email
         ATagParams = class="tx_drblob_emaillink"
       }
     }
     
     fileicon_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
       cObject = IMAGE
-      cObject.file.import < plugin.tx_drblob_pi1.fileExtIconFolder
+      cObject.file.import = {$plugin.tx_drblob.fileExtIconFolder}
       cObject.file.import.field = blob_filext
       cObject.file.import.wrap = |.gif
       cObject.altText.field = blob_filext
       cObject.titleText.field = blob_filext
 
       cObject.stdWrap.ifEmpty.cObject = IMAGE
-      cObject.stdWrap.ifEmpty.cObject.file.import < plugin.tx_drblob_pi1.fileExtIconFolder
+      cObject.stdWrap.ifEmpty.cObject.file.import = {$plugin.tx_drblob.fileExtIconFolder}
       cObject.stdWrap.ifEmpty.cObject.file.import.wrap = default.gif
     }
     
     filename_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
     }
     
     filesize_stdWrap {
       bytes = 1
       bytes.labels = B| KB| MB| GB
       wrap = |
+      if.isTrue.field = blob_size
     }
     
     filechecksum_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
     }
     
     filetype_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
+    }
+    
+    images_stdWrap {
+      wrap = |
+      
+      cObject = IMGTEXT
+      cObject {
+        imgList.field = images
+        imgPath = uploads/pics/
+        
+        imgStart = 0
+        imgMax = 1      
+        imgObjNum = 1
+        1 = IMAGE
+        1.file.import.current = 1
+        1.file.maxW = 50
+      }
     }
     
     moreLink_stdWrap {
@@ -264,17 +322,18 @@ plugin.tx_drblob_pi1 {
     }
 
     date_stdWrap {
-      date = {$plugin.tx_drblob.stdDateWrap}
+      strftime = {$plugin.tx_drblob.dateFormat}
     }
     
     description_stdWrap {
       wrap = <p>|</p>
       stripHtml = 1
-      crop = {$plugin.tx_drblob.lenghtOfDescription}
+      crop = {$plugin.tx_drblob.lenghtOfDescription} | ... | 1
     }
     
     downloadLink_stdWrap {
-      wrap = |      
+      wrap = |
+      if.isTrue.field = blob_size
       typolink {
         ATagBeforeWrap = 1
         ATagParams = class="tx_drblob_downloadlink"
@@ -283,45 +342,69 @@ plugin.tx_drblob_pi1 {
     
     downloadcount_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
     }
 
     email_stdWrap {
       wrap = |
       typolink {
+        parameter.field = author_email
         ATagParams = class="tx_drblob_emaillink"
       }
     }
 
     fileicon_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
       cObject = IMAGE
-      cObject.file.import < plugin.tx_drblob_pi1.fileExtIconFolder
+      cObject.file.import = {$plugin.tx_drblob.fileExtIconFolder}
       cObject.file.import.field = blob_filext
       cObject.file.import.wrap = |.gif
       cObject.altText.field = blob_filext
       cObject.titleText.field = blob_filext
 
       cObject.stdWrap.ifEmpty.cObject = IMAGE
-      cObject.stdWrap.ifEmpty.cObject.file.import < plugin.tx_drblob_pi1.fileExtIconFolder
+      cObject.stdWrap.ifEmpty.cObject.file.import = {$plugin.tx_drblob.fileExtIconFolder}
       cObject.stdWrap.ifEmpty.cObject.file.import.wrap = default.gif
     }
     
     filename_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
     }
     
     filesize_stdWrap {
       bytes = 1
       bytes.labels = B| KB| MB| GB
       wrap = |
+      if.isTrue.field = blob_size
     }
     
     filechecksum_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
     }
     
     filetype_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
+    }
+
+    images_stdWrap {
+      wrap = |
+      
+      cObject = IMGTEXT
+      cObject {
+        imgList.field = images
+        imgPath = uploads/pics/
+        
+        imgStart = 0
+        imgMax = 1      
+        imgObjNum = 1
+        1 = IMAGE
+        1.file.import.current = 1
+        1.file.maxW = 50
+      }
     }
     
     moreLink_stdWrap {
@@ -349,7 +432,6 @@ plugin.tx_drblob_pi1 {
     
     substitutePagetitle = 1
     substituteIndextitle = 1
-
     categoryDivider = ,
     
     age_stdWrap {
@@ -358,6 +440,10 @@ plugin.tx_drblob_pi1 {
 
     author_stdWrap {
       wrap = |
+      typolink {
+        parameter.field = author_email
+        ATagParams = class="tx_drblob_emaillink"
+      }
     }
     
     backLink_stdWrap {
@@ -379,16 +465,15 @@ plugin.tx_drblob_pi1 {
     }
 
     date_stdWrap {
-      date = {$plugin.tx_drblob.stdDateWrap} h:i a
+      strftime = {$plugin.tx_drblob.dateFormat}
     }
     
     description_stdWrap {
       stripHtml = 0
-      crop >
     }
     
     downloadLink_stdWrap {
-      wrap = |      
+      wrap = | 
       typolink {
         ATagBeforeWrap = 1
         ATagParams = class="tx_drblob_downloadlink"
@@ -397,45 +482,70 @@ plugin.tx_drblob_pi1 {
     
     downloadcount_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
     }
 
     email_stdWrap {
       wrap = |
       typolink {
+        parameter.field = author_email
         ATagParams = class="tx_drblob_emaillink"
       }
     }
     
     fileicon_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
       cObject = IMAGE
-      cObject.file.import < plugin.tx_drblob_pi1.fileExtIconFolder
+      cObject.file.import = {$plugin.tx_drblob.fileExtIconFolder}
       cObject.file.import.field = blob_filext
       cObject.file.import.wrap = |.gif
       cObject.altText.field = blob_filext
       cObject.titleText.field = blob_filext
 
       cObject.stdWrap.ifEmpty.cObject = IMAGE
-      cObject.stdWrap.ifEmpty.cObject.file.import < plugin.tx_drblob_pi1.fileExtIconFolder
+      cObject.stdWrap.ifEmpty.cObject.file.import = {$plugin.tx_drblob.fileExtIconFolder}
       cObject.stdWrap.ifEmpty.cObject.file.import.wrap = default.gif
     }
     
     filename_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
     }
     
     filesize_stdWrap {
       bytes = 1
       bytes.labels = Bytes| KiloBytes| MegaBytes| GigaBytes
       wrap = |
+      if.isTrue.field = blob_size
     }
     
     filechecksum_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
     }
     
     filetype_stdWrap {
       wrap = |
+      if.isTrue.field = blob_size
+    }
+    
+    images_stdWrap {
+      wrap = |
+      cObject = IMGTEXT
+      cObject {
+        imgList.field = images
+        imgPath = uploads/pics/
+        imgStart = 0
+        cols = 3
+        colspace = 0
+        rowspace = 2
+      
+        imgObjNum = 1
+        1 = IMAGE
+        1.file.import.current = 1
+        1.file.maxW = 250px
+      }
     }
     
 	version_stdWrap {
@@ -484,6 +594,11 @@ plugin.tx_drblob_pi1 {
   )
 }
 
+tx_drblob_content < plugin.tx_drblob_pi1
+tx_drblob_content {
+  code = single
+  singleView.altSubpartMarker = TEMPLATE_SINGLE_RECORDINSERT
+}
 
 plugin.tx_linkhandler.tx_drblob_content {
   forceLink = 0
