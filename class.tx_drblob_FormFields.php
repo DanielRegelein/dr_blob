@@ -33,17 +33,18 @@
  * @package 	dr_blob
  * @filesource	class.tx_drblob_FormFields.php
  * @since		Version 1.5.0, 2007-04-10
- * @version 	2.2.0
+ * @version 	2.3.0
  */
 class tx_drblob_FormFields {
 
-	function inputFileName( $PA, $fobj ) {
+	public static function inputFileName( $PA, $fobj ) {
 		return 	'<input ' .
 			'type="text" ' .
 			'name="' . $PA['itemFormElName'] . '" ' .
 			'value="' . htmlspecialchars( $PA['itemFormElValue'] ) . '" ' .
 			'onchange="' . htmlspecialchars( implode( '',$PA['fieldChangeFunc'] ) ).'" ' .
 			'size="48" ' .
+			( $PA['row']['type'] == 3 ? 'readonly="readonly" ' : '' ) . 
 			' / >';
 	}
 
@@ -77,11 +78,57 @@ class tx_drblob_FormFields {
 
 
 	function inputFile( $PA, $fobj ) {
-		return '<input ' .
-			'type="file" ' .
-			'name="' . $PA['itemFormElName'] . '" ' .
-			'size="48" ' .
-			'onChange="' . implode( '',$PA['fieldChangeFunc'] ) . ';" / >';
+		$el = null;
+		
+		switch( $PA['row']['type'] ) {
+			
+			case '3':
+			$GLOBALS['TCA']['tx_drblob_content']['columns']['blob_data']['config']['type'] = 'group';
+				$el = $PA['pObj']->getSingleField_typeGroup( 
+					'tx_drblob_content', 
+					'blob_data', 
+					$PA['row'], 
+					$PA 
+				);
+			break;
+			
+			case '1':
+			case '2':
+			default:
+				$el = '<input ' .
+				'type="file" ' .
+				'name="' . $PA['itemFormElName'] . '" ' .
+				'size="48" ' .
+				'onChange="' . implode( '',$PA['fieldChangeFunc'] ) . ';" / >';
+			break;
+		}
+		
+		return $el;
+		
+		return (
+			'Type: ' . $PA['row']['type'] . '<hr />' .
+			'<input ' .
+				'type="file" ' .
+				'name="' . $PA['itemFormElName'] . '" ' .
+				'size="48" ' .
+				'onChange="' . implode( '',$PA['fieldChangeFunc'] ) . ';" / >' . 
+		#	$PA['pObj']->dbFileIcons(
+		#		$PA['itemFormElName'],
+		#		'file',
+		#		'gif,exe,tif,jpg',
+		#		array(),
+		#		!$PA['row']['blob_data'] ? 'no file' : 'file attached',
+		#		array(
+		#			'dontShowMoveIcons' => 1, 
+		#			'maxitems' => 1, 
+		#			'size' => 1, 
+		#			#'style' => 'width: 400px',
+		#			'noBrowser' => 0
+		#		),
+		#		$PA['onFocus']
+		#	) .
+		''
+		);
 		
 		
 		#return 'TEST'.$PA['pObj']->getSingleField_typeGroup( 'tx_drblob_content', 'blob_data', $PA['row'], $PA );

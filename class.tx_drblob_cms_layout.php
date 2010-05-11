@@ -30,7 +30,7 @@
  * @coauthor	Dmitry Dulepov <dmitry@typo3.org>
  * @package 	dr_blob
  * @filesource	class.tx_drblob_cms_layout.php
- * @version		2.0.1
+ * @version		2.3.0
  * @since 		2.0.1, 2009-02-24
  */
 class tx_drblob_cms_layout {

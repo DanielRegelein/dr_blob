@@ -41,6 +41,7 @@ class ux_tx_indexedsearch_indexer extends tx_indexedsearch_indexer {
 	 * @return	void
 	 */
 	function extractLinks($content) {
+		
 			// Get links:
 		$list = $this->extractHyperLinks($content);
 
@@ -148,17 +149,35 @@ class ux_tx_indexedsearch_indexer extends tx_indexedsearch_indexer {
 	 * @see indexRegularDocument()
 	 */
 	function indexBlobFile( $blobURL, $blobUID ) {
+
 		$cObj = t3lib_div::makeInstance( 'tx_drblob_pi1' );
-		
 		$dataArr = $cObj->vDownload( false, intval( $blobUID ) );
 		$dataArr['blob_name'] = t3lib_div::split_fileref( $dataArr['blob_name'] );
-
-		$tmpFile = PATH_site . 'typo3temp/' . $dataArr['blob_name']['file'];
-		t3lib_div::writeFileToTypo3tempDir( $tmpFile, $dataArr['blob_data'] );
+		
+		$createdTempFile = false;
+		if( $dataArr['type'] == '3' ) {
+			$tmpFile = $dataArr['blob_data'];
+		} else {
+			if ( $dataArr['type'] == '2' && $dateArr['is_quoted'] == false ) {
+				//the file has to be stored in a temp-file to ensure a nice index title.
+				//otherwise the index title would be something like abcedefgh.blob
+				$tmpFile = $dataArr['blob_data'];
+				$dataArr['blob_data'] = file_get_contents( $tmpFile );				
+			}
+			
+				//Store file
+			$tmpFile = PATH_site . 'typo3temp/' . $dataArr['blob_name']['file'];
+			t3lib_div::writeFileToTypo3tempDir( $tmpFile, $dataArr['blob_data'] );	
+			$createdTempFile = true;				
+		}
 		
 			// Index that file:
 		$this->indexRegularDocument( $blobURL, TRUE, $tmpFile, $dataArr['blob_name']['realFileext'] );		
-		t3lib_div::unlink_tempfile($tmpFile);
+		
+		if( $createdTempFile ) {
+			t3lib_div::unlink_tempfile( $tmpFile );
+		}
+		
 	}
 }
 

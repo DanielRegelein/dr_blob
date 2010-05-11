@@ -1,17 +1,23 @@
-  # cat=basic//10; type=options[IDList,StoragePID]; label="Accessing category records": Set the way you want to access File Categories. Select "StoragePID" for using the "General record storage page", and "IDList" to configure multiple Sysfolders using the Page-TS-config.
+  # cat=basic//10; type=options[All,IDList,StoragePID]; label="Accessing category records": Set the way you want to access File Categories. Select "StoragePID" for using the "General record storage page", and "IDList" to configure multiple Sysfolders using the Page-TS-config. Use "All" to disable this show all categories
 categoryStorage = StoragePID
 
   # cat=basic//20; type=boolean; label="Enable Download-Counter Reset": This option determines whether the Reset-Function for the Download-Counter is enabled- or not. Using this function can be restricted to special BE Groups through exclude fields. See the manual for more information.
 enableCounterReset = 0
 
-  # cat=basic//30; type=boolean; label="Use IndexedSearch Integration": This option determines whether to enable integration with the indexed_search - Extension. See the manual for more information.
-useIndexedSearchIntegration = 0
-
-  #cat=basic/security/50;type=options[Both,Database,FileSystem];label="File Storage Locations": Define which Record types are possible
-fileStorageLocation = 
-
-  #cat=basic/security/60;type=text;label="File System Storage Folder": Select the folder where to store the files if filesystem storage is enabled.
-fileStorageFolder = [document root]/uploads/tx_drblob/storage/
-
-  #cat=basic//70;type=boolean; label="(Really) Delete files": Define whether files are really deleted, and not just be marked as when a record is deleted. Thus files cannot be restored when a record is restored.
+  #cat=basic//30;type=boolean; label="(Really) Delete files": Define whether files are really deleted, and not just be marked as when a record is deleted. Thus files cannot be restored when a record is restored.
 reallyDeleteFiles = 0
+
+  # cat=basic//40; type=boolean; label="IndexedSearch Integration": This option determines whether to enable integration with the indexed_search - Extension. See the manual for more information.
+integration.indexed_search = 0
+
+  #cat=storage//110;type=boolean;label="Storage 'Secure Database'": Enable the storage type "Database" (if no storage type is selected, this one will be used)
+storageType.db = 1
+
+  #cat=storage//110;type=boolean;label="Storage 'Secure Filesystem'": Enable the storage type "(secure) Filesystem"
+storageType.fs = 
+
+  #cat=storage//110;type=boolean;label="Storage 'Unsecure Filesystem'": Enable the storage type "(unsecure) Filesystem"
+storageType.fsus =  
+
+  #cat=storage//120;type=text;label="File System Storage Folder": Select the folder where to store the files if filesystem storage is enabled.
+fileStorageFolder = uploads/tx_drblob/storage/

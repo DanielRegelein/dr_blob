@@ -28,10 +28,33 @@
  * 
  * @package EXT:dr_blob
  * @since 2.2.0
- * @version 2.0.0
+ * @version 2.3.0
  * @author Daniel Regelein <daniel.regelein@diehl-informatik.de>
  */
 class tx_drblob_div {
+	
+	public static $CONTENT_TABLE = 'tx_drblob_content';
+	
+	private static $EXTCONF = null;
+
+	
+	/**
+	 * This method returns one of the three given parameter depending on its priority
+	 *
+	 * @param Mixed $p1 (Highest Priority)
+	 * @param Mixed $p2 (Medium Priority)
+	 * @param Mixed $p3 (Lowest Priority) -- Default
+	 * @return Mixed
+	 * @access public
+	 * @static
+	 */
+	public static function getPrioParam( $p1, $p2, $p3 ) {
+		if( $p1 && $p1 != 'ts' ) { return $p1; }
+		if( $p2 ) { return $p2; }
+		if( $p3 ) { return $p3; }
+		return false; 
+	}
+	
 	
 	/**
 	 * This method returns the Folder used for secure files from the filesystem
@@ -40,14 +63,14 @@ class tx_drblob_div {
 	 * @return String Folder
 	 */
 	public static function getStorageFolder() {
-		$storageFolder = 'uploads/tx_drblob/storage/';
+		self::extConf_initialize();
 		
-		$extConf = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dr_blob'] );
-		if( !empty( $extConf['fileStorageFolder'] ) ) {
-			$storageFolder = $extConf['fileStorageFolder'];
+		$storageFolder = 'uploads/tx_drblob/storage/';
+		if( !empty( self::$EXTCONF['fileStorageFolder'] ) ) {
+			$storageFolder = self::$EXTCONF['fileStorageFolder'];
 		}
 
-		if( strpos( $storageFolder, '/', 0 ) != 0 ) {
+		if( !t3lib_div::isAbsPath( $storageFolder ) ) {
 			$storageFolder = PATH_site . $storageFolder;
 		}
 
@@ -59,13 +82,210 @@ class tx_drblob_div {
 	
 	
 	/**
-	 * @name		__toString
+	 * This method returns the Folder used to store templates
+	 * (Typically /uploads/tx_drblob/)
+	 *
+	 * @static
+	 * @return String Folder
+	 */
+	public static function getUploadFolder() {
+		return 'uploads/tx_drblob/';
+	}
+	
+	
+	/**
+	 * This method calculates the checksum of the file given as first parameter.
+	 * Therefore it calls the hash-method configured (currently only "md5_file")
+	 *  
+	 * @param String $file Path to file to generate the checksum for
+	 * @return String
+	 * @access public
+	 * @static
+	 */
+	public static function calculateFileChecksum( $file ) {
+		$checksum = md5_file( $file );
+		return $checksum;
+	}
+	
+	
+	/**
+	 * This method allows you to override the default mimetype. The mimetype detected may differ
+	 * from browser to browser.
+	 * Using this API spot you can override the default type depending on the file extension
+	 * 
+	 * @param String	$defaultMimeType	Default mimetype
+	 * @param String	$filename			Filename with file extension
+	 * @return String new mime type
+	 * @access public
+	 * @static
+	 */
+	public static function overrideMimeType( $defaultMimeType, $filename ) {
+		$newMimeType = false;
+		
+			// Adds a hook for post-processing the mime type
+		if (is_array( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dr_blob']['postProcessMimeType'] ) ) {
+			foreach( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dr_blob']['postProcessMimeType'] as $_classRef ) {
+				$_procObj = & t3lib_div::getUserObj( $_classRef );
+				$newMimeType = $_procObj->overrideMimeType( $defaultMimeType, $filename );
+			}
+		}
+		return $newMimeType ? $newMimeType : $defaultMimeType;
+	}
+	
+	
+	/**
+	 * This method generates an techical filename with the suffix .blob for the use in filesystem stored records
+	 * 
+	 * @return String Filename to use
+	 * @access public
+	 * @static
+	 */
+	public static function generateStorageFilename() {
+		return md5(time().rand()).'.blob';
+	}
+
+	
+	/**
+	 * Ensure a initialized self::$EXTCONF variable
+	 *
+	 * @return void
+	 * @static 
+	 * @access private
+	 */
+	private static function extConf_initialize() {
+		if( !sizeof( self::$EXTCONF )){
+			self::$EXTCONF = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dr_blob'] );
+		}
+		return void;
+	}
+	
+	
+	/**
+	 * This method returns the list of valid storage types
+	 * If no valid storage type is selected, the database-type (type=1) will be used.
+	 *
+	 * @return Array
+	 * @static 
+	 * @access public
+	 */
+	public static function extConf_getAllowedStorageTypes() {
+		self::extConf_initialize();
+
+		$rtnArr = array();
+		foreach( self::$EXTCONF['storageType.'] as $key => $value ) {
+			if( $value == 1 ) {
+				$rtnArr[$key] = 1;
+			}
+		}
+		if( !sizeof( $rtnArr ) ) { 
+			$rtnArr['db'] = 1;
+		}
+		return $rtnArr;
+	}
+	
+	
+	/**
+	 * This method tests whether the given storage type is allowed in the extension configuration
+	 * 
+	 * @see extConf_getAllowedStorageTypes
+	 * @param String $type Type to probe for
+	 * @return unknown
+	 * @static 
+	 * @access public
+	 */
+	public static function extConf_isStorageTypeAllowed( $type ) {
+		$validTypes = self::extConf_getAllowedStorageTypes();
+		if( array_key_exists( $type, $validTypes ) ) {
+			if( $validTypes[$type] == 1 ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * Returns the Integer-key of the default storage type
+	 * 	1 = db
+	 *  2 = fs
+	 *  3 = fsus
+	 * 
+	 * @see extConf_getAllowedStorageTypes
+	 * @return Int Default storage type
+	 * @static 
+	 * @access public
+	 */
+	public static function extConf_defaultStorageTypes() {
+		$validTypes = self::extConf_getAllowedStorageTypes();
+		if( $validTypes['db'] == 1 ) {
+			return 1;
+		}
+		if( $validTypes['fs'] == 1 ) {
+			return 2;
+		}
+		if( $validTypes['fsus'] == 1 ) {
+			return 3;
+		}
+	}
+	
+	
+	/**
+	 * Returns the SQL where statement for the category selection in the TCA
+	 *
+	 * @return String SQL-String for the category-selection
+	 * @access public
+	 * @static
+	 */
+	public static function extConf_getCategoryWhereForTCA() {
+		self::extConf_initialize();
+		
+		if( strtolower( self::$EXTCONF['categoryStorage'] ) == 'idlist' ) {
+			return ' AND tx_drblob_category.pid IN( ###PAGE_TSCONFIG_IDLIST### )';
+		} else if ( strtolower( self::$EXTCONF['categoryStorage'] ) == 'storagepid' ) {
+			return ' AND tx_drblob_category.pid = ###STORAGE_PID###';
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * Returns whether the "reset download couter"-funciton is enabled- or not.
+	 *
+	 * @return Bool
+	 * @access public
+	 * @static
+	 */
+	public static function extConf_enableDownloadCounterReset() {
+		self::extConf_initialize();
+		return self::$EXTCONF['enableCounterReset'] ? true : false;
+	}
+
+	
+	/**
+	 * Returns whether the "indexed_search"-integration is enabled- or not.
+	 *
+	 * @return Bool
+	 * @access public
+	 * @static
+	 */
+	public static function extConf_useIndexedSearchIntegration() {
+		self::extConf_initialize();
+		if( t3lib_extMgm::isLoaded( 'indexed_search' ) ) {
+			if( self::$EXTCONF['integration.']['indexed_search'] == 1 ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	/**
 	 * Output the class makes when calling <code>echo $obj;</code>
 	 * 
 	 * @access		public
 	 * @return		String		"tx_drblob_div"
 	 */
-	/*public*/function __toString() {
+	public static function __toString() {
 		return 'tx_drblob_div';
 	}
 };

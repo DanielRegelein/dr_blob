@@ -1,3 +1,28 @@
+2010-05-
+	* Release of version 2.3.0
+
+	* Feature: Added the Storage Type "Unsecure" (Feature #3929)
+	* Feature: Added a static template to generate a RSS 2.0 feed (Feature #7694)
+	* Feature: Added the fields "author" and "author_email" (Feature #6866)
+	* Feature: Preview of downloadable files (Feature #6839)
+	* Feature: Add addToInsertRecords (Feature #4453)
+	* Feature: Added the PageBrower (Feature #3931)
+	* Feature: Enabled Versioning V.2 (Feature #7060)
+	* Minor Feature: Added two registers (one for the author, one for the author's email) (Feature #6866)
+	* Minor Feature: stdWrap for the whole plugin (Feature #6686)
+	* Minor Feature: Added a hook for postprocessing the mime type (Feature #7156)
+
+	* Change: Category Selection (Feature #7621)
+	* Change: Add Configuration option for altSubpartMarker in the Plugin Configuration (Feature #6247)
+	* Change: Changed the records backend mask for the usage with Tabs
+	* Change: workover the update wizard
+	* Change: Allowed multiple frontend groups (Feature #6964)
+	* Change: Created a new reference template (Feature #5781)
+	* Change: Setting backpid from flexform (Feature #5780)
+	* Change: Removed the ico-folder because it makes the extension to heavyweight.
+	
+	* Bugfix: Duplicate entries when combining categories with OR (Issue #7040)
+
 2010-03-14
 	* Release of version 2.2.1
 
@@ -129,17 +154,17 @@
 
 	* Feature: Added the possibility to reset the download counter of an attached file.
 	* Feature: Added specific sort sequence to the list mode.
-	* Small Feature: Added the TypoScript-Marker the define a folder for custom file extension-icons.
-	* Small Feature: Changed the date_stdWrap-Option in TS. date_stdWrap now is a real stdWrap.
-	* Small Feature: Added the field-change-function to the custom TCA fields.
+	* Minor Feature: Added the TypoScript-Marker the define a folder for custom file extension-icons.
+	* Minor Feature: Changed the date_stdWrap-Option in TS. date_stdWrap now is a real stdWrap.
+	* Minor Feature: Added the field-change-function to the custom TCA fields.
 
 	* Change: Migrated the locallang-files to the <T3locallang> XML-data-structure
 	* Change: Moved the definition of the custom input elements to an own class to avoid a naming conflict.
 	* Change: Replaced the XCLASS through a hook on TCEmain
+	* Change: Now hiding the default-language-version of localized records.
 	
 	* Bugfix: Fixed the bug of the file-icons being displayed from the wrong folder (the one from T3 3.x)
 	* Bugfix: Enabled overwritting LocalLang-Labels via the TS Object [...]._LOCAL_LANG.
-	* Now hiding the default-language-version of localized records.
 
 2006-03-21  Daniel Regelein  <Daniel.Regelein@diehl-informatik.de>
 

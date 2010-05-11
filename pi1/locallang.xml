@@ -3,6 +3,9 @@
 	<meta type="array">
 		<description>FE language labels for the Filelist FE plugin &quot;dr_blob&quot;</description>
 		<labelContext type="array">
+			<label index="listHeader"></label>
+			<label index="topHeader"></label>
+			<label index="personalHeader"></label>
 			<label index="list_button_download"></label>
 			<label index="list_button_show"></label>
 			<label index="list_field_uid"></label>
@@ -18,6 +21,7 @@
 			<label index="list_field_tstamp"></label>
 			<label index="list_field_age"></label>
 			<label index="list_field_categories"></label>
+			<label index="list_field_images"></label>
 			<label index="list_field_downloadcount"></label>
 			<label index="list_field_author"></label>
 			<label index="list_field_author_mail"></label>
@@ -36,6 +40,9 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="list_header">Downloads</label>
+			<label index="top_header">Top Downloads</label>
+			<label index="personal_header">My Favorites</label>
 			<label index="list_button_download">download</label>
 			<label index="list_button_show">more</label>
 			<label index="list_field_uid">Record No</label>
@@ -52,6 +59,7 @@
 			<label index="list_field_tstamp">Last Change</label>
 			<label index="list_field_age">Age</label>
 			<label index="list_field_categories">Categories</label>
+			<label index="list_field_images">Images</label>
 			<label index="list_field_downloadcount">Popularity</label>
 			<label index="list_field_downloadcount_wrap">This record has been downloaded %s times</label>
 			<label index="list_field_author">Author</label>

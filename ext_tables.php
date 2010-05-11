@@ -2,7 +2,10 @@
 if ( !defined ('TYPO3_MODE') ) {
 	die ('Access denied.');
 }
-#t3lib_extMgm::addToInsertRecords('tx_drblob_content');
+
+
+include_once( t3lib_extMgm::extPath( 'dr_blob' ) . 'class.tx_drblob_div.php' );
+
 
 $TCA['tx_drblob_content'] = array(
 	'ctrl' => array (
@@ -15,6 +18,7 @@ $TCA['tx_drblob_content'] = array(
 		'transOrigPointerField' => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'languageField' => 'sys_language_uid',
+		'dividers2tabs' => true,
 		'versioningWS' => true,
 		'versioning_followPages' => true,
 		'delete' => 'deleted',	
@@ -31,17 +35,17 @@ $TCA['tx_drblob_content'] = array(
 			'endtime' => 'endtime',
 			'fe_group' => 'fe_group'
 		),
-		'dynamicConfigFile' => t3lib_extMgm::extPath( $_EXTKEY ) . 'tca.php',
-		'iconfile' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'ico/ext_icon_content.gif',
 		'typeicon_column' => 'type',
 		'typeicons' => array (
-			'1' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'ico/ext_icon_content_db.gif',
-			'2' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'ico/ext_icon_content_fs.gif',
-			#'3' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'ico/ext_icon_content_fsus.gif',
-			#'4' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'ico/ext_icon_content_dam.gif',
+			'1' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'res/gfx/tx_drblob_content-1.gif',
+			'2' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'res/gfx/tx_drblob_content-2.gif',
+			'3' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'res/gfx/tx_drblob_content-3.gif',
 		),
+		'iconfile' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'res/gfx/tx_drblob_content.gif',
+		'dynamicConfigFile' => t3lib_extMgm::extPath( $_EXTKEY ) . 'tca.php',
 	),
 );
+
 
 $TCA['tx_drblob_category'] = array(
 	'ctrl' => array (
@@ -55,24 +59,26 @@ $TCA['tx_drblob_category'] = array(
 		'enablecolumns' => array(		
 			'disabled' => 'hidden',	
 		),
+		'iconfile' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'res/gfx/tx_drblob_category.gif',
 		'dynamicConfigFile' => t3lib_extMgm::extPath( $_EXTKEY ) . 'tca.php',
-		'iconfile' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'ico/ext_icon_category.gif',
 	),
 );
 
 
-
-t3lib_div::loadTCA('tt_content');
-$TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1']='layout,select_key,recursive,pages';
-$TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='pi_flexform';
+t3lib_div::loadTCA( 'tt_content' );
+$TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1'] = 'layout,select_key,recursive,pages';
+$TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1'] = 'pi_flexform';
 
 t3lib_extMgm::addPlugin( array( 'LLL:EXT:dr_blob/locallang_tca.xml:tt_content.list_type_pi1', $_EXTKEY . '_pi1' ), 'list_type');
-t3lib_extMgm::addStaticFile( $_EXTKEY, 'static/', 'File List (dr_blob)' );
+t3lib_extMgm::addStaticFile( $_EXTKEY, 'pi1/static/ts/', 'File List' );
+t3lib_extMgm::addStaticFile( $_EXTKEY, 'pi1/static/xml/', 'File List RSS 2.0 Feed' );
 t3lib_extMgm::addPiFlexFormValue( $_EXTKEY.'_pi1', 'FILE:EXT:dr_blob/flexform_ds.xml' );
 t3lib_extMgm::addLLrefForTCAdescr( 'tx_drblob_content','EXT:dr_blob/locallang_csh_txdrblobcontent.xml' );
 t3lib_extMgm::addLLrefForTCAdescr( 'tx_drblob_category','EXT:dr_blob/locallang_csh_txdrblobcategory.xml' );
 t3lib_extMgm::allowTableOnStandardPages( 'tx_drblob_content' );
 
+// add the dr_blob record to the insert records content element
+t3lib_extMgm::addToInsertRecords( 'tx_drblob_content' );
 
 	//Including the class containing the nessesary custom input elements
 require_once( t3lib_extMgm::extPath( $_EXTKEY ) . 'class.tx_drblob_FormFields.php' );
@@ -100,17 +106,9 @@ if ( t3lib_extMgm::isLoaded( 'css_styled_content' ) ) {
 }
 
 
-	//Integration into the extension "t3skin"
-if( t3lib_extMgm::isLoaded( 't3skin' ) ) {
-	$skinPath = 't3skin/';
-} else {
-	$skinPath = '';
-}
-
-
-t3lib_div::loadTCA('pages');
-$TCA['pages']['columns']['module']['config']['items'][] = array('LLL:EXT:' . $_EXTKEY . '/locallang_tca.xml:pages.folderIconsDescr', 'files');
-$ICON_TYPES['files'] = array('icon' => t3lib_extMgm::extRelPath( $_EXTKEY ).'ico/' . $skinPath . 'ext_icon_folder.gif');
+t3lib_div::loadTCA( 'pages' );
+$TCA['pages']['columns']['module']['config']['items'][] = array( 'LLL:EXT:' . $_EXTKEY . '/locallang_tca.xml:pages.folderIconsDescr', 'files' );
+$ICON_TYPES['files'] = array( 'icon' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'res/gfx/' . ( t3lib_extMgm::isLoaded( 't3skin' ) ? 't3skin/' : 'classicskin/' ) . 'pages.gif' );
 
 	
 if (TYPO3_MODE=='BE') {

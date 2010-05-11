@@ -10,6 +10,7 @@
 			<label index="tx_drblob_content.type"></label>
 			<label index="tx_drblob_content.type.db"></label>
 			<label index="tx_drblob_content.type.fs"></label>
+			<label index="tx_drblob_content.type.fsus"></label>
 			<label index="tx_drblob_content.type.dam"></label>
 			<label index="tx_drblob_content.cruser_id"></label>
 			<label index="tx_drblob_content.crdate"></label>
@@ -57,6 +58,7 @@
 			<label index="tt_content.pi_flexform.listOrderDirection.asc"></label>
 			<label index="tt_content.pi_flexform.listOrderDirection.desc"></label>
 			<label index="tt_content.pi_flexform.template_file"></label>
+			<label index="tt_content.pi_flexform.template_subpart"></label>
 			<label index="tt_content.pi_flexform.singlePID"></label>
 			<label index="tt_content.pi_flexform.returnPID"></label>
 		</labelContext>
@@ -64,6 +66,8 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tx_drblob_content">Download</label>
+			<label index="tx_drblob_content.tab.general">General</label>
+			<label index="tx_drblob_content.tab.visibility">Visibility</label>
 			<label index="tx_drblob_content.title">Title</label>
 			<label index="tx_drblob_content.description">Description</label>
 			<label index="tx_drblob_content.type">Record storage type</label>
@@ -107,6 +111,7 @@
 			<label index="tt_content.pi_flexform.whatToDisplay.single">SINGLE (Single item)</label>
 			<label index="tt_content.pi_flexform.whatToDisplay.search">SEARCH (Search items)</label>
 			<label index="tt_content.pi_flexform.whatToDisplay.personal_list">PERSONAL (Personalizable list)</label>
+			<label index="tt_content.pi_flexform.whatToDisplay.personal">PERSONAL (Personalizable list)</label>
 			<label index="tt_content.pi_flexform.whatToDisplay.dummy">DUMMY (No Output)</label>
 			<label index="tt_content.pi_flexform.whatToDisplaypersonal.add">Show &quot;Add to Personal Container&quot; (only in LIST-Mode):</label>
 			<label index="tt_content.pi_flexform.showVFolderTree">Show the Virtual Folder Tree (only in LIST-Mode):</label>
@@ -115,6 +120,7 @@
 			<label index="tt_content.pi_flexform.vFolderTreeInitialState.first">Show the records the first folder</label>
 			<label index="tt_content.pi_flexform.vFolderTreeInitialState.none">Don't show any records initially</label>
 			<label index="tt_content.pi_flexform.limit">Number of items to list:</label>
+			<label index="tt_content.pi_flexform.usePageBrowser">Enable the PageBrowser for this list</label>
 			<label index="tt_content.pi_flexform.listOrderBy">&quot;Order by&quot; this field:</label>
 			<label index="tt_content.pi_flexform.listOrderBy.title">Title</label>
 			<label index="tt_content.pi_flexform.listOrderBy.createdate">Date of the creation</label>
@@ -129,8 +135,12 @@
 			<label index="tt_content.pi_flexform.listOrderDirection.asc">Ascending</label>
 			<label index="tt_content.pi_flexform.listOrderDirection.desc">Descending</label>
 			<label index="tt_content.pi_flexform.template_file">Template file:</label>
+			<label index="tt_content.pi_flexform.template_subpart">Template subpart:</label>
 			<label index="tt_content.pi_flexform.singlePID">Page where to display single items:</label>
 			<label index="tt_content.pi_flexform.returnPID">Page where to return to:</label>
+			<label index="tt_content.pi_flexform.all.usets">Use TypoScript setting</label>
+			<label index="tt_content.pi_flexform.all.no">No</label>
+			<label index="tt_content.pi_flexform.all.yes">Yes</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

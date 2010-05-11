@@ -29,7 +29,7 @@
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  * @package 	dr_blob
  * @filesource	class.tx_drblob_tcemain.php
- * @version		2.2.0
+ * @version		2.3.0
  * @since 		2.0.1, 2009-02-24
  */
 class tx_drblob_befunc {
@@ -42,10 +42,7 @@ class tx_drblob_befunc {
 	 */
 	function displayWarningMessages_postProcess( &$warning ) {
 
-		$extConf = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dr_blob'] );
-
-		if( $extConf['fileStorageLocation'] == 'Both' || $extConf['fileStorageLocation'] == 'FileSystem' ) {
-		
+		if( tx_drblob_div::extConf_isStorageTypeAllowed( 'fs' ) ) {
 			$folder = tx_drblob_div::getStorageFolder();
 			
 			$warning['tx_drblob_uploadFolderNotWriteable'] = sprintf(
@@ -60,7 +57,6 @@ class tx_drblob_befunc {
 				if( @is_writeable( $folder ) ) {
 					unset( $warning['tx_drblob_uploadFolderNotWriteable'] );
 				}
-
 				
 				//Check whether the storage folder is accessible via web
 				if( t3lib_div::isFirstPartOfStr( $folder, PATH_site ) ) {

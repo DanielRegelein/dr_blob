@@ -23,88 +23,283 @@
 ***************************************************************/
 class ext_update {
 
+	var $update = array(
+		'fixEmptyChecksum' => array(),
+		'fixEmptyAuthor' => array(),
+		'fixStaticTemplates' => array()
+	);
+	
+	
+	var $ll = 'LLL:EXT:dr_blob/locallang_wiz.xml:updater.';
+
+
 	/**
 	 * Main function, returning the HTML content of the module
 	 *
 	 * @return	string		HTML
 	 */
 	function main() {
-		$content = null;
-		$content = $this->update_EmptyChecksum();
-		return $content;
-	}
-	
-
-	/**
-	 * Add the checksum for all records
-	 *
-	 * @return String Content of the update interface
-	 */
-	function update_EmptyChecksum() {
 		
-		$content = null;
-		$rslt = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'uid, type, blob_data', 
-			'tx_drblob_content', 
-			'`deleted` = 0 AND `blob_size` > 0 AND `blob_checksum` = \'\' '
+			//Query for updateable records for rows without a checksum
+		$resChecksum = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'uid, title, type, blob_data', 
+			tx_drblob_div::$CONTENT_TABLE, 
+			'`deleted` = 0 AND `type` IN (1,2) AND `blob_size` > 0 AND `blob_checksum` = \'\' '
 		);
-		if ( $rslt && ( $numRows = $GLOBALS['TYPO3_DB']->sql_num_rows( $rslt ) ) ) {
-		
-			if (!t3lib_div::_GP('do_update')) {
-				$content .= '<p>Found ' . $numRows . ' record(s) containing a file but no checksum</p><br /><br /><br />';
-				
-				$content .= '<fieldset>';
-					$content .= '<legend>Do you really want to update there records?</legend>';
-					$onClick = "document.location='".t3lib_div::linkThisScript(array('do_update' => 1))."'; return false;";
-					$content .= '<form action=""><input type="submit" value="Perform update" onclick="'.htmlspecialchars($onClick).'" /></form>';
-				$content .= '</fieldset>';
-			} else {
-				//update code here
-				
-				while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rslt ) ) {
-					$content .= '<br />Updating record [ uid=' . $row['uid'] . ', type=' . $row['type'] . ' ] ... ';
-					$hash = null;
-					$blobData = null;
-					
-					switch( $row['type'] ) {
-						case '1':
-							$blobData = stripslashes( $row['blob_data'] );
-						break;
-						case '2':
-							$file = tx_drblob_div::getStorageFolder() . $row['blob_data'];
-							$fp = fopen( $file, 'r' );
-								$blobData = fread( $fp, filesize ( $file ) );
-							fclose( $fp );
-							$blobData = stripslashes( $blobData );
-						break;
-						default:
-							$content .= 'Error: wrong type';
-						break;
-					}
-					
-					if( $blobData ){
-						$hash = md5( $blobData );
-						$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-							'tx_drblob_content',
-							'uid=\'' . $row['uid'] . '\'',
-							array( 'blob_checksum' => $hash )
-						);
-					} else {
-						$res = false;
-					}
-					$content .= ( $res ? 'success [ hash=' . $hash . ' ]' : 'Error while updating record' );
-				}
-				
+		if ( $resChecksum && $GLOBALS['TYPO3_DB']->sql_num_rows( $resChecksum ) ) {
+			while( $rowChecksum = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $resChecksum ) ) {
+				$this->update['fixEmptyChecksum'][] = $rowChecksum;
 			}
-		
-		} else {
-			$content .= 'Nothing to update';
+		}
+
+			//Query for updateable records for rows without a value for the author-field
+		$resAuthor = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'uid,title,cruser_id', 
+			tx_drblob_div::$CONTENT_TABLE, 
+			'`deleted` = 0 AND `author` = \'\' '
+		);
+		if ( $resAuthor && $GLOBALS['TYPO3_DB']->sql_num_rows( $resAuthor ) ) {
+			while( $rowAuthor = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $resAuthor ) ) {
+				$this->update['fixEmptyAuthor'][] = $rowAuthor;
+			}
 		}
 		
-		return $content;
+			//Query for updateable records for TS-templates that include the old static tmpl path
+		$resTStmpl = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 
+			'uid,pid,title,include_static_file', 
+			'sys_template',
+			'deleted=0 AND include_static_file LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%EXT:dr_blob/static/%', 'sys_template' )
+		);
+		if( $resTStmpl && $GLOBALS['TYPO3_DB']->sql_num_rows( $resTStmpl ) ) {
+			while( $rowTStmpl = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $resTStmpl ) ) {
+				$this->update['fixStaticTemplates'][] = $rowTStmpl;
+			}
+		}
+		
+		$out = '';
+		if (t3lib_div::_GP('do_update')) {
+			$out .= '<a href="' . t3lib_div::linkThisScript(array('do_update' => '', 'func' => '')) . '">' . $GLOBALS['LANG']->sL($this->ll . 'back') . '</a><br>';
+
+			$func = trim(t3lib_div::_GP('func'));
+			if (method_exists($this, $func)) {
+				$out .= '
+				<div style="padding:15px 15px 20px 0;">
+				<div class="typo3-message message-ok">
+   				<div class="message-header">' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_wiz.xml:updater.updateresults') . '</div>
+  				<div class="message-body">
+				' . $this->$func() . '
+				</div>
+				</div></div>';
+			} else {
+				$out .= '
+				<div style="padding:15px 15px 20px 0;">
+				<div class="typo3-message message-error">
+   					<div class="message-body">ERROR: ' . $func . '() not found</div>
+   				</div>
+   				</div>';
+			}
+		} else {
+			$out .= '<a href="' . t3lib_div::linkThisScript(array('do_update' => '', 'func' => '')) . '">' . $GLOBALS['LANG']->sL($this->ll . 'reload') . '
+			<img style="vertical-align:bottom;" ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/refresh_n.gif', 'width="18" height="16"') . '></a><br>';
+
+			$out .= $this->displayWarning();
+
+			$out .= '<h3>' . $GLOBALS['LANG']->sL($this->ll . 'actions') . '</h3>';
+
+				// fixEmptyChecksum
+			$out .= $this->displayUpdateOption( 'fixEmptyChecksum', count( $this->update['fixEmptyChecksum'] ), 'update_fixEmptyChecksum' );
+
+				// fixEmptyAuthor
+			$out .= $this->displayUpdateOption( 'fixEmptyAuthor', count( $this->update['fixEmptyAuthor'] ),'update_fixEmptyAuthor' );
+
+				// fixStaticTemplates
+			$out .= $this->displayUpdateOption( 'fixStaticTemplates', count( $this->update['fixStaticTemplates'] ),'update_fixStaticTemplates' );
+			
+		}
+
+		return $out;
+	}
+
+
+	function displayUpdateOption( $k, $count, $func ) {
+
+		$msg = $GLOBALS['LANG']->sL( $this->ll . 'msg_' . $k ) . ' ';
+		$msg .= '<br /><strong>' . sprintf( $GLOBALS['LANG']->sL( $this->ll . 'foundMsg_' . $k ), $count ) . '</strong>';
+		
+		
+		if ($count == 0) {
+			$i = 'ok';
+
+		} else {
+			$i = 'warning2';
+		}
+		$msg .= ' <img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_' . $i . '.gif', 'width="18" height="16"') . ' />';
+
+		if ($count) {
+			$msg .= '<p style="margin:5px 0;">' . $GLOBALS['LANG']->sL($this->ll . 'question_' . $k) . '<p>';
+			$msg .=  '<p style="margin-bottom:10px;"><em>'.$GLOBALS['LANG']->sL($this->ll . 'questionInfo_' . $k) . '</em><p>';
+			$msg .= $this->getButton($func);
+		} else {
+			$msg .= '<br />' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_wiz.xml:updater.nothingtodo');
+
+		}
+
+		$out = $this->wrapForm($msg,$GLOBALS['LANG']->sL($this->ll . 'lbl_' . $k));
+		$out .= '<br /><br />';
+
+		return $out;
+	}
+
+
+	function displayWarning() {
+		$out = '
+		<div style="padding:15px 15px 20px 0;">
+			<div class="typo3-message message-warning">
+   				<div class="message-header">' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_wiz.xml:updater.warningHeader') . '</div>
+  				<div class="message-body">
+					' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_wiz.xml:updater.warningMsg') . '
+				</div>
+			</div>
+		</div>';
+
+		return $out;
+	}
+
+
+	function wrapForm($content, $fsLabel) {
+		$out = '<form action="">
+			<fieldset style="background:#f4f4f4;margin-right:15px;">
+			<legend>' . $fsLabel . '</legend>
+			' . $content . '
+
+			</fieldset>
+			</form>';
+		return $out;
+	}
+
+
+	function getButton($func, $lbl = 'DO IT') {
+
+		$params = array('do_update' => 1, 'func' => $func);
+
+		$onClick = "document.location='" . t3lib_div::linkThisScript($params) . "'; return false;";
+		$button = '<input type="submit" value="' . $lbl . '" onclick="' . htmlspecialchars($onClick) . '">';
+
+		return $button;
+	}
+
+
+	
+	/*
+	 * 
+	 * Update procedures
+	 * 
+	 */
+
+	
+	/**
+	 * This method updates sys_template-records that try to include static templates from
+	 * the old path.
+	 *
+	 * @return String Successmessage
+	 * @access private
+	 */
+	private function update_fixStaticTemplates() {
+		$msg = array();
+		foreach( $this->update['fixStaticTemplates'] as $ts) {
+			$oldincFile = $ts['include_static_file'];
+
+			$s = array( 'EXT:dr_blob/static' );
+			$r = array( 'EXT:dr_blob/pi/static/ts' );
+			$newincfile = str_replace( $s, $r, $oldincFile );
+			$fields_values = array( 'include_static_file' => $newincfile );
+			if ( $GLOBALS['TYPO3_DB']->exec_UPDATEquery( 'sys_template', 'uid=' . $ts['uid'], $fields_values ) ) {
+				$msg[] = 'Updated template "' . $ts['title'] . '" uid: ' . $ts['uid'] . ', page: ' . $ts['pid'];
+			}
+		}
+		return implode( '<br />', $msg );
 	}
 	
 
+	function update_fixEmptyChecksum() {
+		$msg = array();
+		foreach( $this->update['fixEmptyChecksum'] as $row ) {
+			
+			$hash = null;
+			$blobData = null;
+			
+			switch( $row['type'] ) {
+				case '1':
+					$blobData = stripslashes( $row['blob_data'] );
+				break;
+				case '2':
+					$file = tx_drblob_div::getStorageFolder() . $row['blob_data'];
+					$fp = fopen( $file, 'r' );
+						$blobData = fread( $fp, filesize ( $file ) );
+					fclose( $fp );
+					$blobData = stripslashes( $blobData );
+				break;
+				default:
+					$content .= 'Error: wrong type';
+				break;
+			}
+			
+			//Calculating hash
+			$hash = md5( $blobData );
+			
+			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+				tx_drblob_div::$CONTENT_TABLE, 
+				'uid=' . $row['uid'], 
+				array( 
+					'blob_checksum' => $hash 
+				)
+			) ;
+			if ( $res ) {
+				$msg[] = 'Updated record [ uid=' . $row['uid'] . ', title=' . $row['title'] . ', type=' . $row['type'] . ']';
+			}
+		}
+		return implode('<br />', $msg);
+	}
+
+	
+	function update_fixEmptyAuthor() {
+		$msg = array();
+		$beUserCache = array();
+		foreach ( $this->update['fixEmptyAuthor'] as $row ) {
+			
+			if( !array_key_exists( $row['cruser_id'], $beUserCache ) ) {
+				$rsltUser = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'uid,realName,email',
+					'be_users',
+					'uid=\'' . $row['cruser_id'] . '\''
+				);
+				if( $rsltUser && $GLOBALS['TYPO3_DB']->sql_num_rows( $rsltUser ) ) {
+					$rowUser = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rsltUser );
+					$beUserCache[$rowUser['uid']] = $rowUser;
+				}
+			}
+			
+			if( array_key_exists( $row['cruser_id'], $beUserCache ) ) {
+				
+				$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+					tx_drblob_div::$CONTENT_TABLE, 
+					'uid=' . $row['uid'], 
+					array( 
+						'author' => $beUserCache[$rowUser['uid']]['realName'],
+						'author_email' => $beUserCache[$rowUser['uid']]['email']
+					)
+				) ;
+				if ( $res ) {
+					$msg[] = 'Updated record [ uid=' . $row['uid'] . ', title=' . $row['title'] . ', author=' . $beUserCache[$rowUser['uid']]['realName'] . ' ]';
+				}
+			} else {
+				$msg[] = 'Skipped record [ uid=' . $row['uid'] . ', title=' . $row['title'] . ' ]: no author found';
+			}
+		}
+		return implode( '<br />', $msg );
+	}
+	
+	
 	/**
 	 * Checks how many rows are found and returns true if there are any
 	 * (this function is called from the extension manager)
@@ -113,15 +308,30 @@ class ext_update {
 	 * @return	boolean
 	 */
 	function access($what = 'all') {
+		return true;
+		
 		if ($what == 'all') {
 			if( is_object( $GLOBALS['TYPO3_DB'] ) ) {
-				$testres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				
+				//Testcase 01 - Check for records without checksum
+				$resChecksum = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid', 
-					'tx_drblob_content', 
+					tx_drblob_div::$CONTENT_TABLE, 
 					'`deleted` = 0 AND `blob_size` > 0 AND `blob_checksum` = \'\' '
 				);
 
-				if ( $testres && $GLOBALS['TYPO3_DB']->sql_num_rows( $testres ) ) {
+				if ( $resChecksum && $GLOBALS['TYPO3_DB']->sql_num_rows( $resChecksum ) ) {
+					return true;
+				}
+				
+				//Testcase 02 - Check for records without author
+				$resAuthor = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					'uid', 
+					tx_drblob_div::$CONTENT_TABLE, 
+					'`author` <> \'\' '
+				);
+
+				if ( $resAuthor && !$GLOBALS['TYPO3_DB']->sql_num_rows( $resAuthor ) ) {
 					return true;
 				}
 			}

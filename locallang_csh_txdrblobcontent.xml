@@ -63,8 +63,12 @@
 			<label index="title.description">Enter a title for this record</label>
 			<label index="title.details">The value entered here won't be the filename that is used when downloading the file. This is a mandatory field, so it has to be filled.</label>
 			<label index="_title.seeAlso">tx_drblob_content:blob_name</label>
-			<label index="cruser_id.description">Select the user being displayed as author of the record</label>
-			<label index="cruser_id.details">Normaly the author of a record is set automatilly, but in some cases it might be useful to be able to change this value, for example when you are creating records instead of your collegue</label>
+			<label index="author.description">Enter an author for this record</label>
+			<label index="author.details">This field stores the person in charge for this record to be displayed for website visitors. If not filled in a translated record, the author of the default record will be used</label>
+			<label index="_author.seeAlso">tx_drblob_content:author_email</label>
+			<label index="author_email.description">Enter this record's author's email address</label>
+			<label index="author_email.details">This field stores the email address of the person in charge for this record to be displayed for website visitors. If not filled in a translated record, the value of the default record will be used</label>
+			<label index="_author_email.seeAlso">tx_drblob_content:author</label>
 			<label index="t3ver_label.description">Version-Flag of the current record</label>
 			<label index="t3ver_label.details">This field shows up the title of the version of the current file.</label>
 			<label index="type.description">Determine whether to store the file in the database or in the filesystem of the server</label>
