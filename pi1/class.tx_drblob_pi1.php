@@ -1139,23 +1139,6 @@ class tx_drblob_pi1 extends tslib_pibase {
 		}
 		return $arrCat;
 	}
-	
-	
-	/**
-	 * Returns the fileextension of the given Filename.
-	 * 
-	 * @param 	String 	$filename
-	 * @return 	String 	Extension
-	 * @access 	private
-	 */
-	private function getFileExtension( $fileName ) {
-		if ( !empty( $fileName ) ) {
-			$tmp = t3lib_div::split_fileref( $fileName );
-			return $tmp['realFileext'];
-		} else {
-			return '';
-		}
-	}
 
 	
 	/**
@@ -1207,7 +1190,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 		}
 			
 		$row = $this->internal['currentRow'];
-		$row['blob_filext'] = $this->getFileExtension( $row['blob_name'] );
+		$row['blob_filext'] = tx_drblob_div::getFileExtension( $row['blob_name'] );
 
 		$this->local_cObj->start( $row, tx_drblob_div::$CONTENT_TABLE );
 		

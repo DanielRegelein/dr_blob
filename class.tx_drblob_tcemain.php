@@ -155,7 +155,18 @@ class tx_drblob_tcemain {
 				$fieldArray['blob_checksum'] = tx_drblob_div::calculateFileChecksum( $fileArray['tmp_name'] );
 				$fieldArray['blob_name'] = $fileArray['name'];
 				$fieldArray['blob_size'] = $fileArray['size'];
-				$fieldArray['blob_type'] = tx_drblob_div::overrideMimeType( $fileArray['type'], $fileArray['name'] );
+				$fieldArray['blob_type'] = $fileArray['type'];
+				
+					//This hook can be used to manipulate the file's name as well as its mimetype in the moment the file
+					//is stored. (Compare to a similar hook that may manipulate the file's name in the moment it is
+					//downloaded.
+					//The mimetype could be overidden to avoid running into the IE enctype bug.
+				if (is_array( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dr_blob']['postProcessFileAttributs'] ) ) {
+					foreach( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dr_blob']['postProcessFileAttributs'] as $_classRef ) {
+						$_procObj = & t3lib_div::getUserObj( $_classRef );
+						$_procObj->postProcessFileAttributs( $fieldArray['blob_type'], $fieldArray['blob_name'] );
+					}
+				}
 			}
 		}
 	}

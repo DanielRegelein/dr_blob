@@ -28,7 +28,7 @@
  * 
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  * @package 	dr_blob
- * @filesource	class.tx_drblob_tcemain.php
+ * @filesource	class.tx_drblob_befunc.php
  * @version		2.3.0
  * @since 		2.0.1, 2009-02-24
  */

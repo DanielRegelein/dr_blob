@@ -31,7 +31,7 @@
  * @version 2.3.0
  * @author Daniel Regelein <daniel.regelein@diehl-informatik.de>
  */
-class tx_drblob_div {
+abstract class tx_drblob_div {
 	
 	public static $CONTENT_TABLE = 'tx_drblob_content';
 	
@@ -109,31 +109,6 @@ class tx_drblob_div {
 	
 	
 	/**
-	 * This method allows you to override the default mimetype. The mimetype detected may differ
-	 * from browser to browser.
-	 * Using this API spot you can override the default type depending on the file extension
-	 * 
-	 * @param String	$defaultMimeType	Default mimetype
-	 * @param String	$filename			Filename with file extension
-	 * @return String new mime type
-	 * @access public
-	 * @static
-	 */
-	public static function overrideMimeType( $defaultMimeType, $filename ) {
-		$newMimeType = false;
-		
-			// Adds a hook for post-processing the mime type
-		if (is_array( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dr_blob']['postProcessMimeType'] ) ) {
-			foreach( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dr_blob']['postProcessMimeType'] as $_classRef ) {
-				$_procObj = & t3lib_div::getUserObj( $_classRef );
-				$newMimeType = $_procObj->overrideMimeType( $defaultMimeType, $filename );
-			}
-		}
-		return $newMimeType ? $newMimeType : $defaultMimeType;
-	}
-	
-	
-	/**
 	 * This method generates an techical filename with the suffix .blob for the use in filesystem stored records
 	 * 
 	 * @return String Filename to use
@@ -142,6 +117,24 @@ class tx_drblob_div {
 	 */
 	public static function generateStorageFilename() {
 		return md5(time().rand()).'.blob';
+	}
+	
+	
+	/**
+	 * Returns the fileextension of the given Filename.
+	 * 
+	 * @param 	String 	$filename
+	 * @return 	String 	Extension
+	 * @access 	public
+	 * @static 
+	 */
+	public static function getFileExtension( $fileName ) {
+		if ( !empty( $fileName ) ) {
+			$tmp = t3lib_div::split_fileref( $fileName );
+			return $tmp['realFileext'];
+		} else {
+			return '';
+		}
 	}
 
 	
