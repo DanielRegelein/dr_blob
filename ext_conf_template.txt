@@ -10,14 +10,14 @@ reallyDeleteFiles = 0
   # cat=basic//40; type=boolean; label="IndexedSearch Integration": This option determines whether to enable integration with the indexed_search - Extension. See the manual for more information.
 integration.indexed_search = 0
 
-  #cat=storage//110;type=boolean;label="Storage 'Secure Database'": Enable the storage type "Database" (if no storage type is selected, this one will be used)
+  #cat=basic//101;type=boolean;label="Storage 'Secure Database'": Enable the storage type "Database" (if no storage type is selected, this one will be used)
 storageType.db = 1
 
-  #cat=storage//110;type=boolean;label="Storage 'Secure Filesystem'": Enable the storage type "(secure) Filesystem"
+  #cat=basic//102;type=boolean;label="Storage 'Secure Filesystem'": Enable the storage type "(secure) Filesystem"
 storageType.fs = 
 
-  #cat=storage//110;type=boolean;label="Storage 'Unsecure Filesystem'": Enable the storage type "(unsecure) Filesystem"
+  #cat=basic//103;type=boolean;label="Storage 'Unsecure Filesystem'": Enable the storage type "(unsecure) Filesystem"
 storageType.fsus =  
 
-  #cat=storage//120;type=text;label="File System Storage Folder": Select the folder where to store the files if filesystem storage is enabled.
+  #cat=basic//120;type=text;label="File System Storage Folder": Select the folder where to store the files if filesystem storage is enabled.
 fileStorageFolder = uploads/tx_drblob/storage/
