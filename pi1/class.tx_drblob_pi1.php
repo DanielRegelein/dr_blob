@@ -775,30 +775,36 @@ class tx_drblob_pi1 extends tslib_pibase {
 	 * @return	array		If record is found, an array. Otherwise false.
 	 */
 	function pi_getRecord($table,$uid,$checkPage=0,$listFields=null) {
-		global $TCA;
-		if( empty( $listFields ) ) {
-			$listFields = $this->pi_listFields;
-		}
-		$uid = intval($uid);
-		if (is_array($TCA[$table]))	{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($listFields, $table, 'uid='.intval($uid).$GLOBALS['TSFE']->sys_page->enableFields($table));
-			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-				$GLOBALS['TSFE']->sys_page->versionOL($table,$row);
+		if( $table == tx_drblob_div::$CONTENT_TABLE ) {
+			global $TCA;
+			if( empty( $listFields ) ) {
+				$listFields = $this->pi_listFields;
+			}
+			$uid = intval($uid);
+			if (is_array($TCA[$table]))	{
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($listFields, $table, 'uid='.intval($uid).$GLOBALS['TSFE']->sys_page->enableFields($table));
+				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-
-				if (is_array($row))	{
-					if ($checkPage)	{
-						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid='.intval($row['pid']).$GLOBALS['TSFE']->sys_page->enableFields('pages'));
-						if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
-							return $row;
+				if ($row)	{
+					$GLOBALS['TSFE']->sys_page->versionOL($table,$row);
+					if (is_array($row))	{
+						if ($checkPage)	{
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid='.intval($row['pid']).$GLOBALS['TSFE']->sys_page->enableFields('pages'));
+							$numRows = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+							$GLOBALS['TYPO3_DB']->sql_free_result($res);
+							if ($numRows>0)	{
+								return $row;
+							} else {
+								return 0;
+							}
 						} else {
-							return 0;
+							return $row;
 						}
-					} else {
-						return $row;
 					}
 				}
 			}
+		} else {
+			return parent::pi_getRecord( $table, $uid, $checkPage );
 		}
 	}
 	
@@ -1212,7 +1218,8 @@ class tx_drblob_pi1 extends tslib_pibase {
 		$arrContentMarker['###BLOB_FILETYPE###'] 		= $this->local_cObj->stdWrap( $row['blob_type'], $lConf['filetype_stdWrap.'] );
 		$arrContentMarker['###BLOB_FILEICON###'] 		= $this->local_cObj->stdWrap( $row['blob_filext'], $lConf['fileicon_stdWrap.'] );
 		$arrContentMarker['###BLOB_CATEGORIES###'] 		= $this->local_cObj->stdWrap( $tmp['lstCat'], $lConf['category_stdWrap.'] );
-		$arrContentMarker['###BLOB_IMAGES###'] 			= $this->local_cObj->stdWrap( $row['images'], $lConf['images_stdWrap.'] );			
+		$arrContentMarker['###BLOB_IMAGES###'] 			= $this->local_cObj->stdWrap( $row['images'], $lConf['images_stdWrap.'] );
+		$arrContentMarker['###BLOB_ISFILEATTACHED###']	= $this->local_cObj->stdWrap( (int)$this->blobExists( $row['uid'] ), $lConf['isFileAttached_stdWrap.'] );
 		#die( '###BLOB_PREVIEW### autogeneration mit einem IMAGE-Object, target=blobfile' );
 		
 		

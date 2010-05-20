@@ -1,5 +1,5 @@
 ###
-# This is the default TS-setup for dr_blob, Version 2.2.0
+# This is the default TS-setup for dr_blob, Version 2.3.0
 ###
 plugin.tx_drblob_pi1 = USER
 plugin.tx_drblob_pi1 {
@@ -123,8 +123,21 @@ plugin.tx_drblob_pi1 {
         imgObjNum = 1
         1 = IMAGE
         1.file.import.current = 1
-        1.file.maxW = 50
+        1.file.maxW = {$plugin.tx_drblob.listMaxW}px
+        1.file.maxH = {$plugin.tx_drblob.listMaxH}px
       }
+    }
+    
+    isFileAttached_stdWrap {
+      setContentToCurrent = 1
+      cObject = COA
+      cObject.10 = TEXT
+      cObject.10.value = tx-drblob-noFileAttached
+      cObject.10.if.isFalse.current = 1
+      cObject.20 = TEXT
+      cObject.20.value = tx-drblob-fileAttached
+      cObject.20.if.isTrue.current = 1
+      wrap = class="|"
     }
     
     moreLink_stdWrap {
@@ -136,7 +149,7 @@ plugin.tx_drblob_pi1 {
         ATagParams = class="tx_drblob_morelink"
       }
     }
-    
+
     title_stdWrap {
       wrap = |
     }
@@ -275,8 +288,21 @@ plugin.tx_drblob_pi1 {
         imgObjNum = 1
         1 = IMAGE
         1.file.import.current = 1
-        1.file.maxW = 50
+        1.file.maxW = {$plugin.tx_drblob.topMaxW}px
+        1.file.maxH = {$plugin.tx_drblob.topMaxH}px
       }
+    }
+    
+    isFileAttached_stdWrap {
+      setContentToCurrent = 1
+      cObject = COA
+      cObject.10 = TEXT
+      cObject.10.value = tx-drblob-noFileAttached
+      cObject.10.if.isFalse.current = 1
+      cObject.20 = TEXT
+      cObject.20.value = tx-drblob-fileAttached
+      cObject.20.if.isTrue.current = 1
+      wrap = class="|"
     }
     
     moreLink_stdWrap {
@@ -403,8 +429,21 @@ plugin.tx_drblob_pi1 {
         imgObjNum = 1
         1 = IMAGE
         1.file.import.current = 1
-        1.file.maxW = 50
+        1.file.maxW = {$plugin.tx_drblob.personalMaxW}px
+        1.file.maxH = {$plugin.tx_drblob.personalMaxH}px
       }
+    }
+
+    isFileAttached_stdWrap {
+      setContentToCurrent = 1
+      cObject = COA
+      cObject.10 = TEXT
+      cObject.10.value = tx-drblob-noFileAttached
+      cObject.10.if.isFalse.current = 1
+      cObject.20 = TEXT
+      cObject.20.value = tx-drblob-fileAttached
+      cObject.20.if.isTrue.current = 1
+      wrap = class="|"
     }
     
     moreLink_stdWrap {
@@ -544,8 +583,21 @@ plugin.tx_drblob_pi1 {
         imgObjNum = 1
         1 = IMAGE
         1.file.import.current = 1
-        1.file.maxW = 250px
+        1.file.maxW = {$plugin.tx_drblob.singleMaxW}px
+        1.file.maxH = {$plugin.tx_drblob.singleMaxH}px
       }
+    }
+
+    isFileAttached_stdWrap {
+      setContentToCurrent = 1
+      cObject = COA
+      cObject.10 = TEXT
+      cObject.10.value = tx-drblob-noFileAttached
+      cObject.10.if.isFalse.current = 1
+      cObject.20 = TEXT
+      cObject.20.value = tx-drblob-fileAttached
+      cObject.20.if.isTrue.current = 1
+      wrap = class="|"
     }
     
 	version_stdWrap {
@@ -570,36 +622,26 @@ plugin.tx_drblob_pi1 {
   }
   
   _CSS_DEFAULT_STYLE (
-    .tx_drblob_list {}
-    th.tx_drblob_list-head {}
-    td.tx_drblob_list-row1{}
-    td.tx_drblob_list-row2{}
-    
-    div.tx_drblob_list-vFolderTree { float:left; }
-    
-    .tx_drblob_top {}
-    th.tx_drblob_top-head {}
-    th.tx_drblob_top-foot {}
-    td.tx_drblob_top-row1 {}
-    td.tx_drblob_top-row2 {}
-    
-    .tx_drblob_personal {}
-    th.tx_drblob_personal-head {}
-    th.tx_drblob_personal-foot {}
-    td.tx_drblob_personal-row1 {}
-    td.tx_drblob_personal-row2 {}
-    .tx_drblob_personal-btn { margin-top: 15px; }
-    
-    .tx_drblob_single {}
+    .tx-drblob-noFileAttached { display: none; }
+    .tx-drblob-fileAttached { display: inline; }
+    .tx_drblob_list-vFolderTree { float: left; }
   )
 }
 
+
+ /********************************************************************************
+  * Configuration for the "Record Insert" Mode
+  */
 tx_drblob_content < plugin.tx_drblob_pi1
 tx_drblob_content {
   code = single
   singleView.altSubpartMarker = TEMPLATE_SINGLE_RECORDINSERT
 }
 
+
+ /********************************************************************************
+  * Integration into linkhandler Extension
+  */
 plugin.tx_linkhandler.tx_drblob_content {
   forceLink = 0
   parameter = {$plugin.tx_drblob.downloadPID}

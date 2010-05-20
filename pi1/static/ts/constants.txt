@@ -14,4 +14,24 @@ plugin.tx_drblob {
   downloadPID = 0
     #cat=plugin.tx_drblob/40; type=text; label=Folder containing the filetype-icons
   fileExtIconFolder = typo3/sysext/cms/tslib/media/fileicons/
+
+	# cat=plugin.tx_drblob/dims/10; type=int+; label=Maximum Width of an image in the single mode
+  singleMaxW = 250
+    # cat=plugin.tx_drblob/dims/20; type=int+; label=Maximum Height of an image in the single mode
+  singleMaxH = 250
+
+    # cat=plugin.tx_drblob/dims/30; type=int+; label=Maximum Width of an image in the personal mode
+  personalMaxW = 80
+    # cat=plugin.tx_drblob/dims/40; type=int+; label=Maximum Height of an image in the personal mode
+  personalMaxH = 80
+
+    # cat=plugin.tx_drblob/dims/50; type=int+; label=Maximum Width of an image in the top mode
+  topMaxW = 80
+    # cat=plugin.tx_drblob/dims/60; type=int+; label=Maximum Height of an image in the top mode
+  topMaxH = 80
+
+    # cat=plugin.tx_drblob/dims/70; type=int+; label=Maximum Width of an image in the list mode
+  listMaxW = 50
+    # cat=plugin.tx_drblob/dims/80; type=int+; label=MMaximumax Height of an image in the list mode
+  listMaxH = 50
 }
