@@ -203,7 +203,7 @@ $TCA['tx_drblob_content'] = array (
 		),
 		'download_count' => array(
 			'exclude' => 1,
-			'l10n_mode' => 'mergeIfNotBlank',
+			'l10n_mode' => 'noCopy',
 			'label' => 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.download_count',
 			'config' => array (
 				'type' => ( tx_drblob_div::extConf_enableDownloadCounterReset() ? 'user' : 'passthrough' ),
