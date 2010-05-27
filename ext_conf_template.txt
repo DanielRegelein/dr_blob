@@ -1,4 +1,4 @@
-  # cat=basic//10; type=options[All,IDList,StoragePID]; label="Accessing category records": Set the way you want to access File Categories. Select "StoragePID" for using the "General record storage page", and "IDList" to configure multiple Sysfolders using the Page-TS-config. Use "All" to disable this show all categories
+  # cat=basic//10; type=options[All,IDList,StoragePID]; label="Accessing category records": Set the way you want to access File Categories. Select "StoragePID" for using the "General record storage page", and "IDList" to configure multiple Sysfolders using the Page-TS-config. Use "All" to disable this and to show all categories
 categoryStorage = StoragePID
 
   # cat=basic//20; type=boolean; label="Enable Download-Counter Reset": This option determines whether the Reset-Function for the Download-Counter is enabled- or not. Using this function can be restricted to special BE Groups through exclude fields. See the manual for more information.

@@ -1,3 +1,9 @@
+2010-05-27
+	* Release of version 2.3.1
+	
+	* Bugfix: Update-wizard enters the wrong author (Issue #7952)
+	* Bugfix: Trying to access a deleted file is not handled correctly (Issue #7953)
+
 2010-05-25
 	* Release of version 2.3.0
 

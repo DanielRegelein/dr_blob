@@ -862,168 +862,177 @@ class tx_drblob_pi1 extends tslib_pibase {
 		$rowUID = ( $uid ? $uid : intval( $this->piVars['downloadUid'] ) );
 
 		if( empty( $rowUID ) ) {
-			header( $TYPO3_CONF_VARS['FE']['pageNotFound_handling_statheader'] );
-			exit;
+			$GLOBALS['TSFE']->pageNotFoundAndExit( 'The requested file does not exist!' );
 		}
 		
-		$this->internal['currentTable'] = $this->dbVars['table_content'];
+		$this->internal['currentTable'] = tx_drblob_div::$CONTENT_TABLE;
 		$this->internal['currentRow'] = $this->pi_getRecord( $this->dbVars['table_content'], $rowUID );
 		
-		if ( $this->sys_language_uid ) {
-			$this->internal['currentRow'] = $GLOBALS['TSFE']->sys_page->getRecordOverlay( $this->dbVars['table_content'], $this->internal['currentRow'], $this->sys_language_uid );
-			$lRowUID = $this->internal['currentRow']['_LOCALIZED_UID'];
-		} else {
-			$lRowUID = $this->internal['currentRow']['uid']; 
-		}
-		
-		
-			//prepare the array of information being sent with the header
-		$blob = array(
-			'blob_name' => urlencode( $this->getFieldContent( 'blob_name' ) ),
-			'blob_size' => $this->getFieldContent( 'blob_size' ),
-			'blob_checksum' => $this->getFieldContent( 'blob_checksum' ),
-			'blob_data' => '',
-			'blob_type' => $this->getFieldContent( 'blob_type' ),
-			'type' => $this->getFieldContent( 'type' ),
-			'is_quoted' => false
-		);
-		if( empty( $data['blob_type'] ) ) {
-			$data['blob_type'] = 'text/plain';
-		}
-
-		
-			//Update counter only if we're having a download (and not a indexed_search-request)
-		if( $sendHeaders == true ) {
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-				tx_drblob_div::$CONTENT_TABLE,
-				'uid= \'' . $lRowUID . '\'',
-				array(
-					'download_count' => ( $this->getFieldContent( 'download_count' ) + 1 )
-				)
-			);
-		}		
-		
-			//Preprocess the content depending on the type of the record
-		switch( $this->getFieldContent( 'type' ) ) {
-			case '3': 
-				$blob['blob_data'] = tx_drblob_div::getUploadFolder() . 'storage/' . $this->getFieldContent( 'blob_data' );
-				$blob['is_quoted'] = false;
-			break;
+			//Check whether the file exists (deleted != 1)
+		if( !empty( $this->internal['currentRow'] ) ) {
 			
-			case '2': 
-				$file = tx_drblob_div::getStorageFolder() . $this->getFieldContent( 'blob_data' );
+			if ( $this->sys_language_uid ) {
+				$this->internal['currentRow'] = $GLOBALS['TSFE']->sys_page->getRecordOverlay( tx_drblob_div::$CONTENT_TABLE, $this->internal['currentRow'], $this->sys_language_uid );
+				$lRowUID = $this->internal['currentRow']['_LOCALIZED_UID'];
+			} else {
+				$lRowUID = $this->internal['currentRow']['uid']; 
+			}
+			
+			
+				//prepare the array of information being sent with the header
+			$blob = array(
+				'blob_name' => urlencode( $this->getFieldContent( 'blob_name' ) ),
+				'blob_size' => $this->getFieldContent( 'blob_size' ),
+				'blob_checksum' => $this->getFieldContent( 'blob_checksum' ),
+				'blob_data' => '',
+				'blob_type' => $this->getFieldContent( 'blob_type' ),
+				'type' => $this->getFieldContent( 'type' ),
+				'is_quoted' => false
+			);
+			if( empty( $data['blob_type'] ) ) {
+				$data['blob_type'] = 'text/plain';
+			}
+	
+			
+				//Update counter only if we're having a download (and not a indexed_search-request)
+			if( $sendHeaders == true ) {
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+					tx_drblob_div::$CONTENT_TABLE,
+					'uid= \'' . $lRowUID . '\'',
+					array(
+						'download_count' => ( $this->getFieldContent( 'download_count' ) + 1 )
+					)
+				);
+			}		
+			
+				//Preprocess the content depending on the type of the record
+			switch( $this->getFieldContent( 'type' ) ) {
+				case '3': 
+					$blob['blob_data'] = tx_drblob_div::getUploadFolder() . 'storage/' . $this->getFieldContent( 'blob_data' );
+					$blob['is_quoted'] = false;
+				break;
 				
-					//asume the file to be quoted --> no streaming possible
-				if( $blob['blob_checksum'] != tx_drblob_div::calculateFileChecksum( $file ) ) {
-					$fp = fopen( $file, 'r' );
-						$blob['blob_data'] = fread( $fp, filesize ( $file ) );
-					fclose( $fp );
+				case '2': 
+					$file = tx_drblob_div::getStorageFolder() . $this->getFieldContent( 'blob_data' );
+					
+						//asume the file to be quoted --> no streaming possible
+					if( $blob['blob_checksum'] != tx_drblob_div::calculateFileChecksum( $file ) ) {
+						$fp = fopen( $file, 'r' );
+							$blob['blob_data'] = fread( $fp, filesize ( $file ) );
+						fclose( $fp );
+						$blob['blob_data'] = stripslashes( $blob['blob_data'] );
+						$blob['is_quoted'] = true;
+					} else {
+						$blob['is_quoted'] = false;
+						$blob['blob_data'] = $file;
+					}
+				break;
+				
+				case '1': 
+					$blob['blob_data'] = $this->getFieldContent( 'blob_data' );
 					$blob['blob_data'] = stripslashes( $blob['blob_data'] );
 					$blob['is_quoted'] = true;
-				} else {
-					$blob['is_quoted'] = false;
-					$blob['blob_data'] = $file;
-				}
-			break;
-			
-			case '1': 
-				$blob['blob_data'] = $this->getFieldContent( 'blob_data' );
-				$blob['blob_data'] = stripslashes( $blob['blob_data'] );
-				$blob['is_quoted'] = true;
-			break;
-		}
-		
-			
-			//PostProcess the Filename for download
-		if ( $this->conf['downloadFilenameUserFunc'] ) {
-			$this->conf['downloadFilenameUserFunc.']['parentObj'] = &$this;
-			$blob['blob_name'] = $GLOBALS['TSFE']->cObj->callUserFunction( 
-				$this->conf['downloadFilenameUserFunc'], 
-				$this->conf['downloadFilenameUserFunc.'], 
-				$blob['blob_name']
-			);
-		}
-		
-
-			// Adds a hook for pre-processing the file to download
-		if (is_array( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dr_blob']['preProcessDownloadHook'] ) ) {
-			foreach( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dr_blob']['preProcessDownloadHook'] as $_classRef ) {
-				$_procObj = & t3lib_div::getUserObj( $_classRef );
-				$blob = $_procObj->downloadPreProcessor( $blob );
-			}
-		}
-
-		
-			//send a redirect header if a type=3-record is found. Then the webserver will manage the download
-			//The user will be redirected to the requested file.
-			//Otherwise the content streamed to the browser
-		$headerList = array();
-		if( $this->getFieldContent( 'type' ) == 3 ) {
-			$headerList['Location'] = t3lib_div::locationHeaderUrl( $blob['blob_data'] );
-		} else {
-			$contentDisposition = 'attachment';
-			if( !empty( $this->conf['tryToOpenFileInline'] ) && (bool)$this->conf['tryToOpenFileInline'] == true ) {
-				$contentDisposition = 'inline';
+				break;
 			}
 			
-				//caching related header
-			$headerList['Expires'] = gmdate( 'D, d M Y H:i:s', ( time()-3600 ) . ' GMT' );
-			$headerList['Last-Modified'] = gmdate( 'D, d M Y H:i:s', ( time()-3600 ) . ' GMT' );
-			$headerList['Cache-Control'] = 'post-check=0, pre-check=0';
-			$headerList['Pragma'] = 'no-cache';
-			
-				//content related header
-			$headerList['Content-Type'] = $blob['blob_type'];
-			$headerList['Content-Length'] = $blob['blob_size'];
-			$headerList['Content-Transfer-Encoding'] = 'binary';
-			$headerList['Content-Disposition'] = $contentDisposition.'; filename='. $blob['blob_name'];
-			
-			if( false ) {
-				$headerList['Etag'] = $blob['blob_checksum'];
-				$headerList['Last-Modified'] = gmdate( 'D, d M Y H:i:s', ( $this->getFieldContent( 'tstamp' ) ) . ' GMT' );
-				$headerList['Cache-Control'] = 'public';
-				$headerList['Pragma'] = 'public';
-				$headerList['Expires'] = '0';
 				
-					//downloads continueable
-				$headerList['Accept-Ranges'] = 'bytes';
+				//PostProcess the Filename for download
+			if ( $this->conf['downloadFilenameUserFunc'] ) {
+				$this->conf['downloadFilenameUserFunc.']['parentObj'] = &$this;
+				$blob['blob_name'] = $GLOBALS['TSFE']->cObj->callUserFunction( 
+					$this->conf['downloadFilenameUserFunc'], 
+					$this->conf['downloadFilenameUserFunc.'], 
+					$blob['blob_name']
+				);
 			}
 			
-			$client = t3lib_div::clientInfo();
-			if( ( $client['BROWSER'] == 'msie' ) && ( $client['VERSION'] == '6' || $client['VERSION'] == '7'  || $client['VERSION'] == '8' ) ) {
-				$headerList['Pragma'] = 'anytextexeptno-cache';
-			}
-		}
-		
-		
-			//we got a download request --> send out headers, stream file and kill the process afterwards
-		if( $sendHeaders == true ) {
-			
-			foreach( $headerList as $key=>$value ) {
-				header( $key . ': ' . $value, true );
-			}
-			
-				//if we run into a type=3-record, a redirect-header is already sent out, 
-				//so the following lines won't be processed
-				//if not, the file is either send to the client in one piece, or streamed in 
-				//several pieces. The method used depends on whether the file is quoted- or not.
-				//Quoted files cannot be streamed.
-			if( $blob['is_quoted'] ) {
-				echo $blob['blob_data'];
-			} else {
-				$fp = fopen( $blob['blob_data'], 'r' );
-				while ( !feof( $fp ) ) {
-					echo fread( $fp, 1024*8 );
+	
+				// Adds a hook for pre-processing the file to download
+			if (is_array( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dr_blob']['preProcessDownloadHook'] ) ) {
+				foreach( $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dr_blob']['preProcessDownloadHook'] as $_classRef ) {
+					$_procObj = & t3lib_div::getUserObj( $_classRef );
+					$blob = $_procObj->downloadPreProcessor( $blob );
 				}
-				fclose( $fp );
+			}
+	
+			
+				//send a redirect header if a type=3-record is found. Then the webserver will manage the download
+				//The user will be redirected to the requested file.
+				//Otherwise the content streamed to the browser
+			$headerList = array();
+			if( $this->getFieldContent( 'type' ) == 3 ) {
+				$headerList['Location'] = t3lib_div::locationHeaderUrl( $blob['blob_data'] );
+			} else {
+				$contentDisposition = 'attachment';
+				if( !empty( $this->conf['tryToOpenFileInline'] ) && (bool)$this->conf['tryToOpenFileInline'] == true ) {
+					$contentDisposition = 'inline';
+				}
+				
+					//caching related header
+				$headerList['Expires'] = gmdate( 'D, d M Y H:i:s', ( time()-3600 ) . ' GMT' );
+				$headerList['Last-Modified'] = gmdate( 'D, d M Y H:i:s', ( time()-3600 ) . ' GMT' );
+				$headerList['Cache-Control'] = 'post-check=0, pre-check=0';
+				$headerList['Pragma'] = 'no-cache';
+				
+					//content related header
+				$headerList['Content-Type'] = $blob['blob_type'];
+				$headerList['Content-Length'] = $blob['blob_size'];
+				$headerList['Content-Transfer-Encoding'] = 'binary';
+				$headerList['Content-Disposition'] = $contentDisposition.'; filename='. $blob['blob_name'];
+				
+				if( false ) {
+					$headerList['Etag'] = $blob['blob_checksum'];
+					$headerList['Last-Modified'] = gmdate( 'D, d M Y H:i:s', ( $this->getFieldContent( 'tstamp' ) ) . ' GMT' );
+					$headerList['Cache-Control'] = 'public';
+					$headerList['Pragma'] = 'public';
+					$headerList['Expires'] = '0';
+					
+						//downloads continueable
+					$headerList['Accept-Ranges'] = 'bytes';
+				}
+				
+				$client = t3lib_div::clientInfo();
+				if( ( $client['BROWSER'] == 'msie' ) && ( $client['VERSION'] == '6' || $client['VERSION'] == '7'  || $client['VERSION'] == '8' ) ) {
+					$headerList['Pragma'] = 'anytextexeptno-cache';
+				}
 			}
 			
-				//Kill the process --> avoid TYPO3 from rendering the page
-			exit();
-
+			
+				//we got a download request --> send out headers, stream file and kill the process afterwards
+			if( $sendHeaders == true ) {
+				
+				foreach( $headerList as $key=>$value ) {
+					header( $key . ': ' . $value, true );
+				}
+				
+					//if we run into a type=3-record, a redirect-header is already sent out, 
+					//so the following lines won't be processed
+					//if not, the file is either send to the client in one piece, or streamed in 
+					//several pieces. The method used depends on whether the file is quoted- or not.
+					//Quoted files cannot be streamed.
+				if( $blob['is_quoted'] ) {
+					echo $blob['blob_data'];
+				} else {
+					if( file_exists( $blob['blob_data'] ) ) {
+						$fp = fopen( $blob['blob_data'], 'r' );
+						while ( !feof( $fp ) ) {
+							echo fread( $fp, 1024*8 );
+						}
+						fclose( $fp );
+					}
+				}
+				
+					//Kill the process --> avoid TYPO3 from rendering the page
+				exit();
+	
+			} else {
+					//Return Filecontent to the indexer
+				return $blob;
+			}
+		
 		} else {
-				//Return Filecontent to the indexer
-			return $blob;
+			//404
+			$GLOBALS['TSFE']->pageNotFoundAndExit( 'The requested file does not exist!' );
 		}
 	}
 

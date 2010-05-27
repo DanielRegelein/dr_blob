@@ -264,10 +264,8 @@ class ext_update {
 	
 	function update_fixEmptyAuthor() {
 		$msg = array();
-		$beUserCache = array();
 		foreach ( $this->update['fixEmptyAuthor'] as $row ) {
 			
-			if( !array_key_exists( $row['cruser_id'], $beUserCache ) ) {
 				$rsltUser = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid,realName,email',
 					'be_users',
@@ -275,23 +273,18 @@ class ext_update {
 				);
 				if( $rsltUser && $GLOBALS['TYPO3_DB']->sql_num_rows( $rsltUser ) ) {
 					$rowUser = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rsltUser );
-					$beUserCache[$rowUser['uid']] = $rowUser;
-				}
-			}
-			
-			if( array_key_exists( $row['cruser_id'], $beUserCache ) ) {
-				
-				$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-					tx_drblob_div::$CONTENT_TABLE, 
-					'uid=' . $row['uid'], 
-					array( 
-						'author' => $beUserCache[$rowUser['uid']]['realName'],
-						'author_email' => $beUserCache[$rowUser['uid']]['email']
-					)
-				) ;
-				if ( $res ) {
-					$msg[] = 'Updated record [ uid=' . $row['uid'] . ', title=' . $row['title'] . ', author=' . $beUserCache[$rowUser['uid']]['realName'] . ' ]';
-				}
+					
+					$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+						tx_drblob_div::$CONTENT_TABLE, 
+						'uid=' . $row['uid'], 
+						array( 
+							'author' => $rowUser['realName'],
+							'author_email' => $rowUser['email']
+						)
+					) ;
+					if ( $res ) {
+						$msg[] = 'Updated record [ uid=' . $row['uid'] . ', title=' . $row['title'] . ', author=' . $rowUser['realName'] . ' ]';
+					}
 			} else {
 				$msg[] = 'Skipped record [ uid=' . $row['uid'] . ', title=' . $row['title'] . ' ]: no author found';
 			}
