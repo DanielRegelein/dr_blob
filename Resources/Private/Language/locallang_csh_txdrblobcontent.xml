@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH for table tx_drblob_content</description>
+		<type>CSH</type>
+		<csh_table>tx_drblob_content</csh_table>
+		<fileId>EXT:dr_blob/locallang_csh_txdrblobcontent.xml</fileId>
+		<labelContext type="array">
+			<label index=".description"></label>
+			<label index=".details"></label>
+			<label index="_.seeAlso"></label>
+			<label index="title.description"></label>
+			<label index="title.details"></label>
+			<label index="type.description"></label>
+			<label index="type.details"></label>
+			<label index="hidden.description"></label>
+			<label index="hidden.details"></label>
+			<label index="_hidden.seeAlso"></label>
+			<label index="starttime.description"></label>
+			<label index="_starttime.seeAlso"></label>
+			<label index="endtime.description"></label>
+			<label index="_endtime.seeAlso"></label>
+			<label index="fe_group.description"></label>
+			<label index="_fe_group.seeAlso"></label>
+			<label index="sys_language_uid.description"></label>
+			<label index="sys_language_uid.details"></label>
+			<label index="_sys_language_uid.seeAlso"></label>
+			<label index="l18n_parent.description"></label>
+			<label index="l18n_parent.details"></label>
+			<label index="t3ver_label.description"></label>
+			<label index="t3ver_label.details"></label>
+			<label index="is_vip.description"></label>
+			<label index="is_vip.details"></label>
+			<label index="_is_vip.seeAlso"></label>
+			<label index="description.description"></label>
+			<label index="description.details"></label>
+			<label index="_description.seeAlso"></label>
+			<label index="category.description"></label>
+			<label index="category.details"></label>
+			<label index="_category.seeAlso"></label>
+			<label index="download_count.description"></label>
+			<label index="download_count.details"></label>
+			<label index="_download_count.seeAlso"></label>
+			<label index="blob_name.description"></label>
+			<label index="blob_name.details"></label>
+			<label index="_blob_name.seeAlso"></label>
+			<label index="blob_size.description"></label>
+			<label index="blob_size.details"></label>
+			<label index="_blob_size.seeAlso"></label>
+			<label index="blob_type.description"></label>
+			<label index="blob_type.details"></label>
+			<label index="_blob_type.seeAlso"></label>
+			<label index="blob_data.description"></label>
+			<label index="blob_data.details"></label>
+			<label index="_blob_data.seeAlso"></label>
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".description">&quot;Secure Files&quot; are files that are stored either in the database, or in the file system to ensure secure data storage.</label>
+			<label index=".details">The Administrator can configure the extension where to store the files uploaded here. You can add meta data to the files and categorize the entries.</label>
+			<label index="_.seeAlso">tx_drblob_category</label>
+			<label index="title.description">Enter a title for this record</label>
+			<label index="title.details">The value entered here won't be the filename that is used when downloading the file. This is a mandatory field, so it has to be filled.</label>
+			<label index="_title.seeAlso">tx_drblob_content:blob_name</label>
+			<label index="author.description">Enter an author for this record</label>
+			<label index="author.details">This field stores the person in charge for this record to be displayed for website visitors. If not filled in a translated record, the author of the default record will be used</label>
+			<label index="_author.seeAlso">tx_drblob_content:author_email</label>
+			<label index="author_email.description">Enter this record's author's email address</label>
+			<label index="author_email.details">This field stores the email address of the person in charge for this record to be displayed for website visitors. If not filled in a translated record, the value of the default record will be used</label>
+			<label index="_author_email.seeAlso">tx_drblob_content:author</label>
+			<label index="t3ver_label.description">Version-Flag of the current record</label>
+			<label index="t3ver_label.details">This field shows up the title of the version of the current file.</label>
+			<label index="type.description">Determine whether to store the file in the database or in the filesystem of the server</label>
+			<label index="type.details">Both opinions have advantages and disadvantages. Storing the file in the database ensures that the file isn't changed. It also avoids that the file can be recived via URL hacking. Storing the file in the file system is faster, but if the plugin isn't configured correctly the file may be downloaded via URL hacking by non-authorized users.</label>
+			<label index="hidden.description">Set this field to avoid the current record from being shown.</label>
+			<label index="_hidden.seeAlso">tx_drblob_content:starttime, tx_drblob_content:endtime, tx_drblob_content:fe_group</label>
+			<label index="starttime.description">The &quot;Start&quot; time determines the date from which the record will be available online.</label>
+			<label index="_starttime.seeAlso">tx_drblob_content:hidden, tx_drblob_content:endtime, tx_drblob_content:fe_group</label>
+			<label index="endtime.description">The &quot;End&quot; time determines the date from which the record will NOT be available online anymore.</label>
+			<label index="_endtime.seeAlso">tx_drblob_content:hidden, tx_drblob_content:starttime, tx_drblob_content:fe_group</label>
+			<label index="fe_group.description">Restrict access on this record</label>
+			<label index="fe_group.details">If &quot;Access&quot; is set to a usergroup name, only website users which are members of the selected usergroup will be able to view the record when they are logged in. The special option &quot;Hide at login&quot; means this record will NOT be visible for website users that are logged in. Likewise &amp;quot;Show at login&amp;quot; will make entry visible for any logged in frontend user.</label>
+			<label index="_fe_group.seeAlso">tx_drblob_content:hidden, tx_drblob_content:starttime, tx_drblob_content:endtime</label>
+			<label index="sys_language_uid.description">The language of the file record.</label>
+			<label index="sys_language_uid.details">This should be the default language unless this record is a translation of another record. Use [ALL] to show the record with every language version.</label>
+			<label index="_sys_language_uid.seeAlso">tt_content:sys_language_uid,pages:sys_language_uid,pages_language_overlay:sys_language_uid</label>
+			<label index="l18n_parent.description">The record in the default language where the current record is a translation from.</label>
+			<label index="l18n_parent.details">You should not change this field manually because it is handled by the TYPO3 localization system.</label>
+			<label index="is_vip.description">Show this record in a &quot;Best-of&quot;-list</label>
+			<label index="is_vip.details">This checkbox prepares the record to be shown on the TOP-List of your website. If the hook is not set the record won't be listed in a top list. (Of course the list must be configured to search for records in the current sysfolder)</label>
+			<label index="description.description">Enter a description for the file</label>
+			<label index="description.details">This field can be used to enter additional information for the file you want offer. </label>
+			<label index="category.description">Use this field to categorize a record.</label>
+			<label index="category.details">Categorization helps users to find the information they are interested in.</label>
+			<label index="_category.seeAlso">tx_drblob_catgegory:title</label>
+			<label index="download_count.description">Counts how often the file has been downloaded.</label>
+			<label index="download_count.details">This read only field shows the number of times an attached file has been downloaded yet. Use the according button to reset it to zero.</label>
+			<label index="blob_name.description">Filename used when downloading the file</label>
+			<label index="blob_name.details">This field is filled automatically when a file is uploaded. Enter the filename that is used when the attached file is downloaded after uploading a file. Everytime a file is uploaded for the current record the value of this field will be overwritten by the filename of the uploaded file.</label>
+			<label index="_blob_name.seeAlso">tx_drblob_content:blob_data</label>
+			<label index="blob_checksum.description">Checksum of the file. Stored automatically.</label>
+			<label index="blob_checksum.details">This field is filled out automatically. It contains information that may be useful for a person downloding this file to validate its authenticity</label>
+			<label index="_blob_checksum.seeAlso">tx_drblob_content:blob_data</label>
+			<label index="blob_size.description">Size of the file. Stored automatically.</label>
+			<label index="blob_size.details">This field is filled out automatically. It contains information needed by the client browser when downloading the file</label>
+			<label index="_blob_size.seeAlso">tx_drblob_content:blob_data</label>
+			<label index="blob_type.description">Mimetype of the file. Stored automatically.</label>
+			<label index="blob_type.details">This field is filled out automatically. It contains information needed by the client browser when downloading the file</label>
+			<label index="_blob_type.seeAlso">tx_drblob_content:blob_data</label>
+			<label index="blob_data.description">Select the file you want to attach.</label>
+			<label index="blob_data.details">Every record represents a single file, combined with meta information. The file itself can be uploaded using this field. Once the record is saved, the file has been uploaded to the server. You do not need to keep it on your local harddisc.</label>
+			<label index="_blob_data.seeAlso">tx_drblob_content:blob_name, tx_drblob_content:blob_size, tx_drblob_content:blob_type, tx_drblob_content:blob_checksum</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+	</orig_hash>
+	<orig_text type="array">
+	</orig_text>
+</T3locallang>

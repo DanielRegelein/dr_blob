@@ -270,17 +270,6 @@ abstract class tx_drblob_div {
 		}
 		return false;
 	}
-	
-	
-	/**
-	 * Output the class makes when calling <code>echo $obj;</code>
-	 * 
-	 * @access		public
-	 * @return		String		"tx_drblob_div"
-	 */
-	public static function __toString() {
-		return 'tx_drblob_div';
-	}
 };
 
 

@@ -19,7 +19,7 @@ $TCA['tx_drblob_content'] = array(
 		'transOrigPointerField' => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'languageField' => 'sys_language_uid',
-		'dividers2tabs' => t3lib_div::compat_version( '4.3' ) ? $TYPO3_USER_SETTINGS['ctrl']['dividers2tabs'] : true,
+		'dividers2tabs' => true,
 		'versioningWS' => true,
 		'versioning_followPages' => true,
 		'origUid' => 't3_origuid',
@@ -109,9 +109,15 @@ if ( t3lib_extMgm::isLoaded( 'css_styled_content' ) ) {
 }
 
 
-t3lib_div::loadTCA( 'pages' );
-$TCA['pages']['columns']['module']['config']['items'][] = array( 'LLL:EXT:' . $_EXTKEY . '/locallang_tca.xml:pages.folderIconsDescr', 'files' );
-$ICON_TYPES['files'] = array( 'icon' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'res/gfx/' . ( t3lib_extMgm::isLoaded( 't3skin' ) ? 't3skin/' : 'classicskin/' ) . 'pages.gif' );
+if ( TYPO3_MODE == 'BE' ) {
+	t3lib_div::loadTCA( 'pages' );
+	$TCA['pages']['columns']['module']['config']['items'][] = array( 'LLL:EXT:' . $_EXTKEY . '/locallang_tca.xml:pages.folderIconsDescr', 'files' );
+	if ( t3lib_div::int_from_ver( TYPO3_version ) >= 4004000 ) {
+		t3lib_SpriteManager::addTcaTypeIcon( 'pages', 'contains-files', '../typo3conf/ext/' . $_EXTKEY . '/res/gfx/' . ( t3lib_extMgm::isLoaded( 't3skin' ) ? 't3skin/' : 'classicskin/' ) . 'pages.gif' );
+	} else {
+		$ICON_TYPES['files'] = array( 'icon' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'res/gfx/' . ( t3lib_extMgm::isLoaded( 't3skin' ) ? 't3skin/' : 'classicskin/' ) . 'pages.gif' );
+	}
+}
 
 	
 if (TYPO3_MODE=='BE') {

@@ -518,7 +518,7 @@ class tx_drblob_pi1 extends tslib_pibase {
 				$this->getSortMarkerArray()
 			);
 			$markerArray['###BLOB_PAGEBROWSER###'] = '';
-			if( $this->config['usePageBrower'] ) {
+			if( $this->config['usePageBrowser'] ) {
 				$markerArray['###BLOB_PAGEBROWSER###'] = $this->pi_list_browseresults();
 			}
 			$subpartArray['###CONTENT###'] = implode( '', $arrItems );

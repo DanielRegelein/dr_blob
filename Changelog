@@ -1,3 +1,12 @@
+2010-09-07
+	* Release of version 2.3.2
+	
+	* Change: Added the locallang-files to an additional folder to prepare them for being moved
+	
+	* Bugfix: Usage of $ICON_TYPES is deprecated since 4.4 (Issue #9561)
+	* Bugfix: Invalid method declaration in tx_drblob_div (Issue #8482)
+	* Bugfix: page browser (Issue #8181)
+
 2010-05-27
 	* Release of version 2.3.1
 	

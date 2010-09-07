@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH for table tx_drblob_category</description>
+		<type>CSH</type>
+		<csh_table>tx_drblob_category</csh_table>
+		<fileId>EXT:dr_blob/locallang_csh_txdrblobcategory.xml</fileId>
+		<labelContext type="array">
+			<label index=".description"></label>
+			<label index=".details"></label>
+			<label index="_.seeAlso"></label>
+			<label index="title.description"></label>
+			<label index="title.details"></label>
+			<label index="hidden.description"></label>
+			<label index="hidden.details"></label>
+		</labelContext>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".description">Manage category-entries of secure files.</label>
+			<label index="_.seeAlso">tx_drblob_content</label>
+			<label index="title.description">Enter a title for this category</label>
+			<label index="title.details">This is a mandatory field, so it has to be filled.</label>
+			<label index="hidden.details">Set whether to show- or hide the record.</label>
+			<label index="hidden.description">Set this field to avoid the current record from being shown.</label>
+		</languageKey>
+	</data>
+	<orig_hash type="array">
+	</orig_hash>
+	<orig_text type="array">
+	</orig_text>
+</T3locallang>
