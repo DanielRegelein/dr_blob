@@ -30,7 +30,7 @@ class ext_update {
 	);
 	
 	
-	var $ll = 'LLL:EXT:dr_blob/locallang_wiz.xml:updater.';
+	var $ll = 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_wiz.xml:updater.';
 
 
 	/**
@@ -43,7 +43,7 @@ class ext_update {
 			//Query for updateable records for rows without a checksum
 		$resChecksum = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'uid, title, type, blob_data', 
-			tx_drblob_div::$CONTENT_TABLE, 
+			Tx_DrBlob_Div::CONTENT_TABLE, 
 			'`deleted` = 0 AND `type` IN (1,2) AND `blob_size` > 0 AND `blob_checksum` = \'\' '
 		);
 		if ( $resChecksum && $GLOBALS['TYPO3_DB']->sql_num_rows( $resChecksum ) ) {
@@ -55,7 +55,7 @@ class ext_update {
 			//Query for updateable records for rows without a value for the author-field
 		$resAuthor = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'uid,title,cruser_id', 
-			tx_drblob_div::$CONTENT_TABLE, 
+			Tx_DrBlob_Div::CONTENT_TABLE, 
 			'`deleted` = 0 AND `author` = \'\' '
 		);
 		if ( $resAuthor && $GLOBALS['TYPO3_DB']->sql_num_rows( $resAuthor ) ) {
@@ -68,7 +68,14 @@ class ext_update {
 		$resTStmpl = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 
 			'uid,pid,title,include_static_file', 
 			'sys_template',
-			'deleted=0 AND include_static_file LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%EXT:dr_blob/static/%', 'sys_template' )
+			'deleted=0 AND (
+				include_static_file LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%EXT:dr_blob/static/%', 'sys_template' ) . 
+				
+				#' OR ' .
+				#include_static_file LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%EXT:dr_blob/pi1/static/ts/%', 'sys_template' ) . ' OR
+				#include_static_file LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%EXT:dr_blob/pi1/static/xml/%', 'sys_template' ) . '
+				'
+			)'
 		);
 		if( $resTStmpl && $GLOBALS['TYPO3_DB']->sql_num_rows( $resTStmpl ) ) {
 			while( $rowTStmpl = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $resTStmpl ) ) {
@@ -85,7 +92,7 @@ class ext_update {
 				$out .= '
 				<div style="padding:15px 15px 20px 0;">
 				<div class="typo3-message message-ok">
-   				<div class="message-header">' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_wiz.xml:updater.updateresults') . '</div>
+   				<div class="message-header">' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/Resources/Private/Language/locallang_wiz.xml:updater.updateresults') . '</div>
   				<div class="message-body">
 				' . $this->$func() . '
 				</div>
@@ -140,7 +147,7 @@ class ext_update {
 			$msg .=  '<p style="margin-bottom:10px;"><em>'.$GLOBALS['LANG']->sL($this->ll . 'questionInfo_' . $k) . '</em><p>';
 			$msg .= $this->getButton($func);
 		} else {
-			$msg .= '<br />' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_wiz.xml:updater.nothingtodo');
+			$msg .= '<br />' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/Resources/Private/Language/locallang_wiz.xml:updater.nothingtodo');
 
 		}
 
@@ -155,9 +162,9 @@ class ext_update {
 		$out = '
 		<div style="padding:15px 15px 20px 0;">
 			<div class="typo3-message message-warning">
-   				<div class="message-header">' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_wiz.xml:updater.warningHeader') . '</div>
+   				<div class="message-header">' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/Resources/Private/Language/locallang_wiz.xml:updater.warningHeader') . '</div>
   				<div class="message-body">
-					' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_wiz.xml:updater.warningMsg') . '
+					' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/Resources/Private/Language/locallang_wiz.xml:updater.warningMsg') . '
 				</div>
 			</div>
 		</div>';
@@ -248,7 +255,7 @@ class ext_update {
 			$hash = md5( $blobData );
 			
 			$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-				tx_drblob_div::$CONTENT_TABLE, 
+				Tx_DrBlob_Div::CONTENT_TABLE, 
 				'uid=' . $row['uid'], 
 				array( 
 					'blob_checksum' => $hash 
@@ -275,7 +282,7 @@ class ext_update {
 					$rowUser = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rsltUser );
 					
 					$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-						tx_drblob_div::$CONTENT_TABLE, 
+						Tx_DrBlob_Div::CONTENT_TABLE, 
 						'uid=' . $row['uid'], 
 						array( 
 							'author' => $rowUser['realName'],
@@ -309,7 +316,7 @@ class ext_update {
 				//Testcase 01 - Check for records without checksum
 				$resChecksum = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid', 
-					tx_drblob_div::$CONTENT_TABLE, 
+					Tx_DrBlob_Div::CONTENT_TABLE, 
 					'`deleted` = 0 AND `blob_size` > 0 AND `blob_checksum` = \'\' '
 				);
 
@@ -320,7 +327,7 @@ class ext_update {
 				//Testcase 02 - Check for records without author
 				$resAuthor = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'uid', 
-					tx_drblob_div::$CONTENT_TABLE, 
+					Tx_DrBlob_Div::CONTENT_TABLE, 
 					'`author` <> \'\' '
 				);
 

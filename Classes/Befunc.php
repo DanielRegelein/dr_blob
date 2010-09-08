@@ -23,16 +23,16 @@
 ***************************************************************/
 
 /**
- * @name 		tx_drblob_befunc
  * Class being included by t3lib_befunc using the hook displayWarningMessages_postProcess
  * 
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
- * @package 	dr_blob
- * @filesource	class.tx_drblob_befunc.php
- * @version		2.3.0
+ * @package 	TYPO3
+ * @subpackage  dr_blob
+ * @filesource	EXT:dr_blob/Classes/Befunc.php
+ * @version		2.4.0
  * @since 		2.0.1, 2009-02-24
  */
-class tx_drblob_befunc {
+class Tx_DrBlob_Befunc {
 	
 	/**
 	 * Display some warning messages if this installation is obviously insecure!!
@@ -46,7 +46,7 @@ class tx_drblob_befunc {
 			$folder = tx_drblob_div::getStorageFolder();
 			
 			$warning['tx_drblob_uploadFolderNotWriteable'] = sprintf(
-				$GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/locallang_wiz.xml:err_uploadFolderNotWriteable' ),
+				$GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_wiz.xml:err_uploadFolderNotWriteable' ),
 				$folder
 			);
 			
@@ -61,7 +61,7 @@ class tx_drblob_befunc {
 				//Check whether the storage folder is accessible via web
 				if( t3lib_div::isFirstPartOfStr( $folder, PATH_site ) ) {
 					$warning['tx_drblob_uploadFolderAccesibleViaWeb'] = sprintf(
-						$GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/locallang_wiz.xml:err_uploadFolderAccesibleViaWeb' ),
+						$GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_wiz.xml:err_uploadFolderAccesibleViaWeb' ),
 						$folder
 					);
 				}
@@ -69,22 +69,10 @@ class tx_drblob_befunc {
 			
 		}
 	}
-	
-	
-	/**
-	 * @name		__toString
-	 * Output the class makes when calling <code>echo $obj;</code>
-	 * 
-	 * @access		public
-	 * @return		String		"tx_drblob_befunc"
-	 */
-	/*public*/function __toString() {
-		return 'tx_drblob_befunc';
-	}
 };
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_befunc.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_befunc.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/Classes/Befunc.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/Classes/Befunc.php']);
 }
 ?>

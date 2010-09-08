@@ -1,0 +1,4 @@
+RTE.default.tx_linkhandler.dr_blob.label=Secure File
+RTE.default.tx_linkhandler.dr_blob.listTables=tx_drblob_content
+mod.tx_linkhandler.dr_blob.label=Secure File
+mod.tx_linkhandler.dr_blob.listTables=tx_drblob_content

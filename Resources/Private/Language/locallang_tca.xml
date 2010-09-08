@@ -29,6 +29,7 @@
 			<label index="tx_drblob_category.title"></label>
 			<label index="pages.folderIconsDescr"></label>
 			<label index="tt_content.list_type_pi1"></label>
+			<label index="tt_content.list_type_pi2"></label>
 			<label index="tt_content.pi_flexform.sheet.datasource"></label>
 			<label index="tt_content.pi_flexform.categories"></label>
 			<label index="tt_content.pi_flexform.categories_mode"></label>
@@ -93,6 +94,7 @@
 			<label index="tx_drblob_category.title">Title</label>
 			<label index="pages.folderIconsDescr">Files</label>
 			<label index="tt_content.list_type_pi1">Filelist</label>
+			<label index="tt_content.list_type_pi2">Filelist</label>
 			<label index="tt_content.pi_flexform.sheet.datasource">Data Source</label>
 			<label index="tt_content.pi_flexform.sheet.settings">Settings</label>
 			<label index="tt_content.pi_flexform.sheet.vFolderTree">&quot;vFolderTree&quot;-Settings</label>

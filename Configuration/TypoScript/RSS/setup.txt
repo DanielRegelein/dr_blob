@@ -1,0 +1,82 @@
+drblobRSS = PAGE
+drblobRSS {
+  typeNum = 235
+  
+  config {
+    disableAllHeaderCode = 1
+    additionalHeaders = Content-type:application/xml
+    xhtml_cleaning = 0
+    admPanel = 0
+    no_cache = 1
+  }
+  
+  
+  10 = TEMPLATE
+  10 {
+    template = USER
+    template {
+      includeLibs = EXT:dr_blob/Classes/Pi1.php
+      userFunc = tx_drblob_pi1->main
+      templateFile = EXT:dr_blob/Resources/Private/ClassicTemplates/rss_2.tmpl
+      
+      code = list
+      renderAsXML = 1
+      pidList = {$plugin.tx_drblob.rss.pidList}
+      recursive = {$plugin.tx_drblob.rss.recursive}
+      singlePID = {$plugin.tx_drblob.rss.singlePID}
+
+      listView {
+        altSubpartMarker = TEMPLATE_RSS2
+        listOrderBy = tstamp
+        listOrderDir = 1
+        limit = 25
+        
+        author_stdWrap.override.field = author_email
+        
+        date_stdWrap.date = D, d M Y H:i:s O
+        
+        description_stdWrap.stripHtml = 1
+        description_stdWrap.htmlSpecialChars = 1
+        description_stdWrap.htmlSpecialChars.preserveEntities = 1
+
+        images_stdWrap {
+          wrap = |      
+          cObject = IMAGE
+          cObject {
+            file.import = uploads/pics/
+            file.import.field = images
+            file.import.listNum  = 0
+            file.maxW = 150px
+          }
+        }
+      }
+    }
+
+    marks {
+      SITE_TITLE = TEXT
+      SITE_TITLE.value = {$plugin.tx_drblob.rss.title}
+      SITE_LANG = TEXT
+      SITE_LANG.value = {$plugin.tx_drblob.rss.language}
+      SITE_DESCRIPTION = TEXT
+      SITE_DESCRIPTION.field = description
+      SITE_DESCRIPTION.override = {$plugin.tx_drblob.rss.description}
+      SITE_LINK = TEXT
+      SITE_LINK.value = {$plugin.tx_drblob.rss.siteUrl}
+
+      RSS_LASTBUILD = TEXT
+      RSS_LASTBUILD.data = date : U
+      RSS_LASTBUILD.date = D, d M Y H:i:s O
+      
+      IMG_TITLE = TEXT
+      IMG_TITLE.value = {$plugin.tx_drblob.rss.img_title}
+      IMG = TEXT
+      IMG.value = {$plugin.tx_drblob.rss.img_filename}
+      IMG_W = TEXT
+      IMG_W.value = {$plugin.tx_drblob.rss.img_width}
+      IMG_H = TEXT
+      IMG_H.value = {$plugin.tx_drblob.rss.img_height}
+      IMG_DESCRIPTION = TEXT
+      IMG_DESCRIPTION.value = {$plugin.tx_drblob.rss.img_description}
+    }
+  }
+}

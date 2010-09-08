@@ -23,20 +23,20 @@
 ***************************************************************/
 
 /**
- * @name 		tx_drblob_tcemain
  * Class being included by TCEmain using the hook processDatamap_postProcessFieldArray
  * 
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
- * @package 	dr_blob
- * @filesource	class.tx_drblob_tcemain.php
- * @version		2.3.0
+ * @package 	TYPO3
+ * @subpackage 	dr_blob
+ * @filesource	EXT:dr_blob/Classes/TceMain.php
+ * @version		2.4.0
  * @since 		1.5.0, 2007-04-10
  * @internal 	Record type: $obj->checkValue_currentRecord['type']
  * 					Type 1 -- Database
  * 					Type 2 -- Filesystem
  * 					Type 3 -- Filesystem Unsecure
  */
-class tx_drblob_tcemain {
+class Tx_DrBlob_TceMain {
 	
 	
 	/**
@@ -52,7 +52,7 @@ class tx_drblob_tcemain {
 	 * @access public
 	 */
 	public function processDatamap_preProcessFieldArray( &$fieldArray, $table, $id, &$pObj ) {
-		if( $table == tx_drblob_div::$CONTENT_TABLE ) {
+		if( $table == Tx_DrBlob_Div::CONTENT_TABLE ) {
 			
 				//Probe for the type of the record
 			$type = null;
@@ -115,7 +115,7 @@ class tx_drblob_tcemain {
 	 * @return		void
 	 */
 	public function processDatamap_postProcessFieldArray( $status, $table, $id, &$fieldArray, $obj ) {
-		if( $table == tx_drblob_div::$CONTENT_TABLE ) {
+		if( $table == Tx_DrBlob_Div::CONTENT_TABLE ) {
 			if( $obj->checkValue_currentRecord['type'] == 3 ) {
 					//Clear file-related attributes if the file is deleted
 				if ( array_key_exists( 'blob_data', $fieldArray ) && $fieldArray['blob_data'] == '' ) {
@@ -181,7 +181,7 @@ class tx_drblob_tcemain {
 	 * @param TCEMAIN 	$pObj
 	 */
 	public function processCmdmap_postProcess( $command, $table, $srcId, $destId, &$pObj ) {
-		if( $table == tx_drblob_div::$CONTENT_TABLE ) {
+		if( $table == Tx_DrBlob_Div::CONTENT_TABLE ) {
 			
 			$rslt = $GLOBALS['TYPO3_DB']->exec_SELECTquery( 
 				'`type`, `blob_data`', 
@@ -258,22 +258,10 @@ class tx_drblob_tcemain {
 			}
 		}
 	}
-
-	
-	/**
-	 * @name		__toString
-	 * Output the class makes when calling <code>echo $obj;</code>
-	 * 
-	 * @access		public
-	 * @return		String		"tx_drblob_tcemain"
-	 */
-	public function __toString() {
-		return 'tx_drblob_tcemain';
-	}
 };
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_tcemain.php'])    {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_tcemain.php']);
+if ( defined( 'TYPO3_MODE' ) && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/Classes/TceMain.php'] ) {
+    include_once( $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/Classes/TceMain.php'] );
 }
 ?>

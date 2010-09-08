@@ -22,20 +22,20 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @name		tx_drblob_FormFields
  * Class provides methods to generate the extension's custom input fields.
  * A file's content cannot be displayed here, so the user needs some information about the stored file.
  * To avoid changes to these information some of these fields are hidden, and a simple output is returned. 
  * 
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
- * @category 	Frontend Plugins
  * @copyright 	Copyright &copy; 2005-present Daniel Regelein
- * @package 	dr_blob
- * @filesource	class.tx_drblob_FormFields.php
+ * @package		TYPO3
+ * @subpackage 	dr_blob
+ * @filesource	EXT:dr_blob/Classes/FormFields.php
  * @since		Version 1.5.0, 2007-04-10
- * @version 	2.3.0
+ * @version 	2.4.0
+ * @see			TCA
  */
-class tx_drblob_FormFields {
+class Tx_DrBlob_FormFields {
 
 	public static function inputFileName( $PA, $fobj ) {
 		return 	'<input ' .
@@ -49,7 +49,7 @@ class tx_drblob_FormFields {
 	}
 
 
-	function inputFileType( $PA, $fobj ) {
+	public function inputFileType( $PA, $fobj ) {
 		return 	$PA['itemFormElValue'] . '<input ' .
 			'type="hidden" ' .
 			'name="' . $PA['itemFormElName'] . '" ' .
@@ -57,7 +57,7 @@ class tx_drblob_FormFields {
 	}
 
 
-	function inputFileSize( $PA, $fobj ) {
+	public function inputFileSize( $PA, $fobj ) {
 		if ( $PA['itemFormElValue'] ) {
 			return t3lib_div::formatSize( $PA['itemFormElValue'], (' B| KB| MB| GB' ) ) . '<input ' .
 				'type="hidden" ' .
@@ -69,7 +69,7 @@ class tx_drblob_FormFields {
 	}
 	
 	
-	function inputFileChecksum( $PA, $fobj ) {
+	public function inputFileChecksum( $PA, $fobj ) {
 		return $PA['itemFormElValue'] . '<input ' .
 			'type="hidden" ' .
 			'name="' . $PA['itemFormElName'] . '" ' .
@@ -77,7 +77,7 @@ class tx_drblob_FormFields {
 	}
 
 
-	function inputFile( $PA, $fobj ) {
+	public function inputFile( $PA, $fobj ) {
 		$el = null;
 		
 		switch( $PA['row']['type'] ) {
@@ -104,44 +104,11 @@ class tx_drblob_FormFields {
 		}
 		
 		return $el;
-		
-		return (
-			'Type: ' . $PA['row']['type'] . '<hr />' .
-			'<input ' .
-				'type="file" ' .
-				'name="' . $PA['itemFormElName'] . '" ' .
-				'size="48" ' .
-				'onChange="' . implode( '',$PA['fieldChangeFunc'] ) . ';" / >' . 
-		#	$PA['pObj']->dbFileIcons(
-		#		$PA['itemFormElName'],
-		#		'file',
-		#		'gif,exe,tif,jpg',
-		#		array(),
-		#		!$PA['row']['blob_data'] ? 'no file' : 'file attached',
-		#		array(
-		#			'dontShowMoveIcons' => 1, 
-		#			'maxitems' => 1, 
-		#			'size' => 1, 
-		#			#'style' => 'width: 400px',
-		#			'noBrowser' => 0
-		#		),
-		#		$PA['onFocus']
-		#	) .
-		''
-		);
-		
-		
-		#return 'TEST'.$PA['pObj']->getSingleField_typeGroup( 'tx_drblob_content', 'blob_data', $PA['row'], $PA );
-		return 'Type: ' . $PA['row']['type'] . '<hr /><input ' .
-			'type="file" ' .
-			'name="' . $PA['itemFormElName'] . '" ' .
-			'size="48" ' .
-			'onChange="' . implode( '',$PA['fieldChangeFunc'] ) . ';" / >';
 	}
 
 
-	function inputDownloadCounter( $PA, $fobj ) {
-		$temp = preg_replace( '/\#\#\#DOWNLOAD\_COUNT\#\#\#/', '%s', $GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.download_count.desc' ), 1 );
+	public function inputDownloadCounter( $PA, $fobj ) {
+		$temp = preg_replace( '/\#\#\#DOWNLOAD\_COUNT\#\#\#/', '%s', $GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.download_count.desc' ), 1 );
 		return (
 			sprintf(
 				$temp,
@@ -153,14 +120,14 @@ class tx_drblob_FormFields {
 					'readonly="readonly" /> '
 			) . ' ' . 
 			'<input type="button" ' . 
-				'value="' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.download_count.reset') . '" ' . 
+				'value="' . $GLOBALS['LANG']->sL('LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.download_count.reset') . '" ' . 
 				'onClick="document.getElementsByName(\'' . $PA['itemFormElName'] . '\')[0].value = \'0\'; ' . implode( '',$PA['fieldChangeFunc'] ) . '" />'
 		);
 	}
 };
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_FormFields.php'])    {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_FormFields.php']);
+if ( defined( 'TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/Classes/FormFields.php'] ) {
+    include_once( $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/Classes/FormFields.php'] );
 }
 ?>

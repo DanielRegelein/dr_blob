@@ -26,14 +26,16 @@
  * This class provides several methods to be called staticly for the 
  * extension dr_blob
  * 
- * @package EXT:dr_blob
+ * @package TYPO3
+ * @subpackage dr_blob
  * @since 2.2.0
- * @version 2.3.0
+ * @version 2.4.0
  * @author Daniel Regelein <daniel.regelein@diehl-informatik.de>
+ * @filesource EXT:dr_blob/Classes/Div.php
  */
-abstract class tx_drblob_div {
+abstract class Tx_DrBlob_Div {
 	
-	public static $CONTENT_TABLE = 'tx_drblob_content';
+	const CONTENT_TABLE = 'tx_drblob_content';
 	
 	private static $EXTCONF = null;
 
@@ -136,7 +138,19 @@ abstract class tx_drblob_div {
 			return '';
 		}
 	}
-
+	
+	
+	/**
+	 * Returns the content of a User- or Page TS .txt-file found in the Configuration-folder
+	 *
+	 * @param string $file Filename to read out
+	 * @return string UserTS / PageTS
+	 * @see t3lib_div::getURL
+	 */
+	public static function getUserOrPageTS( $file ) {
+		return t3lib_div::getURL( t3lib_extMgm::extPath( 'dr_blob' ) . 'Configuration/' . $file, 0, false );
+	}
+	
 	
 	/**
 	 * Ensure a initialized self::$EXTCONF variable
@@ -270,10 +284,24 @@ abstract class tx_drblob_div {
 		}
 		return false;
 	}
+
+	
+	/**
+	 * @return Bool
+	 * @access public
+	 * @static
+	 */
+	public static function extConf_useExtbase() {
+		self::extConf_initialize();
+		if( t3lib_extMgm::isLoaded( 'extbase' ) && t3lib_extMgm::isLoaded( 'fluid' ) ) {
+			return true;
+		}
+		return false;
+	}
 };
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_div.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_div.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/Classes/Div.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/Classes/Div.php']);
 }
 ?>

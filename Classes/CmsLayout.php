@@ -28,12 +28,13 @@
  *
  * @author		Daniel Regelein <Daniel.Regelein@diehl-informatik.de>
  * @coauthor	Dmitry Dulepov <dmitry@typo3.org>
- * @package 	dr_blob
- * @filesource	class.tx_drblob_cms_layout.php
- * @version		2.3.0
+ * @package 	TYPO3
+ * @subpackage 	dr_blob
+ * @filesource	EXT:dr_blob/Classes/CmsLayout.php
+ * @version		2.4.0
  * @since 		2.0.1, 2009-02-24
  */
-class tx_drblob_cms_layout {
+class Tx_DrBlob_CmsLayout {
 
 	/**
 	 * Returns information about this extension's pi1 plugin
@@ -50,39 +51,27 @@ class tx_drblob_cms_layout {
 			$listType = $listType ? $listType : 'list';
 			
 			$result = sprintf(
-				$GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/locallang_wiz.xml:cms_layout.mode' ),
-				$GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.' . $listType ) 
+				$GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_wiz.xml:cms_layout.mode' ),
+				$GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.' . $listType ) 
 			);
 			
 			if( $listType == 'list' ) {
 				if( $data['data']['sVFolderTree']['lDEF']['xmlShowVFolderTree']['vDEF'] == '1' ) {
-					$result .= ' ' . $GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/locallang_wiz.xml:cms_layout.mode.usingVFolderTree' );
+					$result .= ' ' . $GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_wiz.xml:cms_layout.mode.usingVFolderTree' );
 				}
 				
 				if( $data['data']['sSettings']['lDEF']['xmlAdd2Fav']['vDEF'] == '1' ) {
-					$result .= ' ' . $GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/locallang_wiz.xml:cms_layout.mode.usingAdd2Fav' );					
+					$result .= ' ' . $GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_wiz.xml:cms_layout.mode.usingAdd2Fav' );					
 				}
 			}
 			
 		}
 		return $result;
 	}
-	
-	
-	/**
-	 * @name		__toString
-	 * Output the class makes when calling <code>echo $obj;</code>
-	 * 
-	 * @access		public
-	 * @return		String		"tx_drblob_cms_layout"
-	 */
-	/*public*/function __toString() {
-		return 'tx_drblob_cms_layout';
-	}
 };
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_cms_layout.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.tx_drblob_cms_layout.php']);
+if ( defined( 'TYPO3_MODE' ) && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/Classes/CmsLayout.php'] ) {
+	include_once( $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/Classes/CmsLayout.php'] );
 }
 ?>

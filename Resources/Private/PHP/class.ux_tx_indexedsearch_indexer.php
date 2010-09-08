@@ -182,7 +182,7 @@ class ux_tx_indexedsearch_indexer extends tx_indexedsearch_indexer {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.ux_tx_indexedsearch_indexer.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/class.ux_tx_indexedsearch_indexer.php']);
+if ( defined( 'TYPO3_MODE' ) && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/Resources/Private/PHP/class.ux_tx_indexedsearch_indexer.php'] ) {
+	include_once( $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dr_blob/Resources/Private/PHP/class.ux_tx_indexedsearch_indexer.php'] );
 }
 ?>

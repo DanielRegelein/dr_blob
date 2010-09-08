@@ -1,0 +1,15 @@
+<f:layout name="default" />
+
+<f:section name="content" >
+Hallo Welt {test}
+
+	<ul>
+		<f:for each="{files}" as="file">
+		<li>
+			{file.title} 
+			<f:link.action action="download" arguments="{file : file}" noCache="1">[ <f:translate key="list_button_download" /> ]</f:link.action>
+			<f:link.action action="details" arguments="{file : file}">[ <f:translate key="list_button_show" /> ]</f:link.action>
+		</li>
+		</f:for>
+	</ul>
+</f:section>

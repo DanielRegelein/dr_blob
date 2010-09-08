@@ -1,0 +1,2 @@
+# RTE mode in table "tx_drblob_content"
+RTE.config.tx_drblob_content.description.proc.overruleMode=ts_css

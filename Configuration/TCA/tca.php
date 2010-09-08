@@ -107,7 +107,7 @@ $TCA['tx_drblob_content'] = array (
 		'title' => array (		
 			'exclude' => 0,
 			'l10n_mode' => 'prefixLangTitle',
-			'label' => 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.title',		
+			'label' => 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.title',		
 			'config' => array (
 				'type' => 'input',	
 				'size' => '30',	
@@ -141,7 +141,7 @@ $TCA['tx_drblob_content'] = array (
 		),
 		'type' => array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.type',
+			'label' => 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.type',
 			'displayCond' => 'REC:NEW:true',
 			'config' => array (
 				'type' => ( sizeof( tx_drblob_div::extConf_getAllowedStorageTypes() ) > 1 ) ? 'radio' : 'passthrough',
@@ -155,7 +155,7 @@ $TCA['tx_drblob_content'] = array (
 		'description' => array (		
 			'exclude' => 0,
 			'l10n_mode' => 'prefixLangTitle',		
-			'label' => 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.description',		
+			'label' => 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.description',		
 			'config' => array (
 				'type' => 'text',
 				'cols' => '30',
@@ -192,11 +192,11 @@ $TCA['tx_drblob_content'] = array (
 		),
 		'is_vip' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.is_vip',
+			'label' => 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.is_vip',
 			'config' => array (
 				'type' => 'check',
 				'items' => array(
-					array( 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.is_vip.desc' , '1' )
+					array( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.is_vip.desc' , '1' )
 				),
 				'eval' => 'int'
 			)
@@ -204,7 +204,7 @@ $TCA['tx_drblob_content'] = array (
 		'download_count' => array(
 			'exclude' => 1,
 			'l10n_mode' => 'noCopy',
-			'label' => 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.download_count',
+			'label' => 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.download_count',
 			'config' => array (
 				'type' => ( tx_drblob_div::extConf_enableDownloadCounterReset() ? 'user' : 'passthrough' ),
 				'userFunc' => 'tx_drblob_FormFields->inputDownloadCounter'
@@ -212,7 +212,7 @@ $TCA['tx_drblob_content'] = array (
 		),
 		'category' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.category',
+			'label' => 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.category',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'tx_drblob_category',
@@ -227,7 +227,7 @@ $TCA['tx_drblob_content'] = array (
 		'blob_name' => array (		
 			'exclude' => 0,	
 			'l10n_mode' => 'mergeIfNotBlank',
-			'label' => 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.blob_name',
+			'label' => 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.blob_name',
 			//'displayCond' => 'FIELD:type!=3',
 			'config' => array (
 				'type' => 'user',	
@@ -237,7 +237,7 @@ $TCA['tx_drblob_content'] = array (
 		'blob_size' => array (		
 			'exclude' => 1,
 			'l10n_mode' => 'mergeIfNotBlank',
-			'label' => 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.blob_size',		
+			'label' => 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.blob_size',		
 			'config' => array (
 				'type' => 'user',
 				'userFunc' => 'tx_drblob_FormFields->inputFileSize',
@@ -246,7 +246,7 @@ $TCA['tx_drblob_content'] = array (
 		'blob_type' => array (		
 			'exclude' => 1,
 			'l10n_mode' => 'mergeIfNotBlank',
-			'label' => 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.blob_type',		
+			'label' => 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.blob_type',		
 			'config' => array (
 				'type' => 'user',
 				'userFunc' => 'tx_drblob_FormFields->inputFileType'				
@@ -255,7 +255,7 @@ $TCA['tx_drblob_content'] = array (
 		'blob_checksum' => array (		
 			'exclude' => 1,
 			'l10n_mode' => 'mergeIfNotBlank',
-			'label' => 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.blob_checksum',		
+			'label' => 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.blob_checksum',		
 			'config' => array (
 				'type' => 'user',
 				'userFunc' => 'tx_drblob_FormFields->inputFileChecksum'	
@@ -265,7 +265,7 @@ $TCA['tx_drblob_content'] = array (
 			'exclude' => 0,
 			'l10n_mode' => 'mergeIfNotBlank',
 			'l10n_display' => 'hideDiff',
-			'label' => 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.blob_data',
+			'label' => 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.blob_data',
 			'config' => array(
 				'type' => 'user',
 				'userFunc' => 'tx_drblob_FormFields->inputFile',
@@ -283,8 +283,8 @@ $TCA['tx_drblob_content'] = array (
 
 	'types' => array (
 		'1' => array( 'showitem' => '
-			--div--;LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.tab.general,title;;1;;2-2-2,type,sys_language_uid;;2;;,description;;;richtext:rte_transform[mode=ts],images,category,download_count;;;;2-2-2,,blob_name;;3;;,blob_data,
-			--div--;LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.tab.visibility,hidden,starttime,endtime,fe_group,is_vip
+			--div--;LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.tab.general,title;;1;;2-2-2,type,sys_language_uid;;2;;,description;;;richtext:rte_transform[flag=rte_enabled|mode=ts],images,category,download_count;;;;2-2-2,,blob_name;;3;;,blob_data,
+			--div--;LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.tab.visibility,hidden,starttime,endtime,fe_group,is_vip
 		'),
 	
 	),
@@ -297,13 +297,13 @@ $TCA['tx_drblob_content'] = array (
 );
 
 if( tx_drblob_div::extConf_isStorageTypeAllowed( 'db' ) ) {
-	$TCA['tx_drblob_content']['columns']['type']['config']['items'][] = array( 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.type.db', 1 );
+	$TCA['tx_drblob_content']['columns']['type']['config']['items'][] = array( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.type.db', 1 );
 }
 if( tx_drblob_div::extConf_isStorageTypeAllowed( 'fs' ) ) {
-	$TCA['tx_drblob_content']['columns']['type']['config']['items'][] = array( 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.type.fs', 2 );
+	$TCA['tx_drblob_content']['columns']['type']['config']['items'][] = array( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.type.fs', 2 );
 }
 if( tx_drblob_div::extConf_isStorageTypeAllowed( 'fsus' ) ) {
-	$TCA['tx_drblob_content']['columns']['type']['config']['items'][] = array( 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_content.type.fsus', 3 );
+	$TCA['tx_drblob_content']['columns']['type']['config']['items'][] = array( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content.type.fsus', 3 );
 }
 
 
@@ -325,7 +325,7 @@ $TCA['tx_drblob_category'] = array(
 		'title' => array (		
 			'exclude' => 0,
 			'l10n_mode' => 'prefixLangTitle',
-			'label' => 'LLL:EXT:dr_blob/locallang_tca.xml:tx_drblob_category.title',		
+			'label' => 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_category.title',		
 			'config' => array (
 				'type' => 'input',	
 				'size' => '30',	

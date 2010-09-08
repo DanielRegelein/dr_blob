@@ -7,7 +7,7 @@
 		<sDataSource>
 			<ROOT>
 		    	<TCEforms>
-					<sheetTitle>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.sheet.datasource</sheetTitle>
+					<sheetTitle>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.sheet.datasource</sheetTitle>
 				</TCEforms>
 		    	<type>array</type>
 				<el>
@@ -65,20 +65,20 @@
 					</xmlRecursive>
 					<xmlCategoriesShowWhat>
 						<TCEforms>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.categories_mode</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.categories_mode</label>
 							<config>
 								<type>radio</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.categories_showAll</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.categories_showAll</numIndex>
 										<numIndex index="1">0</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.categories_showSelected.or</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.categories_showSelected.or</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.categories_showSelected.and</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.categories_showSelected.and</numIndex>
 										<numIndex index="1">2</numIndex>
 									</numIndex>
 								</items>
@@ -90,7 +90,7 @@
 					<xmlCategories>
 						<TCEforms>
 							<exclude>1</exclude>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.categories</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.categories</label>
 							<config>
 								<type>group</type>
 								<internal_type>db</internal_type>
@@ -108,37 +108,37 @@
     	<sSettings>
 	  		<ROOT>
 		    	<TCEforms>
-					<sheetTitle>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.sheet.settings</sheetTitle>
+					<sheetTitle>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.sheet.settings</sheetTitle>
 				</TCEforms>
 				<el>
 					<xmlWhatToDisplay>
 						<TCEforms>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay</label>
 							<config>
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.top</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.top</numIndex>
 										<numIndex index="1">top</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.list</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.list</numIndex>
 										<numIndex index="1">list</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.single</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.single</numIndex>
 										<numIndex index="1">single</numIndex>
 									</numIndex>
 									<numIndex index="3" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.search</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.search</numIndex>
 										<numIndex index="1">search</numIndex>
 									</numIndex>
 									<numIndex index="4" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.personal_list</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.personal_list</numIndex>
 										<numIndex index="1">personal_list</numIndex>
 									</numIndex>
 									<numIndex index="5" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.dummy</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.dummy</numIndex>
 										<numIndex index="1">dummy</numIndex>
 									</numIndex>
 								</items>
@@ -149,7 +149,7 @@
 					</xmlWhatToDisplay>
 					<xmlTemplate>
 						<TCEforms>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.template_file</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.template_file</label>
 							<config>
 								<type>group</type>
 								<internal_type>file</internal_type>
@@ -164,7 +164,7 @@
 					</xmlTemplate>
 					<ff_altSubpartMarker>
 						<TCEforms>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.template_subpart</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.template_subpart</label>
 							<config>
 								<type>input</type>
 								<eval>upper</eval>
@@ -173,7 +173,7 @@
 					</ff_altSubpartMarker>
 					<xmlSinglePID>
 						<TCEforms>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.singlePID</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.singlePID</label>
 							<exclude>1</exclude>
 							<config>
 								<type>group</type>
@@ -188,7 +188,7 @@
 					</xmlSinglePID>
 					<xmlReturnPID>
 						<TCEforms>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.returnPID</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.returnPID</label>
 							<exclude>1</exclude>
 							<config>
 								<type>group</type>
@@ -203,7 +203,7 @@
 					</xmlReturnPID>
 					<xmlListOrderBy>
 						<TCEforms>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.listOrderBy</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy</label>
 							<config>
 								<type>select</type>
 								<items type="array">
@@ -212,35 +212,35 @@
 										<numIndex index="1"></numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.title</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.title</numIndex>
 										<numIndex index="1">title</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.createdate</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.createdate</numIndex>
 										<numIndex index="1">crdate</numIndex>
 									</numIndex>
 									<numIndex index="3" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.lastchange</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.lastchange</numIndex>
 										<numIndex index="1">tstamp</numIndex>
 									</numIndex>
 									<numIndex index="4" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.author</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.author</numIndex>
 										<numIndex index="1">author</numIndex>
 									</numIndex>
 									<numIndex index="5" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.sorting</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.sorting</numIndex>
 										<numIndex index="1">sorting</numIndex>
 									</numIndex>
 									<numIndex index="6" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.blob_size</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.blob_size</numIndex>
 										<numIndex index="1">blob_size</numIndex>
 									</numIndex>
 									<numIndex index="7" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.blob_type</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.blob_type</numIndex>
 										<numIndex index="1">blob_type</numIndex>
 									</numIndex>
 									<numIndex index="8" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.download_count</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.download_count</numIndex>
 										<numIndex index="1">download_count</numIndex>
 									</numIndex>
 								</items>
@@ -251,16 +251,16 @@
 					</xmlListOrderBy>
 					<xmlListOrderDirection>
 						<TCEforms>						
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.listOrderDirection</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderDirection</label>
 							<config>
 								<type>radio</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.listOrderDirection.asc</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderDirection.asc</numIndex>
 										<numIndex index="1">0</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.listOrderDirection.desc</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderDirection.desc</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 								</items>
@@ -271,7 +271,7 @@
 					</xmlListOrderDirection>
 					<xmlLimitCount>
 						<TCEforms>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.limit</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.limit</label>
 							<config>
 								<eval>num</eval>
 								<type>input</type>
@@ -281,20 +281,20 @@
 					</xmlLimitCount>
 					<ff_usePageBrowser>
 						<TCEforms>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.usePageBrowser</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.usePageBrowser</label>
 							<config>
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.all.usets</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.all.usets</numIndex>
 										<numIndex index="1">ts</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.all.yes</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.all.yes</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.all.no</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.all.no</numIndex>
 										<numIndex index="1">0</numIndex>
 									</numIndex>
 								</items>
@@ -306,20 +306,20 @@
 					</ff_usePageBrowser>
 					<xmlAdd2Fav>
 						<TCEforms>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.whatToDisplaypersonal.add</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplaypersonal.add</label>
 							<config>
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.all.usets</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.all.usets</numIndex>
 										<numIndex index="1">ts</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.all.yes</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.all.yes</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.all.no</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.all.no</numIndex>
 										<numIndex index="1">0</numIndex>
 									</numIndex>
 								</items>
@@ -335,25 +335,25 @@
 		<sVFolderTree>
 	  		<ROOT>
 		    	<TCEforms>
-					<sheetTitle>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.sheet.vFolderTree</sheetTitle>
+					<sheetTitle>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.sheet.vFolderTree</sheetTitle>
 				</TCEforms>
 				<el>
 					<xmlShowVFolderTree>
 						<TCEforms>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.showVFolderTree</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.showVFolderTree</label>
 							<config>
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.all.usets</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.all.usets</numIndex>
 										<numIndex index="1">ts</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.all.yes</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.all.yes</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.all.no</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.all.no</numIndex>
 										<numIndex index="1">0</numIndex>
 									</numIndex>
 								</items>
@@ -364,21 +364,21 @@
 					</xmlShowVFolderTree>
 					<ff_vFolderTreeInitialState>
 						<TCEforms>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTreeInitialState</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.vFolderTreeInitialState</label>
 							<config>
 								<type>radio</type>
 								<default>none</default>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTreeInitialState.none</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.vFolderTreeInitialState.none</numIndex>
 										<numIndex index="1">none</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTreeInitialState.first</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.vFolderTreeInitialState.first</numIndex>
 										<numIndex index="1">first</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTreeInitialState.all</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.vFolderTreeInitialState.all</numIndex>
 										<numIndex index="1">all</numIndex>
 									</numIndex>
 								</items>
@@ -389,16 +389,16 @@
 					</ff_vFolderTreeInitialState>
 					<ff_vFolderTree_FolderSubscriptionMode>
 						<TCEforms>
-							<label>LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTree_FolderSubscriptionMode</label>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.vFolderTree_FolderSubscriptionMode</label>
 							<config>
 								<type>radio</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTree_FolderSubscriptionMode.all</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.vFolderTree_FolderSubscriptionMode.all</numIndex>
 										<numIndex index="1">all</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:dr_blob/locallang_tca.xml:tt_content.pi_flexform.vFolderTree_FolderSubscriptionMode.selected</numIndex>
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.vFolderTree_FolderSubscriptionMode.selected</numIndex>
 										<numIndex index="1">selected</numIndex>
 									</numIndex>
 								</items>

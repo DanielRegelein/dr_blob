@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>dr_blob Reference Template</title>
+	</head>
+	
+	<body>
+		<h1>dr_blob Reference Template</h1>
+
+		<p>This is the example zemplate for the TYPO3 Extension dr_blob</p>
+		<p>The template marker mentioned below are not necessarily complete. Please refer the extension documentation for a complete list</p>
+
+		<h2>Template Marker Index:</h2>
+		
+		<h3>Record Marker Index:</h3>
+		<p>In general, every aspect consists of two marker: a language marker (###LANG_###), and a content marker (###BLOB_###).<br />The language marker contain the localized language label for the according field</p>
+		
+		<pre>
+			###BLOB_UID###			The record's uid
+			###LANG_UID###
+			###BLOB_TITLE###		The record's title
+			###LANG_TITLE###
+			###BLOB_DESCRIPTION###		The record's description
+			###LANG_DESCRIPTION###
+			###BLOB_AUTHOR###		The name of the record's author
+			###LANG_AUTHOR###
+			###BLOB_AUTHOR_EMAIL###		Same for email-address
+			###LANG_AUTHOR_EMAIL###
+			###BLOB_CRDATE###		The record's date of creation
+			###LANG_CRDATE###
+			###BLOB_LASTCHANGE###		The record's date of last change
+			###LANG_LASTCHANGE###
+			###BLOB_AGE###			The record's age
+			###LANG_AGE###
+			###BLOB_DOWNLOADCOUNT###	The record's downloadcounter
+			###LANG_DOWNLOADCOUNT###
+			###BLOB_CHECKSUM###		The record's checksum
+			###LANG_CHECKSUM###
+			###BLOB_FILENAME###		The record's file's name
+			###LANG_FILENAME### 
+			###BLOB_FILESIZE###		The record's file's size
+			###LANG_FILESIZE###
+			###BLOB_FILETYPE###		The record's file's type
+			###LANG_FILETYPE###
+			###BLOB_FILEICON###		The record's file's icon
+			###LANG_FILEICON###
+			###BLOB_CATEGORIES###		The record's categories
+			###LANG_CATEGORIES###
+			###BLOB_IMAGES###		The record's image
+			###LANG_IMAGES###
+			###BLOB_VERSION###		The record's version flag
+			###LANG_VERSION###
+		</pre>
+	
+		
+		<h3>Special Marker for the List Mode, the Top Mode and the Personal Mode:</h3>
+		<pre>
+			###BLOB_SORTLINK_TITLE###		Sortlink for the field title
+			###BLOB_SORTLINK_CRDATE###		Sortlink for the field crdate
+			###BLOB_SORTLINK_LASTCHANGE###		Sortlink for the field tstamp
+			###BLOB_SORTLINK_FILESIZE###		Sortlink for the field blob_size
+			###BLOB_SORTLINK_AUTHOR###		Sortlink for the field cruser_id
+			###BLOB_SORTLINK_UID###			Sortlink for the field uid
+			###BLOB_SORTLINK_DOWNLOADCOUNT###	Sortlink for the field downloadcounter
+			###BLOB_SORTLINK_FILETYPE###		Sortlink for the field blob_type
+			###BLOB_VFOLDERTREE###			Marker containing the vFolderTree (Only in LIST-View)
+			###LANG_VFOLDERTREE###
+			###BLOB_PAGEBROWSER###			Marker containg the PageBrowser (Not in SINGLE-View)
+			###LANG_PAGEBROWSER###		
+			###LANG_MORE###				The word "more"	 (not in SINGLE-View)
+			###LANG_DOWNLOAD###			The word "download"
+			###LANG_BACK###				The word "back"	 (only in SINGLE-View)
+			###LANG_TOPHEADER###		The headline for the top mode
+			###LANG_LISTHEADER###		The headline for the list mode
+			###LANG_PERSONALHEADER###	The headline for the personal mode
+		</pre>
+
+	
+		<h3>Wrapped subpart marker</h3>
+		<pre>
+			###BLOB_LINK_ITEM###		Link to a record's detailed view (not in SINGLE-View)
+			###BLOB_LINK_FILE###		Link to a record's file
+			###BLOB_LINK_BACK###		Link back to the record list (Only in SINGLE-View)
+		</pre>
+	
+		<hr />
+
+ 
+
+
+<!-- ###TEMPLATE_LIST### begin 
+	This is the template subpart for the LIST-Mode
+-->
+	###BLOB_VFOLDERTREE###
+
+	<table class="blob-list-container">
+		<colgroup>
+			<col width="20%" />
+			<col width="20%" />
+			<col width="15%" />
+			<col width="10%" />
+			<col width="20%" />
+			<col width="15%" />
+		</colgroup>
+		<thead>
+			<tr class="blob-list-head">
+				<th>###BLOB_SORTLINK_TITLE###</th>
+				<th>###BLOB_SORTLINK_AUTHOR###</th>
+				<th>###BLOB_SORTLINK_CRDATE###</th>
+				<th>###BLOB_SORTLINK_FILESIZE###</th>
+				<th>###LANG_CATEGORIES###</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tfoot></tfoot>
+		<tbody>
+		<!-- ###CONTENT### begin -->
+			<!-- ###BLOBITEM### begin -->
+			<tr class="blob-list-item1">
+				<td>###BLOB_TITLE###</td>
+				<td>###BLOB_AUTHOR###</td>
+				<td>###BLOB_CRDATE###</td>
+				<td>###BLOB_FILESIZE###</td>
+				<td>###BLOB_CATEGORIES###</td>
+				<td>
+					<!--###BLOB_LINK_ITEM###-->###LANG_MORE###<!--###BLOB_LINK_ITEM###-->
+					<!--###BLOB_LINK_FILE###-->###LANG_DOWNLOAD###<!--###BLOB_LINK_FILE###-->
+				</td>
+			</tr>
+			<!-- ###BLOBITEM### end -->
+				
+			<!-- ###BLOBITEM_1### begin -->
+			<tr class="blob-list-item2">
+				<td>###BLOB_TITLE###</td>
+				<td>###BLOB_AUTHOR###</td>
+				<td>###BLOB_CRDATE###</td>
+				<td>###BLOB_FILESIZE###</td>
+				<td>###BLOB_CATEGORIES###</td>
+				<td>
+					<!--###BLOB_LINK_ITEM###-->###LANG_MORE###<!--###BLOB_LINK_ITEM###-->
+					<!--###BLOB_LINK_FILE###-->###LANG_DOWNLOAD###<!--###BLOB_LINK_FILE###-->
+				</td>
+			</tr>
+			<!-- ###BLOBITEM_1### end -->
+		<!-- ###CONTENT### end -->
+		</tbody>
+	</table>
+	###BLOB_PAGEBROWSER###
+<!-- ###TEMPLATE_LIST### end -->
+
+
+<!-- ###TEMPLATE_LIST_NOITEMS### begin 
+	This is the template subpart for the LIST-Mode when the list is empty
+-->
+	###BLOB_VFOLDERTREE###
+
+	<table class="blob-list-container">
+		<colgroup>
+			<col width="20%" />
+			<col width="20%" />
+			<col width="15%" />
+			<col width="10%" />
+			<col width="20%" />
+			<col width="15%" />
+		</colgroup>
+		<thead>
+			<tr class="blob-list-head">
+				<th>###LANG_TITLE###</th>
+				<th>###LANG_AUTHOR###</th>
+				<th>###LANG_CRDATE###</th>
+				<th>###LANG_FILESIZE###</th>
+				<th>###LANG_CATEGORIES###</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tfoot></tfoot>
+		<tbody>
+			<tr class="blob-list-item1">
+				<td colspan="6">###LANG_NOITEMS###</td>
+			</tr>
+		</tbody>
+	</table>
+<!-- ###TEMPLATE_LIST_NOITEMS### end -->
+
+
+
+<hr />
+
+
+
+<!-- ###TEMPLATE_TOP### begin 
+	This is the template subpart for the TOP-Mode, typically displayed on a frontpage
+-->
+	<div class="blob-top-container">
+	<!-- ###CONTENT### begin -->
+		<!-- ###BLOBITEM### begin -->
+			<div class="blob-top-item">
+				###BLOB_LASTCHANGE###
+				<h2><!--###BLOB_LINK_ITEM###--> ###BLOB_TITLE### <!--###BLOB_LINK_ITEM###--></h2>
+				###BLOB_IMAGES###
+				###BLOB_DESCRIPTION###
+				###BLOB_CATEGORIES###<br />
+				<!--###BLOB_LINK_ITEM###--> ###LANG_MORE### <!--###BLOB_LINK_ITEM###-->
+			</div>
+		<!-- ###BLOBITEM### end-->
+	<!-- ###CONTENT### end -->
+	###BLOB_PAGEBROWSER###
+	</div>
+<!-- ###TEMPLATE_TOP### end -->
+
+
+<!-- ###TEMPLATE_TOP_NOITEMS### begin -->
+	<div class="blob-top-container">
+		<div class="blob-top-item">
+			###LANG_NOITEMS###
+		</div>
+	</div>
+<!-- ###TEMPLATE_TOP_NOITEMS### end -->
+
+
+
+<hr />
+ 
+ 
+
+<!-- ###TEMPLATE_PERSONAL### begin 
+	This is the template subpart for the PERSONAL-Mode.
+-->
+	<div class="blob-personal-container">
+	<!-- ###CONTENT### begin -->
+		<!-- ###BLOBITEM### begin -->
+			<div class="blob-personal-item">
+				###BLOB_LASTCHANGE###
+				<h2><!--###BLOB_LINK_ITEM###--> ###BLOB_TITLE### <!--###BLOB_LINK_ITEM###--></h2>
+				###BLOB_IMAGES###
+				###BLOB_DESCRIPTION###
+				###BLOB_CATEGORIES###<br />
+				<!--###BLOB_LINK_ITEM###--> ###LANG_MORE### <!--###BLOB_LINK_ITEM###-->
+			</div>
+		<!-- ###BLOBITEM### end-->
+	<!-- ###CONTENT### end -->
+	###BLOB_PAGEBROWSER###
+	</div>
+<!-- ###TEMPLATE_PERSONAL### end -->
+
+
+<!-- ###TEMPLATE_PERSONAL_NOITEMS### begin -->
+	<div class="blob-personal-container">
+		<div class="blob-personal-item">
+			###LANG_NOITEMS###
+		</div>
+	</div>
+<!-- ###TEMPLATE_PERSONAL_NOITEMS### end -->
+
+
+<!-- ###TEMPLATE_PERSONAL_ADD_FOLDER### begin 
+	This subpart generates the "Subscribe this list"-button
+-->
+	<div class="blob-personal-btn">
+		<form method="###FORM_METHOD###" action="###FORM_TARGET###">
+			<input type="hidden" name="tx_drblob_pi1[dr_blob][action]" value="###ACTION###" />
+			<input type="hidden" name="tx_drblob_pi1[dr_blob][items]" value="###ITEMS###" />
+			<input type="submit" value="###LANG_PERSADD###" />
+		</form>
+	</div>
+<!-- ###TEMPLATE_PERSONAL_ADD_FOLDER### end -->
+
+<!-- ###TEMPLATE_PERSONAL_REMOVE_FOLDER### begin 
+This subpart generates the "Unsubscribe this list"-button
+-->
+	<div class="blob-personal-btn">
+		<form method="###FORM_METHOD###" action="###FORM_TARGET###">
+			<input type="hidden" name="tx_drblob_pi1[dr_blob][action]" value="###ACTION###" />
+			<input type="hidden" name="tx_drblob_pi1[dr_blob][items]" value="###ITEMS###" />
+			<input type="submit" value="###LANG_PERSREMOVE###" />
+		</form>
+	</div>
+<!-- ###TEMPLATE_PERSONAL_REMOVE_FOLDER### end -->
+
+
+
+<hr />
+
+
+
+<!-- ###TEMPLATE_SINGLE### begin 
+	This is the template subpart for the SINGLE-Mode.
+-->
+	<div class="blob-single">
+		###LANG_LASTCHANGE### ###BLOB_LASTCHANGE### (###BLOB_AGE###)
+		<h1>###BLOB_TITLE###</h1>
+		###BLOB_VERSION###
+		###BLOB_IMAGES###
+		###BLOB_DESCRIPTION###
+		<p>###LANG_CATEGORIES###: ###BLOB_CATEGORIES###</p>
+		<p><strong>###LANG_AUTHOR###:</strong> ###BLOB_AUTHOR###</p>
+		
+		<p ###BLOB_ISFILEATTACHED###>
+			###BLOB_FILEICON### ###BLOB_FILENAME### (###BLOB_FILESIZE###) <br />
+			###LANG_CHECKSUM###: ###BLOB_CHECKSUM###<br />
+			###BLOB_DOWNLOADCOUNT###<br />
+		 	<!--###BLOB_LINK_FILE###--> ###LANG_DOWNLOAD### <!--###BLOB_LINK_FILE###-->
+		</p>
+		
+		<!--###BLOB_LINK_BACK###-->###LANG_BACK###<!--###BLOB_LINK_BACK###-->
+	</div>
+<!-- ###TEMPLATE_SINGLE### end -->
+
+
+
+<hr />
+
+
+<!-- ###TEMPLATE_SINGLE_RECORDINSERT### begin 
+	This is the template subpart for the SINGLE-Mode when using InsertRecord-CO.
+-->
+	<div class="blob-single">
+		###LANG_LASTCHANGE### ###BLOB_LASTCHANGE### (###BLOB_AGE###)
+		<h1>###BLOB_TITLE###</h1>
+		###BLOB_VERSION###
+		###BLOB_IMAGES###
+		###BLOB_DESCRIPTION###
+		<p>###LANG_CATEGORIES###: ###BLOB_CATEGORIES###</p>
+		<p><strong>###LANG_AUTHOR###:</strong> ###BLOB_AUTHOR###</p>
+		<p>
+			###BLOB_FILEICON### ###BLOB_FILENAME### (###BLOB_FILESIZE###) [###LANG_CHECKSUM###: ###BLOB_CHECKSUM###]<br />
+			###BLOB_DOWNLOADCOUNT###<br />
+		 	<!--###BLOB_LINK_FILE###--> ###LANG_DOWNLOAD### <!--###BLOB_LINK_FILE###-->
+		</p>
+	</div>
+<!-- ###TEMPLATE_SINGLE_RECORDINSERT### end -->
+
+
+
+
+<hr />
+
+
+
+<!-- ###TEMPLATE_SEARCH### begin 
+	This is the template subpart for the SEARCH-Mode. 
+	The SEARCH-Mode uses the LIST-Mode-Template to show the records
+-->
+	<form method="post" action="###FORM_URL###">
+		<input size="30" maxlength="100" type="text" name="tx_drblob_pi1[sword]" value="###SWORDS###" />
+		<input type="hidden" name="no_cache" value="1" />
+		<input type="hidden" name="tx_drblob_pi1[pointer]" value="" />
+		<input type="submit" name="search" value="###LANG_SEARCH###" />
+	</form>
+	<hr />
+<!-- ###TEMPLATE_SEARCH### end -->
+
+
+<!-- ###TEMPLATE_SEARCH_NOITEMS### begin -->
+	<table class="blob-list-container">
+		<colgroup>
+			<col width="20%" />
+			<col width="20%" />
+			<col width="15%" />
+			<col width="10%" />
+			<col width="20%" />
+			<col width="15%" />
+		</colgroup>
+		<thead>
+			<tr class="blob-list-head">
+				<th>###LANG_TITLE###</th>
+				<th>###LANG_AUTHOR###</th>
+				<th>###LANG_CRDATE###</th>
+				<th>###LANG_FILESIZE###</th>
+				<th>###LANG_CATEGORIES###</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tfoot></tfoot>
+		<tbody>
+			<tr class="blob-list-item1">
+				<td colspan="6">###LANG_NOITEMS###</td>
+			</tr>
+		</tbody>
+	</table>
+<!-- ###TEMPLATE_SEARCH_NOITEMS### end -->
+
+
+
+
+<hr />
+
+
+
+<!-- ###TEMPLATE_MOSTDOWNLOADED### begin 
+	This is an example for an overwritten subpart.
+	It will generate an ordered list of the records
+-->
+	<ol>
+	<!-- ###CONTENT### begin -->
+		<!-- ###BLOBITEM### begin -->
+		<li>###BLOB_TITLE### (###BLOB_DOWNLOADCOUNT###)</li>
+		<!-- ###BLOBITEM### end -->
+	<!-- ###CONTENT### end -->
+	</ol>
+<!-- ###TEMPLATE_MOSTDOWNLOADED### end -->
+
+
+<!-- ###TEMPLATE_MOSTDOWNLOADED_NOITEMS### begin -->
+	<p>###LANG_NOITEMS###</p>
+<!-- ###TEMPLATE_MOSTDOWNLOADED_NOITEMS### end -->
