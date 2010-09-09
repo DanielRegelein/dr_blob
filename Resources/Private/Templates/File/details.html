@@ -1,7 +1,29 @@
+{namespace vhc=Tx_DrBlob_ViewHelpers}
+
 <f:layout name="default" />
 
 <f:section name="content" >
 
-	Showing file details for <b>{file.title}</b>
+	<div class="blob-single">
+		<f:translate key="list_field_tstamp" /> ###BLOB_LASTCHANGE### (###BLOB_AGE###)
+		<h1>{file.title}</h1>
+		{file.version}
+		###BLOB_IMAGES###
+		
+		<f:format.html>{file.description}</f:format.html>
+		
+		<p><f:translate key="list_field_categories" />: ###BLOB_CATEGORIES###</p>
+		<p><strong><f:translate key="list_field_author" />:</strong> {file.author}</p>
+		
+		<p>
+			<vhc:fileicon filename="{file.fileName}" style="vertical-align: middle;" /> {file.fileName} (<vhc:format.filesize bytes="{file.filesize}" />) <br />
+			<f:translate key="list_field_blob_checksum" />: {file.fileChecksum}<br />
+			
+			<f:translate key="list_field_downloadcount_wrap" arguments="{ 0 : file.downloadCount }" /><br />
+		 	<!--###BLOB_LINK_FILE###--> ###LANG_DOWNLOAD### <!--###BLOB_LINK_FILE###-->
+		</p>
+		
+	</div>
+	
 
 </f:section>
