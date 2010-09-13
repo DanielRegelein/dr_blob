@@ -35,15 +35,26 @@ class Tx_DrBlob_WizIcon {
 
 	public function proc( $wizardItems ) {
 		global $LANG;
-
 		$LL = $this->includeLocalLang();
-		$wizardItems['plugins_tx_drblob_pi1'] = array(
-			'icon' => t3lib_extMgm::extRelPath( 'dr_blob' ) . 'Resources/Public/Backend/' . 'ce_wiz.gif',
-			'title' => $LANG->getLLL( 'pi1_title', $LL ),
-			'description' => $LANG->getLLL( 'pi1_plus_wiz_description', $LL ),
-			'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=dr_blob_pi1'
-		);
-
+		
+		if( Tx_DrBlob_Div::extConf_usePi1() ) {
+			$wizardItems['plugins_tx_drblob_pi1'] = array(
+				'icon' => t3lib_extMgm::extRelPath( 'dr_blob' ) . 'Resources/Public/Backend/' . 'ce_wiz.gif',
+				'title' => $LANG->getLLL( 'pi1_title', $LL ),
+				'description' => $LANG->getLLL( 'pi1_plus_wiz_description', $LL ),
+				'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=dr_blob_pi1'
+			);
+		}
+		
+		if( Tx_DrBlob_Div::extConf_usePi2() ) {
+			$wizardItems['plugins_tx_drblob_pi2'] = array(
+				'icon' => t3lib_extMgm::extRelPath( 'dr_blob' ) . 'Resources/Public/Backend/' . 'ce_wiz.gif',
+				'title' => $LANG->getLLL( 'pi2_title', $LL ),
+				'description' => $LANG->getLLL( 'pi2_plus_wiz_description', $LL ),
+				'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=drblob_pi2'
+			);
+		}
+		
 		return $wizardItems;
 	}
 	

@@ -17,8 +17,7 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 	 */
 	public function indexAction( $sort = null) {
 		$this->fileRepository->qryParams['orderBy'] = $sort;
-		
-		switch( $this->setings['code'] ) {
+		switch( $this->settings['code'] ) {
 			case 'top':  		$filelist = $this->fileRepository->findVipRecords(); 		break;
 			case 'personal':  	$filelist = $this->fileRepository->findSubscribedRecords(); break;
 			case 'list':

@@ -36,6 +36,7 @@
 abstract class Tx_DrBlob_Div {
 	
 	const CONTENT_TABLE = 'tx_drblob_content';
+	const CATEGORY_TABLE = 'tx_drblob_category';
 	
 	private static $EXTCONF = null;
 
@@ -291,12 +292,22 @@ abstract class Tx_DrBlob_Div {
 	 * @access public
 	 * @static
 	 */
-	public static function extConf_useExtbase() {
-		self::extConf_initialize();
-		if( t3lib_extMgm::isLoaded( 'extbase' ) && t3lib_extMgm::isLoaded( 'fluid' ) ) {
+	public static function extConf_usePi1() {
+		return true;
+	}
+	
+	
+	/**
+	 * @return Bool
+	 * @access public
+	 * @static
+	 */
+	public static function extConf_usePi2() {
+		#self::extConf_initialize();
+		#if( t3lib_extMgm::isLoaded( 'extbase' ) && t3lib_extMgm::isLoaded( 'fluid' ) ) {
 			return true;
-		}
-		return false;
+		#}
+		#return false;
 	}
 };
 

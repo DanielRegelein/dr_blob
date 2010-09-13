@@ -65,6 +65,16 @@ class Tx_DrBlob_CmsLayout {
 				}
 			}
 			
+		} else if ( $params['row']['list_type'] == 'drblob_pi2' ) {
+			
+			$data = t3lib_div::xml2array( $params['row']['pi_flexform'] );
+			$listType = $data['data']['sDEF']['lDEF']['settings.code']['vDEF'];
+			$listType = $listType ? $listType : 'list';
+
+			$result = sprintf(
+				$GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_wiz.xml:cms_layout.mode' ),
+				$GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.' . $listType ) 
+			);
 		}
 		return $result;
 	}

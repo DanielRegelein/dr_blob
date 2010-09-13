@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<sheets>
+		<sDEF>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.sheet.settings</sheetTitle>
+				</TCEforms>
+				<el>
+					<settings.code>
+						<TCEforms>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay</label>
+							<config>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.list</numIndex>
+										<numIndex index="1">list</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.top</numIndex>
+										<numIndex index="1">top</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.personal_list</numIndex>
+										<numIndex index="1">personal</numIndex>
+									</numIndex>
+								</items>
+								<default>list</default>
+								<maxitems>1</maxitems>
+								<size>3</size>
+							</config>
+						</TCEforms>
+					</settings.code>
+				</el>
+			</ROOT>
+		</sDEF>
+	</sheets>
+</T3DataStructure>
