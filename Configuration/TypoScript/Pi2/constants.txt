@@ -1,0 +1,10 @@
+plugin.tx_drblob {
+	view {
+		 # cat=plugin.tx_drblob/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:dr_blob/Resources/Private/Templates/
+		 # cat=plugin.tx_drblob/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:dr_blob/Resources/Private/Partials/
+		 # cat=plugin.tx_drblob/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:dr_blob/Resources/Private/Layouts/
+	}
+}

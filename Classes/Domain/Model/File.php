@@ -9,12 +9,12 @@ class Tx_DrBlob_Domain_Model_File extends Tx_Extbase_DomainObject_AbstractEntity
 	/**
 	 * @var int
 	 */
-	protected $crdate = 0;
+	protected $createTS = 0;
 	
 	/**
 	 * @var int
 	 */
-	protected $tstamp = 0;
+	protected $modifyTS = 0;
 	
 	/**
 	 * @var string
@@ -87,14 +87,14 @@ class Tx_DrBlob_Domain_Model_File extends Tx_Extbase_DomainObject_AbstractEntity
 	 * @return DateTime
 	 */
 	public function getCreateDate() {
-		return new DateTime( date( 'Y-m-d', $this->crdate ) );
+		return new DateTime( date( 'Y-m-d', $this->createTS ) );
 	}
 	
 	/**
 	 * @return DateTime
 	 */
 	public function getChangeDate() {
-		return new DateTime( date( 'Y-m-d', $this->tstamp ) );
+		return new DateTime( date( 'Y-m-d', $this->modifyTS ) );
 	}
 	
 	/**

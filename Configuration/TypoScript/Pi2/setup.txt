@@ -1,0 +1,54 @@
+plugin.tx_drblob {
+  settings {
+    code = list
+  }
+
+  persistence {
+    storagePid = {$plugin.tx_drblob.persistence.storagePid}
+
+    classes {
+      Tx_DrBlob_Domain_Model_File {
+        mapping {
+          tableName = tx_drblob_content
+
+          columns {
+            ####################category.foreignClass = Tx_DrBlob_Domain_Model_Category
+            version.mapOnProperty = t3ver_label
+            authorEmail.mapOnProperty = author_email
+            downloadCount.mapOnProperty = download_count
+            blobName.mapOnProperty = blob_name
+            blobType.mapOnProperty = blob_type
+            blobSize.mapOnProperty = blob_size
+            blobChecksum.mapOnProperty = blob_checksum
+            crdate.mapOnProperty = createTS
+            tstamp.mapOnProperty = modifyTS
+          }
+        }
+      }
+
+      Tx_DrBlob_Domain_Model_Category {
+        mapping {
+          tableName = tx_drblob_category
+        }
+      }
+    }
+  }
+
+  view {
+    templateRootPath = {$plugin.tx_drblob.view.templateRootPath}
+    partialRootPath = {$plugin.tx_drblob.view.partialRootPath}
+    layoutRootPath = {$plugin.tx_drblob.view.layoutRootPath}
+  }
+}
+
+plugin.tx_drblob._LOCAL_LANG {
+  default {
+  }
+}
+	
+plugin.tx_drblob._CSS_DEFAULT_STYLE (
+  div.blob-top-container div.blob-top-item,
+  div.blob-personal-container div.blob-personal-item { width: 300px; margin-bottom: 1px; border: 1px solid #afafaf; padding: 5px;}
+  div.blob-top-container div.blob-top-item h2,
+  div.blob-personal-container div.blob-personal-item h2 { margin: 2px; }
+)
