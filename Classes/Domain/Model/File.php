@@ -55,6 +55,11 @@ class Tx_DrBlob_Domain_Model_File extends Tx_Extbase_DomainObject_AbstractEntity
 	 * @var int
 	 */
 	protected $downloadCount = 0;
+
+	/**
+	 * @var int
+	 */
+	protected $type = 0;
 	
 	/**
 	 * @var string
@@ -80,7 +85,21 @@ class Tx_DrBlob_Domain_Model_File extends Tx_Extbase_DomainObject_AbstractEntity
 	 * @return bool
 	 */	
 	public function hasWorkload() {
-		return false;
+		return $this->getFileSize() ? true : false;
+	}
+	
+	/**
+	 * @return bool
+	 */	
+	public function getHasWorkload() {
+		return $this->hasWorkload();
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function getRecordType() {
+		return $this->type;
 	}
 	
 	/**
@@ -195,6 +214,10 @@ class Tx_DrBlob_Domain_Model_File extends Tx_Extbase_DomainObject_AbstractEntity
 		} else {
 			return null;
 		}
+	}
+	
+	public function incrementDownloadCounter() {
+		$this->downloadCount++;
 	}
 }
 ?>

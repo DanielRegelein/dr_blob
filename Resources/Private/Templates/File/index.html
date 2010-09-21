@@ -44,7 +44,7 @@
 										</f:if>
 									</td>
 									<td>
-										<f:link.action action="download" arguments="{file : file}" noCache="1">[ <f:translate key="list_button_download" /> ]</f:link.action>
+										<f:render partial="downloadLink" arguments="{file : file, label : 'list_button_download' }"/>
 										<f:link.action action="details" arguments="{file : file}">[ <f:translate key="list_button_show" /> ]</f:link.action>
 									</td>
 								</tr>

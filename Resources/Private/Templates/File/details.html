@@ -1,4 +1,4 @@
-<f:layout name="default" />
+<f:layout name="details" />
 
 <f:section name="content" >
 
@@ -18,7 +18,7 @@
 			<f:translate key="list_field_blob_checksum" />: {file.fileChecksum}<br />
 			
 			<f:translate key="list_field_downloadcount_wrap" arguments="{ 0 : file.downloadCount }" /><br />
-		 	<!--###BLOB_LINK_FILE###--> ###LANG_DOWNLOAD### <!--###BLOB_LINK_FILE###-->
+		 	<f:render partial="downloadLink" arguments="{file : file, label : 'single_button_download' }"/>
 		</p>
 		
 	</div>

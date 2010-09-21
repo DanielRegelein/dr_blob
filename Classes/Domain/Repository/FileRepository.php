@@ -19,6 +19,11 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 			->execute();
 	}
 	
+	/**
+	 * Returns vip records
+	 *
+	 * @return array
+	 */
 	public function findVipRecords() {
 		$query = $this->createQuery();
 		return $query
@@ -30,6 +35,23 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 	public function findSubscribedRecords() {
 		die( 'not yet implemented' );
 	}
+	
+	
+	public function getFileWorkload( $uid ) {
+		$query = $this->createQuery();
+		
+		$tmpReturnRawQueryResult = $query->getQuerySettings()->getReturnRawQueryResult();
+		$query->getQuerySettings()->setReturnRawQueryResult( true );
+
+		$data = $query
+			->matching( $query->equals( 'uid', $uid ) )
+			->execute();
+		
+		$query->getQuerySettings()->setReturnRawQueryResult( $tmpReturnRawQueryResult );
+		
+		return $data[0];
+	}
+	
 	
 	private function validateOrdering() {
 		$orderArr = array();
