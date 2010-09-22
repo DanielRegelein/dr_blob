@@ -1,6 +1,7 @@
 plugin.tx_drblob {
   settings {
     code = list
+    tryToOpenFileInline = 1
   }
 
   persistence {
@@ -20,8 +21,8 @@ plugin.tx_drblob {
             blobType.mapOnProperty = blob_type
             blobSize.mapOnProperty = blob_size
             blobChecksum.mapOnProperty = blob_checksum
-            crdate.mapOnProperty = createTS
-            tstamp.mapOnProperty = modifyTS
+            createTS.mapOnProperty = crdate
+            modifyTS.mapOnProperty = tstamp
           }
         }
       }

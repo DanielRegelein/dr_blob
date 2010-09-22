@@ -915,7 +915,7 @@ class Tx_DrBlob_Pi1 extends tslib_pibase {
 					$file = Tx_DrBlob_Div::getStorageFolder() . $this->getFieldContent( 'blob_data' );
 					
 						//asume the file to be quoted --> no streaming possible
-					if( $blob['blob_checksum'] != Tx_DrBlob_Div::calculateFileChecksum( $file ) ) {
+					if( empty( $blob['blob_checksum'] ) || $blob['blob_checksum'] != Tx_DrBlob_Div::calculateFileChecksum( $file ) ) {
 						$fp = fopen( $file, 'r' );
 							$blob['blob_data'] = fread( $fp, filesize ( $file ) );
 						fclose( $fp );

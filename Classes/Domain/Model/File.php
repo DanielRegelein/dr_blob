@@ -74,7 +74,7 @@ class Tx_DrBlob_Domain_Model_File extends Tx_Extbase_DomainObject_AbstractEntity
 	/**
 	 * @var string
 	 */
-	protected $blobSype = null;
+	protected $blobType = null;
 	
 	/**
 	 * @var string

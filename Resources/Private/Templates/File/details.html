@@ -1,20 +1,29 @@
+{namespace vhc=Tx_Vhc_ViewHelpers}
 <f:layout name="details" />
 
 <f:section name="content" >
 
 	<div class="blob-single">
-		<f:translate key="list_field_tstamp" /> ###BLOB_LASTCHANGE### (###BLOB_AGE###)
+		<f:translate key="list_field_tstamp" /> <f:format.date date="{file.changeDate}" format="d.m.Y" /> (<vhc:format.age date={file.changeDate} />)
 		<h1>{file.title}</h1>
 		{file.version}
 		###BLOB_IMAGES###
 		
 		<f:format.html>{file.description}</f:format.html>
 		
-		<p><f:translate key="list_field_categories" />: ###BLOB_CATEGORIES###</p>
+		<f:if condition="{file.categories}">
+			<p><f:translate key="list_field_categories" />:</p>
+			<ul>
+			<f:for each="{file.categories}" as="category">
+				<li>{category.title}</li>
+			</f:for>
+			</ul>
+		</f:if>
+		
 		<p><strong><f:translate key="list_field_author" />:</strong> {file.author}</p>
 		
 		<p>
-			<vhc:fileicon filename="{file.fileName}" style="vertical-align: middle;" /> {file.fileName} (<vhc:format.filesize bytes="{file.filesize}" />) <br />
+			<vhc:fileicon filename="{file.fileName}" style="vertical-align: middle;" /> {file.fileName} (<vhc:format.filesize bytes="{file.fileSize}" />) <br />
 			<f:translate key="list_field_blob_checksum" />: {file.fileChecksum}<br />
 			
 			<f:translate key="list_field_downloadcount_wrap" arguments="{ 0 : file.downloadCount }" /><br />
