@@ -21,10 +21,14 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 	/**
 	 * List-View Mode
 	 * 
-	 * @param string $sort Field to use for sorting
+	 * @param string $sort Field to use for sorting (will be validated in the repository)
+	 * @param int $pointer Pointer for the Page browser
 	 */
-	public function indexAction( $sort = null) {
+	public function indexAction( $sort = null, $pointer = 0 ) {
 		$this->fileRepository->qryParams['orderBy'] = $sort;
+		$this->fileRepository->qryParams['limit'] = 5;
+		$this->fileRepository->qryParams['pointer'] = intval( $pointer );
+		
 		switch( $this->settings['code'] ) {
 			case 'top':  		$filelist = $this->fileRepository->findVipRecords(); 		break;
 			case 'personal':  	$filelist = $this->fileRepository->findSubscribedRecords(); break;
@@ -33,6 +37,7 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 		}
 		
 		$this->view->assign( 'files', $filelist );
+		$this->view->assign( 'files_count', count( $filelist ) );
 	}
 
 	/**
@@ -41,6 +46,16 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 	 * @param Tx_DrBlob_Domain_Model_File $file
 	 */
 	public function detailsAction( Tx_DrBlob_Domain_Model_File $file ) {
+			//substitute Pagetitle [should be part of the view, ot of the controller...]
+		if( (bool)$this->settings['substitutePagetitle'] == true ) {
+			$GLOBALS['TSFE']->page['title'] = $file->getTitle();	
+		}
+				
+			//substitute Indextitle
+		if( (bool)$this->settings['substituteIndextitle'] == true ) {
+			$GLOBALS['TSFE']->indexedDocTitle = $file->getTitle();
+		}
+		
 		$this->view->assign( 'file', $file );
 	}
 	

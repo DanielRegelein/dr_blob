@@ -131,14 +131,19 @@ class Tx_DrBlob_Domain_Model_File extends Tx_Extbase_DomainObject_AbstractEntity
 	}
 	
 	/**
-	 * @return string
-	 * @TODO this method only returns the first image
+	 * Returns an array containing the path to the images attacted to this record (if any) 
+	 * @return array<string>
 	 */
-	public function getFirstImage() {
+	public function getImages() {
+		$tmpImgArr = array();
 		if( $this->images ) {
-			return 'uploads/pics/' . ( is_array( $this->images ) ? $this->images[0] : $this->images );
+			$tmpImgArr = explode( ',', $this->images );
+			
+			for( $i = 0; $i < sizeof( $tmpImgArr ); $i++ ) {
+				$tmpImgArr[$i] = 'uploads/pics/' . $tmpImgArr[$i]; 
+			}
 		}
-		return null;
+		return $tmpImgArr;
 	}
 	
 	/**

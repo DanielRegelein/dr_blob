@@ -3,7 +3,9 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 	
 	public $qryParams = array(
 		'orderBy' => 'title',
-		'orderDir' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
+		'orderDir' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
+		'limit' => 30,
+		'pointer' => 0
 	);
 	
 	/**
@@ -16,6 +18,8 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 		$query = $this->createQuery();
 		return $query
 			->setOrderings( $this->validateOrdering() )
+			->setLimit( $this->qryParams['limit'] )
+			->setOffset( $this->qryParams['pointer'] )
 			->execute();
 	}
 	
@@ -29,6 +33,8 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 		return $query
 			->matching( $query->equals( 'is_vip', 1 ) )
 			->setOrderings( $this->validateOrdering() )
+			->setLimit( $this->qryParams['limit'] )
+			->setOffset( $this->qryParams['pointer'] )
 			->execute();
 	}
 	

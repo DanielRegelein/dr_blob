@@ -1,7 +1,15 @@
 plugin.tx_drblob {
   settings {
     code = list
+    
+    limit = 30
+    maxPages = 10
+    #categories
+    #defaultorderby
+    
     tryToOpenFileInline = 1
+    substitutePagetitle = 1
+    substituteIndextitle = 1
   }
 
   persistence {
@@ -13,7 +21,7 @@ plugin.tx_drblob {
           tableName = tx_drblob_content
 
           columns {
-            ####################category.foreignClass = Tx_DrBlob_Domain_Model_Category
+            category.foreignClass = Tx_DrBlob_Domain_Model_Category
             version.mapOnProperty = t3ver_label
             authorEmail.mapOnProperty = author_email
             downloadCount.mapOnProperty = download_count
@@ -44,6 +52,21 @@ plugin.tx_drblob {
 
 plugin.tx_drblob._LOCAL_LANG {
   default {
+    pageBrowser_next = Next
+    pageBrowser_last = Last
+    pageBrowser_page = Page %s
+    pageBrowser_prev = Previous
+    pageBrowser_first = First
+    pageBrowser_displays = 
+  }
+  
+  de {
+    pageBrowser_next = Next
+    pageBrowser_last = Last
+    pageBrowser_page = Page %s
+    pageBrowser_prev = Previous
+    pageBrowser_first = First
+    pageBrowser_displays = 
   }
 }
 	

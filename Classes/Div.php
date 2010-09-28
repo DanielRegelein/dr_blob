@@ -292,8 +292,14 @@ abstract class Tx_DrBlob_Div {
 	 * @access public
 	 * @static
 	 */
-	public static function extConf_usePi1() {
-		return true;
+	public static function extConf_enablePi1() {
+		self::extConf_initialize();
+		if( t3lib_extMgm::isLoaded( 'cms' ) ) {
+			if( self::$EXTCONF['enable.']['pi1'] == 1 ) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	
@@ -302,12 +308,14 @@ abstract class Tx_DrBlob_Div {
 	 * @access public
 	 * @static
 	 */
-	public static function extConf_usePi2() {
-		#self::extConf_initialize();
-		#if( t3lib_extMgm::isLoaded( 'extbase' ) && t3lib_extMgm::isLoaded( 'fluid' ) ) {
-			return true;
-		#}
-		#return false;
+	public static function extConf_enablePi2() {
+		self::extConf_initialize();
+		if( t3lib_extMgm::isLoaded( 'extbase' ) && t3lib_extMgm::isLoaded( 'fluid' ) ) {
+			if( self::$EXTCONF['enable.']['pi2'] == 1 ) {
+				return true;
+			}
+		}
+		return false;
 	}
 };
 

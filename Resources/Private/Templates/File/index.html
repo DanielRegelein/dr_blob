@@ -30,8 +30,8 @@
 					<tbody>
 
 						<f:for each="{files}" as="file">
-							<f:cycle values="{0: '1', 1: '2'}" as="zebraClass">
-								<tr class="blob-list-item{zebraClass}">
+							<f:cycle values="{0: 'even', 1: 'odd'}" as="zebraClass">
+								<tr class="tr-{zebraClass}">
 									<td>{file.title}</td>
 									<td>{file.author}</td>
 									<td><f:format.date date="{file.createDate}" format="d.m.Y" /></td>
@@ -53,6 +53,8 @@
 						
 					</tbody>
 				</table>
+
+				<vhc:Pagebrowser resCount="430" resultsPerPage="5" maxPages="20" showResultCount="0" />
 			</f:then>
 		</f:if>
 </f:section>
@@ -69,9 +71,10 @@
 							<f:format.date date="{file.changeDate}" format="d.m.Y" />
 							<h2><f:link.action action="download" arguments="{file : file}" noCache="1">{file.title}</f:link.action></h2>
 							
-							<f:if condition="{file.firstImage}">
-								<f:image src="{file.firstImage}" alt="{file.title}" width="50px" />
+							<f:if condition="{file.images}">
+								<f:image src="{file.images.0}" alt="{file.title}" width="150px"/>
 							</f:if>
+
 							<f:format.crop maxCharacters="150" append="..."><vhc:format.stripTags content="{file.description}" /></f:format.crop>
 							
 							<f:if condition="{file.categories}">
@@ -110,9 +113,10 @@
 							<f:format.date date="{file.changeDate}" format="d.m.Y" />
 							<h2><f:link.action action="download" arguments="{file : file}" noCache="1">{file.title}</f:link.action></h2>
 							
-							<f:if condition="{file.firstImage}">
-								<f:image src="{file.firstImage}" alt="{file.title}" width="50px" />
+							<f:if condition="{file.images}">
+								<f:image src="{file.images.0}" alt="{file.title}" width="150px"/>
 							</f:if>
+
 							<f:format.crop maxCharacters="150" append="..."><vhc:format.stripTags content="{file.description}" /></f:format.crop>
 							
 							<f:if condition="{file.categories}">

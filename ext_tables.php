@@ -108,7 +108,7 @@ if ( TYPO3_MODE == 'BE' ) {
 	
 	
 		//"old" Plugin architecture (pibase)
-	if( Tx_DrBlob_Div::extConf_usePi1() ) {
+	if( Tx_DrBlob_Div::extConf_enablePi1() ) {
 			//add wizicon
 		$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_DrBlob_WizIcon'] = t3lib_extMgm::extPath( $_EXTKEY ) . 'Classes/WizIcon.php';
 		t3lib_extMgm::addPlugin( array( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.list_type_pi1', $_EXTKEY . '_pi1' ), 'list_type');
@@ -118,19 +118,20 @@ if ( TYPO3_MODE == 'BE' ) {
 		t3lib_extMgm::addPiFlexFormValue( $_EXTKEY.'_pi1', 'FILE:EXT:dr_blob/Configuration/FlexForms/pi1.xml' );
 
 			//Add static templates
-		t3lib_extMgm::addStaticFile( $_EXTKEY, 'Configuration/TypoScript/Pi1/', 'File List' );
+		t3lib_extMgm::addStaticFile( $_EXTKEY, 'Configuration/TypoScript/Pi1/', 'File List [classic]' );
 		t3lib_extMgm::addStaticFile( $_EXTKEY, 'Configuration/TypoScript/RSS/', 'File List RSS 2.0 Feed' );
 	}
 	
 		//"new" plugin architecture (Extbase / Fluid)
-	if( Tx_DrBlob_Div::extConf_usePi2() ) {
+	if( Tx_DrBlob_Div::extConf_enablePi2() ) {
 		Tx_Extbase_Utility_Extension::registerPlugin(
 			$_EXTKEY,
 			'Pi2',
 			'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.list_type_pi2'
 		);
 		
-		$TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1'] = 'layout,select_key';
+		t3lib_extMgm::addStaticFile( $_EXTKEY, 'Configuration/TypoScript/Pi2/', 'File List [new]' );
+		$TCA['tt_content']['types']['list']['subtypes_excludelist']['drblob_pi2'] = 'layout,select_key';
 		$TCA['tt_content']['types']['list']['subtypes_addlist']['drblob_pi2'] = 'pi_flexform';
 		t3lib_extMgm::addPiFlexFormValue( 'drblob_pi2', 'FILE:EXT:dr_blob/Configuration/FlexForms/pi2.xml' );
 	}

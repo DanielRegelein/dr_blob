@@ -21,14 +21,14 @@ if ( TYPO3_MODE == 'BE' ) {
 
 
 
-if( Tx_DrBlob_Div::extConf_usePi1() ) {
+if( Tx_DrBlob_Div::extConf_enablePi1() ) {
 	t3lib_extMgm::addPItoST43( $_EXTKEY, 'Classes/Pi1.php', '_pi1', 'list_type', 1 );
 
 		//Hook for displaying the list type in the tt_content-object
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['dr_blob_pi1'][] = 'EXT:dr_blob/Classes/CmsLayout.php:tx_DrBlob_CmsLayout->getExtensionSummary';
 }
 
-if( Tx_DrBlob_Div::extConf_usePi2() ) {
+if( Tx_DrBlob_Div::extConf_enablePi2() ) {
 	
 	Tx_Extbase_Utility_Extension::configurePlugin(
 		$_EXTKEY,
