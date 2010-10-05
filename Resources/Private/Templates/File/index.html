@@ -43,7 +43,7 @@
 											</f:for>
 										</f:if>
 									</td>
-									<td>
+									<td style="white-space: nowrap;">
 										<f:render partial="downloadLink" arguments="{file : file, label : 'list_button_download' }"/>
 										<f:link.action action="details" arguments="{file : file}">[ <f:translate key="list_button_show" /> ]</f:link.action>
 									</td>
@@ -53,8 +53,10 @@
 						
 					</tbody>
 				</table>
-
-				<vhc:Pagebrowser resCount="430" resultsPerPage="5" maxPages="20" showResultCount="0" />
+				
+				<f:if condition="{settings.usePageBrowser}">
+					<vhc:Pagebrowser resCount="{files_count}" resultsPerPage="{settings.limit}" maxPages="5" showResultCount="0" forceOutput="false" />
+				</f:if>
 			</f:then>
 		</f:if>
 </f:section>
@@ -72,7 +74,7 @@
 							<h2><f:link.action action="download" arguments="{file : file}" noCache="1">{file.title}</f:link.action></h2>
 							
 							<f:if condition="{file.images}">
-								<f:image src="{file.images.0}" alt="{file.title}" width="150px"/>
+								<f:image src="{file.images.0}" alt="{file.title}" width="100px"/>
 							</f:if>
 
 							<f:format.crop maxCharacters="150" append="..."><vhc:format.stripTags content="{file.description}" /></f:format.crop>

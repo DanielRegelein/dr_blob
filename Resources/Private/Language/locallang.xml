@@ -76,6 +76,12 @@
 			<label index="top_button_show">more</label>
 			<label index="list_vfoldertree">Folder Tree</label>
 			<label index="noRecordsFound">Sorry, no Items available</label>
+			<label index="pageBrowser_next">Next</label>
+			<label index="pageBrowser_last">Last</label>
+			<label index="pageBrowser_page">Page %s</label>
+			<label index="pageBrowser_prev">Previous</label>
+			<label index="pageBrowser_first">First</label>
+			<label index="pageBrowser_displays">Displaying results %s to %s out of %s</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

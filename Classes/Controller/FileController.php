@@ -1,4 +1,32 @@
 <?php
+/*                                                                        *
+ * This script belongs to the TYPO3 extension "dr_blob".                  *
+ *                                                                        *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU Lesser General Public License as published by the *
+ * Free Software Foundation, either version 3 of the License, or (at your *
+ * option) any later version.                                             *
+ *                                                                        *
+ * This script is distributed in the hope that it will be useful, but     *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
+ * General Public License for more details.                               *
+ *                                                                        *
+ * You should have received a copy of the GNU Lesser General Public       *
+ * License along with the script.                                         *
+ * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
+ *                                                                        */
+
+
+/**
+ * Controller for the File records
+ *
+ * @author Daniel Regelein <daniel.regelein@diehl-informatik.de>
+ * @package TYPO3
+ * @subpackage dr_blob
+ */
 class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_ActionController {
 	
 	/**
@@ -25,19 +53,30 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 	 * @param int $pointer Pointer for the Page browser
 	 */
 	public function indexAction( $sort = null, $pointer = 0 ) {
-		$this->fileRepository->qryParams['orderBy'] = $sort;
-		$this->fileRepository->qryParams['limit'] = 5;
+		
+		$this->fileRepository->qryParams['orderBy'] = ( $sort ? $sort : $this->settings['orderBy'] );
+		$this->fileRepository->qryParams['orderDir'] = $this->settings['orderDir'];
+		$this->fileRepository->qryParams['limit'] = intval( $this->settings['limit'] ) ? $this->settings['limit'] : 30;
 		$this->fileRepository->qryParams['pointer'] = intval( $pointer );
 		
 		switch( $this->settings['code'] ) {
-			case 'top':  		$filelist = $this->fileRepository->findVipRecords(); 		break;
-			case 'personal':  	$filelist = $this->fileRepository->findSubscribedRecords(); break;
+			case 'top': 
+				$filelist = $this->fileRepository->findVipRecords();
+				$numRows = $this->fileRepository->countVipRecords();
+			break;
+			#case 'personal':  	
+			#	$filelist = $this->fileRepository->findSubscribedRecords();
+			#	$numRows = $this->fileRepository->countSubscribedRecords();
+			#break;
 			case 'list':
-			default: 			$filelist = $this->fileRepository->findAll(); 				break;
+			default: 			
+				$filelist = $this->fileRepository->findAll();
+				$numRows = $this->fileRepository->countAll();
+			break;
 		}
 		
 		$this->view->assign( 'files', $filelist );
-		$this->view->assign( 'files_count', count( $filelist ) );
+		$this->view->assign( 'files_count', $numRows );
 	}
 
 	/**
@@ -121,7 +160,6 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 				break;
 			}
 			
-			
 				//Increment the download counter
 			$file->incrementDownloadCounter();
 			$this->fileRepository->update( $file );
@@ -138,10 +176,15 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 				$this->response->setHeader( 'Content-Disposition', ( (bool)$this->settings['tryToOpenFileInline'] ? 'attachment' : 'inline' ) . '; filename=' . $file->getFileName(), true );
 				
 					//caching related header
-				$this->response->setHeader( 'Expires', gmdate( 'D, d M Y H:i:s', ( time()-3600 ) . ' GMT' ) );
-				$this->response->setHeader( 'Last-Modified', gmdate( 'D, d M Y H:i:s', ( time()-3600 ) . ' GMT' ) );
-				$this->response->setHeader( 'Cache-Control', 'post-check=0, pre-check=0' );
-				$this->response->setHeader( 'Pragma', 'no-cache' );
+				$this->response->setHeader( 'Expires', gmdate( 'D, d M Y H:i:s', ( time()-3600 ) . ' GMT' ), true );
+				$this->response->setHeader( 'Last-Modified', gmdate( 'D, d M Y H:i:s', ( time()-3600 ) . ' GMT' ), true );
+				$this->response->setHeader( 'Cache-Control', 'post-check=0, pre-check=0', true );
+				$this->response->setHeader( 'Pragma', 'no-cache', true );
+				
+				$client = t3lib_div::clientInfo();
+				if( ( $client['BROWSER'] == 'msie' ) && ( $client['VERSION'] == '6' || $client['VERSION'] == '7'  || $client['VERSION'] == '8' ) ) {
+					$this->response->setHeader( 'Pragma', 'anytextexeptno-cache', true );					
+				}
 
 					//Send out the headers
 				$this->response->send();

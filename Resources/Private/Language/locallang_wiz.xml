@@ -70,6 +70,8 @@
 			<label index="cms_layout.mode.usingVFolderTree">with a vFolderTree</label>
 			<label index="pi1_title">Filelist</label>
 			<label index="pi1_plus_wiz_description">Adds a list of downloadable files to the page</label>
+			<label index="pi2_title">Filelist</label>
+			<label index="pi2_plus_wiz_description">Adds a list of downloadable files to the page</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

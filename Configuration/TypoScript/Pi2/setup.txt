@@ -3,9 +3,10 @@ plugin.tx_drblob {
     code = list
     
     limit = 30
-    maxPages = 10
-    #categories
-    #defaultorderby
+    orderBy = title
+    orderDir = ASC
+    
+    usePageBrowser = 1
     
     tryToOpenFileInline = 1
     substitutePagetitle = 1
@@ -22,15 +23,15 @@ plugin.tx_drblob {
 
           columns {
             category.foreignClass = Tx_DrBlob_Domain_Model_Category
-            version.mapOnProperty = t3ver_label
-            authorEmail.mapOnProperty = author_email
-            downloadCount.mapOnProperty = download_count
-            blobName.mapOnProperty = blob_name
-            blobType.mapOnProperty = blob_type
-            blobSize.mapOnProperty = blob_size
-            blobChecksum.mapOnProperty = blob_checksum
-            createTS.mapOnProperty = crdate
-            modifyTS.mapOnProperty = tstamp
+            t3ver_label.mapOnProperty = version
+            author_email.mapOnProperty = authorEmail
+            download_count.mapOnProperty = downloadCount
+            blob_name.mapOnProperty = blobName
+            blob_type.mapOnProperty = blobType
+            blob_size.mapOnProperty = blobSize
+            blob_checksum.mapOnProperty = blobChecksum
+            crdate.mapOnProperty = createTS
+            tstamp.mapOnProperty = modifyTS 
           }
         }
       }
@@ -51,23 +52,6 @@ plugin.tx_drblob {
 }
 
 plugin.tx_drblob._LOCAL_LANG {
-  default {
-    pageBrowser_next = Next
-    pageBrowser_last = Last
-    pageBrowser_page = Page %s
-    pageBrowser_prev = Previous
-    pageBrowser_first = First
-    pageBrowser_displays = 
-  }
-  
-  de {
-    pageBrowser_next = Next
-    pageBrowser_last = Last
-    pageBrowser_page = Page %s
-    pageBrowser_prev = Previous
-    pageBrowser_first = First
-    pageBrowser_displays = 
-  }
 }
 	
 plugin.tx_drblob._CSS_DEFAULT_STYLE (
@@ -75,4 +59,7 @@ plugin.tx_drblob._CSS_DEFAULT_STYLE (
   div.blob-personal-container div.blob-personal-item { width: 300px; margin-bottom: 1px; border: 1px solid #afafaf; padding: 5px;}
   div.blob-top-container div.blob-top-item h2,
   div.blob-personal-container div.blob-personal-item h2 { margin: 2px; }
+  
+  ul.browsebox { list-style-type: none; }
+  ul.browsebox li { display: inline; } 
 )

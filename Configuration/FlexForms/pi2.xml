@@ -24,17 +24,100 @@
 										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.top</numIndex>
 										<numIndex index="1">top</numIndex>
 									</numIndex>
+									<!--
 									<numIndex index="2" type="array">
 										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.personal_list</numIndex>
 										<numIndex index="1">personal</numIndex>
 									</numIndex>
+									-->
 								</items>
 								<default>list</default>
 								<maxitems>1</maxitems>
-								<size>3</size>
+								<size>1</size>
 							</config>
 						</TCEforms>
 					</settings.code>
+					
+					
+					
+					<settings.orderBy>
+						<TCEforms>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy</label>
+							<config>
+								<type>select</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0"></numIndex>
+										<numIndex index="1"></numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.title</numIndex>
+										<numIndex index="1">title</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.createdate</numIndex>
+										<numIndex index="1">crdate</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.lastchange</numIndex>
+										<numIndex index="1">tstamp</numIndex>
+									</numIndex>
+									<numIndex index="4" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.author</numIndex>
+										<numIndex index="1">author</numIndex>
+									</numIndex>
+									<numIndex index="5" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.sorting</numIndex>
+										<numIndex index="1">sorting</numIndex>
+									</numIndex>
+									<numIndex index="6" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.blob_size</numIndex>
+										<numIndex index="1">blob_size</numIndex>
+									</numIndex>
+									<numIndex index="7" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.blob_type</numIndex>
+										<numIndex index="1">blob_type</numIndex>
+									</numIndex>
+									<numIndex index="8" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderBy.download_count</numIndex>
+										<numIndex index="1">download_count</numIndex>
+									</numIndex>
+								</items>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</settings.orderBy>
+					<settings.orderDir>
+						<TCEforms>						
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderDirection</label>
+							<config>
+								<type>radio</type>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderDirection.asc</numIndex>
+										<numIndex index="1">ASC</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.listOrderDirection.desc</numIndex>
+										<numIndex index="1">DESC</numIndex>
+									</numIndex>
+								</items>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</settings.orderDir>
+					<settings.limit>
+						<TCEforms>
+							<label>LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.limit</label>
+							<config>
+								<eval>num</eval>
+								<type>input</type>
+								<size>10</size>
+							</config>
+						</TCEforms>
+					</settings.limit>
 				</el>
 			</ROOT>
 		</sDEF>

@@ -37,7 +37,7 @@ class Tx_DrBlob_WizIcon {
 		global $LANG;
 		$LL = $this->includeLocalLang();
 		
-		if( Tx_DrBlob_Div::extConf_usePi1() ) {
+		if( Tx_DrBlob_Div::extConf_enablePi1() ) {
 			$wizardItems['plugins_tx_drblob_pi1'] = array(
 				'icon' => t3lib_extMgm::extRelPath( 'dr_blob' ) . 'Resources/Public/Backend/' . 'ce_wiz.gif',
 				'title' => $LANG->getLLL( 'pi1_title', $LL ),
@@ -46,7 +46,7 @@ class Tx_DrBlob_WizIcon {
 			);
 		}
 		
-		if( Tx_DrBlob_Div::extConf_usePi2() ) {
+		if( Tx_DrBlob_Div::extConf_enablePi2() ) {
 			$wizardItems['plugins_tx_drblob_pi2'] = array(
 				'icon' => t3lib_extMgm::extRelPath( 'dr_blob' ) . 'Resources/Public/Backend/' . 'ce_wiz.gif',
 				'title' => $LANG->getLLL( 'pi2_title', $LL ),

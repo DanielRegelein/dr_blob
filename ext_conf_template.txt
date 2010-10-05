@@ -22,8 +22,8 @@ storageType.fsus =
   #cat=basic//120;type=text;label="File System Storage Folder": Select the folder where to store the files if filesystem storage is enabled.
 fileStorageFolder = uploads/tx_drblob/storage/
 
-  #cat=advanced//201;type=boolean;label="Enable classic Plugin": Enable the classic frontend plugin for dr_blob ("pi1") [Technology: pibase]
+  #cat=advanced//201;type=boolean;label="Enable classic Plugin": STABLE! Enable the classic frontend plugin for dr_blob ("pi1") [Technology: pibase]
 enable.pi1 = 1
 
-#cat=advanced//202;type=boolean;label="Enable new Plugin": Enable the new frontend plugin for dr_blob ("pi2") [Technology: extbase / fluid]
+#cat=advanced//202;type=boolean;label="Enable new Plugin": EXPERIMENTAL! Enable the new frontend plugin for dr_blob ("pi2") [Technology: extbase / fluid]
 enable.pi2 = 
