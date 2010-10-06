@@ -69,12 +69,9 @@ class ext_update {
 			'uid,pid,title,include_static_file', 
 			'sys_template',
 			'deleted=0 AND (
-				include_static_file LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%EXT:dr_blob/static/%', 'sys_template' ) . 
-				
-				#' OR ' .
-				#include_static_file LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%EXT:dr_blob/pi1/static/ts/%', 'sys_template' ) . ' OR
-				#include_static_file LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%EXT:dr_blob/pi1/static/xml/%', 'sys_template' ) . '
-				'
+				include_static_file LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr( '%EXT:dr_blob/static/%', 'sys_template' ) . ' OR
+				include_static_file LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr( '%EXT:dr_blob/pi1/static/ts/%', 'sys_template' ) . ' OR
+				include_static_file LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr( '%EXT:dr_blob/pi1/static/xml/%', 'sys_template' ) . '
 			)'
 		);
 		if( $resTStmpl && $GLOBALS['TYPO3_DB']->sql_num_rows( $resTStmpl ) ) {
@@ -216,12 +213,12 @@ class ext_update {
 		foreach( $this->update['fixStaticTemplates'] as $ts) {
 			$oldincFile = $ts['include_static_file'];
 
-			$s = array( 'EXT:dr_blob/static' );
-			$r = array( 'EXT:dr_blob/pi/static/ts' );
+			$s = array( 'EXT:dr_blob/static', 'EXT:dr_blob/pi1/static/ts', 'EXT:dr_blob/pi1/static/xml' );
+			$r = array( 'EXT:dr_blob/Configuration/TypoScript/Pi1', 'EXT:dr_blob/Configuration/TypoScript/Pi1', 'EXT:dr_blob/Configuration/TypoScript/RSS' );
 			$newincfile = str_replace( $s, $r, $oldincFile );
 			$fields_values = array( 'include_static_file' => $newincfile );
 			if ( $GLOBALS['TYPO3_DB']->exec_UPDATEquery( 'sys_template', 'uid=' . $ts['uid'], $fields_values ) ) {
-				$msg[] = 'Updated template "' . $ts['title'] . '" uid: ' . $ts['uid'] . ', page: ' . $ts['pid'];
+				$msg[] = 'Updated template "' . $ts['title'] . '" uid: ' . $ts['uid'] . ', page: ' . $ts['pid'] . '<br /><br />' . $newincfile;
 			}
 		}
 		return implode( '<br />', $msg );

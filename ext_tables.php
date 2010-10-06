@@ -4,9 +4,6 @@ if ( !defined ('TYPO3_MODE') ) {
 }
 
 
-include_once( t3lib_extMgm::extPath( 'dr_blob' ) . 'Classes/Div.php' );
-
-
 $TCA[Tx_DrBlob_Div::CONTENT_TABLE] = array(
 	'ctrl' => array (
 		'title' => 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tx_drblob_content',		
@@ -118,7 +115,7 @@ if ( TYPO3_MODE == 'BE' ) {
 		t3lib_extMgm::addPiFlexFormValue( $_EXTKEY.'_pi1', 'FILE:EXT:dr_blob/Configuration/FlexForms/pi1.xml' );
 
 			//Add static templates
-		t3lib_extMgm::addStaticFile( $_EXTKEY, 'Configuration/TypoScript/Pi1/', 'File List [classic]' );
+		t3lib_extMgm::addStaticFile( $_EXTKEY, 'Configuration/TypoScript/Pi1/', 'File List [pibase]' );
 		t3lib_extMgm::addStaticFile( $_EXTKEY, 'Configuration/TypoScript/RSS/', 'File List RSS 2.0 Feed' );
 	}
 	
@@ -130,7 +127,7 @@ if ( TYPO3_MODE == 'BE' ) {
 			'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.list_type_pi2'
 		);
 		
-		t3lib_extMgm::addStaticFile( $_EXTKEY, 'Configuration/TypoScript/Pi2/', 'File List [new]' );
+		t3lib_extMgm::addStaticFile( $_EXTKEY, 'Configuration/TypoScript/Pi2/', 'File List [extbase]' );
 		$TCA['tt_content']['types']['list']['subtypes_excludelist']['drblob_pi2'] = 'layout,select_key';
 		$TCA['tt_content']['types']['list']['subtypes_addlist']['drblob_pi2'] = 'pi_flexform';
 		t3lib_extMgm::addPiFlexFormValue( 'drblob_pi2', 'FILE:EXT:dr_blob/Configuration/FlexForms/pi2.xml' );

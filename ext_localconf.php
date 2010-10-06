@@ -3,8 +3,6 @@ if ( !defined( 'TYPO3_MODE' ) ) {
 	die ( 'Access denied.' );
 }
 
-include_once( t3lib_extMgm::extPath( 'dr_blob' ) . 'Classes/Div.php' );
-
 if ( TYPO3_MODE == 'BE' ) {
 
 	t3lib_extMgm::addUserTSConfig( Tx_DrBlob_Div::getUserOrPageTS( 'UserTS/default.txt' ) );
