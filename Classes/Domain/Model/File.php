@@ -49,9 +49,10 @@ class Tx_DrBlob_Domain_Model_File extends Tx_Extbase_DomainObject_AbstractEntity
 	protected $version = null;
 	
 	/**
-	 * @var array<Tx_DrBlob_Domain_Model_Category>
+	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_DrBlob_Domain_Model_Category>
+	 * @lazy
 	 */
-	protected $categories = array();
+	protected $category = array();
 	
 	/**
 	 * @var string
@@ -72,11 +73,6 @@ class Tx_DrBlob_Domain_Model_File extends Tx_Extbase_DomainObject_AbstractEntity
 	 * @var string
 	 */
 	protected $authorEmail = null;
-	
-	/**
-	 * @var array<Tx_DrBlob_Domain_Model_Category>
-	 */
-	protected $category = null;
 	
 	/**
 	 * @var int
@@ -175,10 +171,18 @@ class Tx_DrBlob_Domain_Model_File extends Tx_Extbase_DomainObject_AbstractEntity
 	
 	/**
 	 * Returns the Category-Objects assigned to this record
-	 * @return array<Tx_DrBlob_Domain_Model_Category>
+	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_DrBlob_Domain_Model_Category>
+	 */
+	public function getCategory() {
+		return $this->category;
+	}
+	
+	/**
+	 * Returns the Category-Objects assigned to this record
+	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_DrBlob_Domain_Model_Category>
 	 */
 	public function getCategories() {
-		return $this->categories;
+		return $this->getCategory();
 	}
 	
 	/**

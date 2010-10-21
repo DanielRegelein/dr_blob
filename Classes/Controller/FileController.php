@@ -58,6 +58,10 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 		$this->fileRepository->qryParams['orderDir'] = $this->settings['orderDir'];
 		$this->fileRepository->qryParams['limit'] = intval( $this->settings['limit'] ) ? $this->settings['limit'] : 30;
 		$this->fileRepository->qryParams['pointer'] = intval( $pointer );
+		$this->fileRepository->qryParams['categoryMode'] = intval( $this->settings['categoryMode'] );
+		if( !empty( $this->settings['categorySelection'] ) ) {
+			$this->fileRepository->qryParams['categorySelection'] = Tx_Extbase_Utility_Arrays::integerExplode( ',', $this->settings['categorySelection'] );
+		}
 		
 		switch( $this->settings['code'] ) {
 			case 'top': 
@@ -89,7 +93,7 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 		if( (bool)$this->settings['substitutePagetitle'] == true ) {
 			$GLOBALS['TSFE']->page['title'] = $file->getTitle();	
 		}
-				
+
 			//substitute Indextitle
 		if( (bool)$this->settings['substituteIndextitle'] == true ) {
 			$GLOBALS['TSFE']->indexedDocTitle = $file->getTitle();

@@ -73,6 +73,29 @@
 			<label index="pi2_title">Filelist</label>
 			<label index="pi2_plus_wiz_description">Adds a list of downloadable files to the page</label>
 		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="pi1_title">Dateiliste</label>
+			<label index="pi1_plus_wiz_description">Fügt der Seite eine Liste herunterladbarer Dateien hinzu, die in der Datenbank gespeichert sind.</label>
+			<label index="pi2_title">Dateiliste</label>
+			<label index="pi2_plus_wiz_description">Fügt der Seite eine Liste herunterladbarer Dateien hinzu, die in der Datenbank gespeichert sind.</label>
+		</languageKey>
+		<languageKey index="es" type="array">
+			<label index="pi1_title">Lista de ficheros</label>
+			<label index="pi1_plus_wiz_description">Añade una lista de archivos descargables que se almacenen en la base de datos a la página</label>
+			<label index="pi2_title">Lista de ficheros</label>
+			<label index="pi2_plus_wiz_description">Añade una lista de archivos descargables que se almacenen en la base de datos a la página</label>
+		</languageKey>
+		<languageKey index="th" type="array">
+			<label index="err_uploadFolderAccesibleViaWeb">โฟลเดอร์ upload dr_blob&quot;% s&quot;เป็นโฟลเดอร์ย่อยของ TYPO3 Document Root Directory ดังนั้นอาจเข้าถึงได้มากกว่าเว็บ</label>
+			<label index="err_uploadFolderNotWriteable">โฟลเดอร์ upload dr_blob&quot;% s&quot;ไม่พบหรือไม่เขียนลงไฟล์</label>
+			<label index="cms_layout.mode">โหมดปลั๊กอิน :% s</label>
+			<label index="cms_layout.mode.usingAdd2Fav">และ&quot;ส่วนตัว&quot;ปุ่ม</label>
+			<label index="cms_layout.mode.usingVFolderTree">กับ vFolderTree</label>
+			<label index="pi1_title">Filelist</label>
+			<label index="pi1_plus_wiz_description">เพิ่มรายชื่อไฟล์ที่ดาวน์โหลดไปหน้า</label>
+			<label index="pi2_title">Filelist</label>
+			<label index="pi2_plus_wiz_description">เพิ่มรายชื่อไฟล์ที่ดาวน์โหลดไปหน้า</label>
+		</languageKey>
 	</data>
 	<orig_hash type="array">
 	</orig_hash>

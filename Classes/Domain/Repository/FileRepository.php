@@ -37,7 +37,9 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 		'orderBy' => 'title',
 		'orderDir' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
 		'limit' => 30,
-		'pointer' => 0
+		'pointer' => 0,
+		'categoryMode' => 0,
+		'categorySelection' => array()
 	);
 	
 	/**
@@ -49,6 +51,7 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 	public function findAll() {
 		$query = $this->createQuery();
 		return $query
+			->matching( $this->buildCategorySelectionSubQuery() )
 			->setOrderings( $this->validateOrdering() )
 			->setLimit( (integer)$this->qryParams['limit'] )
 			->setOffset( (integer)$this->qryParams['pointer'] * (integer)$this->qryParams['limit'] )
@@ -64,6 +67,7 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 	public function countAll() {
 		$query = $this->createQuery();
 		return $query
+			#->matching( $this->buildCategorySelectionSubQuery() )
 			->count();
 	}
 	
@@ -74,12 +78,23 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 	 */
 	public function findVipRecords() {
 		$query = $this->createQuery();
+		$catSelectSubQry = $this->buildCategorySelectionSubQuery();
+		if( $catSelectSubQry != null ) {
+			$query = $query->matching(
+				$query->logicalAnd(  
+					$query->equals( 'is_vip', 1 ),
+					$catSelectSubQry
+				) 
+			);
+		} else {
+			$query = $query->matching( $query->equals( 'is_vip', 1 ) );
+		}
+		
 		return $query
-			->matching( $query->equals( 'is_vip', 1 ) )
 			->setOrderings( $this->validateOrdering() )
 			->setLimit( (integer)$this->qryParams['limit'] )
 			->setOffset( (integer)$this->qryParams['pointer'] )
-			->execute();
+		 	->execute();
 	}
 	
 	/**
@@ -89,9 +104,19 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 	 */
 	public function countVipRecords() {
 		$query = $this->createQuery();
-		return $query
-			->matching( $query->equals( 'is_vip', 1 ) )
-			->count();
+		$catSelectSubQry = $this->buildCategorySelectionSubQuery();
+		if( $catSelectSubQry != null ) {
+			$query = $query->matching(
+				$query->logicalAnd(  
+					$query->equals( 'is_vip', 1 ),
+					$catSelectSubQry
+				) 
+			);
+		} else {
+			$query = $query->matching( $query->equals( 'is_vip', 1 ) );
+		}
+		
+		return $query->count();
 	}
 	
 	public function findSubscribedRecords() {
@@ -125,10 +150,10 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 	 *
 	 * @return array
 	 */
-	private function validateOrdering() {
+	protected function validateOrdering() {
+		$allowedOrderByFields = explode( ',', 'sorting,title,crdate,tstamp,blob_size,uid,download_count,blob_type,author,author_email,t3ver_label' );
 		$orderArr = array();
-		
-		if( in_array( $this->qryParams['orderBy'], explode( ',', 'sorting,title,crdate,tstamp,blob_size,uid,download_count,blob_type,author,author_email' ) ) ) {
+		if( in_array( $this->qryParams['orderBy'], $allowedOrderByFields ) ) {
 			$orderArr[$this->qryParams['orderBy']] = ( 
 				$this->qryParams['orderDir'] == Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING || 
 				$this->qryParams['orderDir'] == Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING ) ? 
@@ -139,6 +164,24 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 		}
 		
 		return $orderArr;
+	}
+	
+	/**
+	 * This method generates the subquery to build the category selection.
+	 * @uses $this->qryParams['categoryMode']
+	 * @uses $this->qryParams['categorySelection']
+	 * @return Tx_Extbase_Persistence_QOM_OrInterface or null
+	 */
+	protected function buildCategorySelectionSubQuery() {
+		if( $this->qryParams['categoryMode'] == 1 && sizeof( $this->qryParams['categorySelection'] ) ) {
+			$query = $this->createQuery();
+			$constraint = array();
+			foreach( $this->qryParams['categorySelection'] as $cat ) {
+				$constraint[] = $query->equals( 'category.uid', $cat );
+			}
+			return $query->logicalOr( $constraint );
+		}
+		return null;
 	}
 }
 ?>

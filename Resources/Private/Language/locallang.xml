@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>FE language labels for the Filelist FE plugin &quot;dr_blob&quot;</description>
+		<description>FE language labels for the Filelist FE plugin dr_blob</description>
 		<labelContext type="array">
 			<label index="listHeader"></label>
 			<label index="topHeader"></label>
@@ -82,6 +82,158 @@
 			<label index="pageBrowser_prev">Previous</label>
 			<label index="pageBrowser_first">First</label>
 			<label index="pageBrowser_displays">Displaying results %s to %s out of %s</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="list_button_download">[herunterladen]</label>
+			<label index="list_button_show">[mehr]</label>
+			<label index="list_field_uid">Datensatznummer</label>
+			<label index="list_field_title">Titel</label>
+			<label index="list_field_description">Beschreibung</label>
+			<label index="list_field_blob_name">Dateiname</label>
+			<label index="list_field_blob_size">Dateigröße</label>
+			<label index="list_field_blob_type">Dateityp</label>
+			<label index="list_field_blob_data">Datei</label>
+			<label index="list_field_blob_checksum">Dateiprüfsumme</label>
+			<label index="list_field_cruser_id">Autor</label>
+			<label index="list_field_crdate">Erstelldatum</label>
+			<label index="list_field_version">Version</label>
+			<label index="list_field_tstamp">Letzte Änderung</label>
+			<label index="list_field_age">Alter</label>
+			<label index="list_field_categories">Kategorien</label>
+			<label index="list_field_images">Bilder</label>
+			<label index="list_field_downloadcount">Popularität</label>
+			<label index="list_field_downloadcount_wrap">Dieser Datensatz wurde bereits %s Mal heruntergeladen</label>
+			<label index="list_field_author">Autor</label>
+			<label index="list_field_author_mail">E-Mail-Adresse</label>
+			<label index="personal_button_add">Diese Liste abonnieren</label>
+			<label index="personal_button_download">[herunterladen]</label>
+			<label index="personal_button_remove">Diese Liste abbestellen</label>
+			<label index="personal_button_show">[mehr]</label>
+			<label index="search_button_search">Suchen</label>
+			<label index="single_button_download">angehängte Datei herunterladen</label>
+			<label index="single_button_back">Zurück</label>
+			<label index="single_noItemFound">Keine Datensatznummer vorhanden</label>
+			<label index="top_button_download">[herunterladen]</label>
+			<label index="top_button_show">[mehr]</label>
+			<label index="list_vfoldertree">Ordnerbaum</label>
+			<label index="noRecordsFound">Momentan sind leider keine Einträge vorhanden</label>
+			<label index="pageBrowser_next">Nächste</label>
+			<label index="pageBrowser_last">Letzte</label>
+			<label index="pageBrowser_page">Seite %s</label>
+			<label index="pageBrowser_prev">Vorherige</label>
+			<label index="pageBrowser_first">Erste</label>
+			<label index="list_dateFormat">d.m.Y</label>
+			<label index="personal_dateFormat">d.m.Y H:i</label>
+			<label index="single_dateFormat">d.m.Y</label>
+			<label index="top_dateFormat">d.m.Y H:i</label>
+		</languageKey>
+		<languageKey index="es" type="array">
+			<label index="list_button_download">Descargar</label>
+			<label index="list_button_show">Más</label>
+			<label index="list_field_uid">Sin registro</label>
+			<label index="list_field_title">Título</label>
+			<label index="list_field_description">Descripción</label>
+			<label index="list_field_blob_name">Nombre del fichero</label>
+			<label index="list_field_blob_size">Tamaño del fichero</label>
+			<label index="list_field_blob_type">Tipo de fichero</label>
+			<label index="list_field_blob_data">Fichero</label>
+			<label index="list_field_blob_checksum">Checksum</label>
+			<label index="list_field_cruser_id">Autor</label>
+			<label index="list_field_crdate">Fecha</label>
+			<label index="list_field_version">Version</label>
+			<label index="list_field_tstamp">Último cambio</label>
+			<label index="list_field_age">Edad</label>
+			<label index="list_field_categories">Categorías</label>
+			<label index="list_field_downloadcount">Popularidad</label>
+			<label index="list_field_downloadcount_wrap">El registro ha sido descargado</label>
+			<label index="list_field_author">Autor</label>
+			<label index="list_field_author_mail">Dirección de email</label>
+			<label index="list_dateFormat">m/d/Y</label>
+			<label index="personal_dateFormat">m/d/Y h:i</label>
+			<label index="personal_button_add">Suscribirse a esta lista</label>
+			<label index="personal_button_download">Descargar</label>
+			<label index="personal_button_remove">Anular esta lista</label>
+			<label index="personal_button_show">más</label>
+			<label index="search_button_search">Buscar</label>
+			<label index="single_button_download">Descargar archivo adjunto</label>
+			<label index="single_button_back">Volver</label>
+			<label index="single_noItemFound">N º de registro de identificación dado</label>
+			<label index="single_dateFormat">m/d/Y</label>
+			<label index="top_button_download">Descargar</label>
+			<label index="top_button_show">Mas</label>
+			<label index="top_dateFormat">m/d/Y h:i</label>
+			<label index="list_vfoldertree">Arbol de carpetas</label>
+			<label index="noRecordsFound">Lo sentimos, no hay artículos disponibles</label>
+		</languageKey>
+		<languageKey index="it" type="array">
+			<label index="list_button_download">[scarica]</label>
+			<label index="list_button_show">[avanti]</label>
+			<label index="list_field_uid">Record n.</label>
+			<label index="list_field_title">Titolo</label>
+			<label index="list_field_description">Descrizione</label>
+			<label index="list_field_blob_name">Nome documento</label>
+			<label index="list_field_blob_size">Dimensioni</label>
+			<label index="list_field_blob_type">Tipo</label>
+			<label index="list_field_blob_data">File</label>
+			<label index="list_field_blob_checksum">CRC Controllo</label>
+			<label index="list_field_cruser_id">Autore</label>
+			<label index="list_field_crdate">Data</label>
+			<label index="list_field_tstamp">Ultima modifica</label>
+			<label index="list_field_age">Et#192;</label>
+			<label index="list_field_categories">categorie</label>
+			<label index="list_field_downloadcount">Popolarit#192;</label>
+			<label index="list_field_downloadcount_wrap">Questo record #232; stato scaricato %s volte</label>
+			<label index="list_field_author">Autore</label>
+			<label index="list_field_author_mail">indirizzo e-mail</label>
+			<label index="list_dateFormat">d/m/Y</label>
+			<label index="personal_dateFormat">d/m/Y h:i</label>
+			<label index="personal_button_add">Iscriviti a questa lista</label>
+			<label index="personal_button_download">[scarica]</label>
+			<label index="personal_button_remove">Cancellati da questa lista</label>
+			<label index="personal_button_show">[avanti]</label>
+			<label index="search_button_search">Cerca</label>
+			<label index="single_button_download">Scarica documento allegato</label>
+			<label index="single_button_back">Indietro</label>
+			<label index="single_noItemFound">Manca il numero del record</label>
+			<label index="single_dateFormat">d/m/Y h:i</label>
+			<label index="top_button_download">[scarica]</label>
+			<label index="top_button_show">[avanti]</label>
+			<label index="top_dateFormat">d/m/Y h:i</label>
+			<label index="noRecordsFound">Spiacente, nessun record trovato</label>
+		</languageKey>
+		<languageKey index="th" type="array">
+			<label index="list_button_download">ดาวน์โหลด</label>
+			<label index="list_button_show">ขึ้น</label>
+			<label index="list_field_uid">No Record</label>
+			<label index="list_field_title">ชื่อเรื่อง</label>
+			<label index="list_field_description">ลักษณะ</label>
+			<label index="list_field_blob_name">Filename</label>
+			<label index="list_field_blob_size">ขนาดของไฟล์</label>
+			<label index="list_field_blob_type">ประเภทของไฟล์</label>
+			<label index="list_field_blob_data">ไฟล์</label>
+			<label index="list_field_blob_checksum">การตรวจสอบ</label>
+			<label index="list_field_cruser_id">ผู้เขียน</label>
+			<label index="list_field_crdate">วันที่</label>
+			<label index="list_field_version">Version</label>
+			<label index="list_field_tstamp">Last Change</label>
+			<label index="list_field_age">อายุ</label>
+			<label index="list_field_categories">หมวด</label>
+			<label index="list_field_downloadcount">ความนิยม</label>
+			<label index="list_field_downloadcount_wrap">บันทึกนี้ได้รับการดาวน์โหลด s% ครั้ง</label>
+			<label index="list_field_author">ผู้เขียน</label>
+			<label index="list_field_author_mail">ที่อยู่อีเมล</label>
+			<label index="personal_button_add">สมัครสมาชิกรายการนี้</label>
+			<label index="personal_button_download">ดาวน์โหลด</label>
+			<label index="personal_button_remove">ยกเลิกรายการนี้</label>
+			<label index="personal_button_show">ขึ้น</label>
+			<label index="search_button_search">ค้นหา</label>
+			<label index="single_button_download">ดาวน์โหลดไฟล์แนบ</label>
+			<label index="single_button_back">กลับ</label>
+			<label index="single_noItemFound">ไม่มีระเบียน - id ให้</label>
+			<label index="top_button_download">ดาวน์โหลด</label>
+			<label index="top_button_show">ขึ้น</label>
+			<label index="list_vfoldertree">Folder Tree</label>
+			<label index="noRecordsFound">Sorry, รายการที่ใช้ได้</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

@@ -9,11 +9,10 @@
 
 				<table class="blob-list-container">
 					<colgroup>
-						<col width="20%" />
-						<col width="20%" />
+						<col width="30%" />
+						<col width="30%" />
 						<col width="15%" />
 						<col width="10%" />
-						<col width="20%" />
 						<col width="15%" />
 					</colgroup>
 					<thead>
@@ -22,7 +21,6 @@
 							<th><f:link.action arguments="{sort : 'author'}"><f:translate key="list_field_author" /></f:link.action></th>
 							<th><f:link.action arguments="{sort : 'crdate'}"><f:translate key="list_field_crdate" /></f:link.action></th>
 							<th><f:link.action arguments="{sort : 'blob_size'}"><f:translate key="list_field_blob_size" /></f:link.action></th>
-							<th><f:translate key="list_field_categories" /></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -36,13 +34,6 @@
 									<td>{file.author}</td>
 									<td><f:format.date date="{file.createDate}" format="d.m.Y" /></td>
 									<td><vhc:format.filesize>{file.filesize}</vhc:format.filesize></td>
-									<td>
-										<f:if condition="{file.categories}">
-											<f:for each="{file.categories}" as="category">
-												{category.title},
-											</f:for>
-										</f:if>
-									</td>
 									<td style="white-space: nowrap;">
 										<f:render partial="downloadLink" arguments="{file : file, label : 'list_button_download' }"/>
 										<f:link.action action="details" arguments="{file : file}">[ <f:translate key="list_button_show" /> ]</f:link.action>

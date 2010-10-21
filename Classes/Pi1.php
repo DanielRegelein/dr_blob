@@ -55,14 +55,6 @@ class Tx_DrBlob_Pi1 extends tslib_pibase {
 	/*protected*/	var $scriptRelPath = 'Resources/Private/Language/locallang.xml';
 	/*protected*/	var $extKey = 'dr_blob';
 	
-	
-	/**
-	 * @var		Array	$dbVars
-	 * @access	private
-	 * @deprecated
-	 */
-	private $dbVars = array( 'table_categories' => 'tx_drblob_category', 'table_categories_mm' => 'tx_drblob_category_mm', 'table_personal' );
-	
 	/**
 	 * @var 	Array $searchFields
 	 * Sets the fields that are used by the inbuild search function.
@@ -407,8 +399,8 @@ class Tx_DrBlob_Pi1 extends tslib_pibase {
 		if( $lConf['categoryMode'] ) {
 			
 			$arrMM = array(
-				'table' => $this->dbVars['table_categories'],
-				'mmtable' => $this->dbVars['table_categories_mm']
+				'table' => Tx_DrBlob_Div::CATEGORY_TABLE,
+				'mmtable' => Tx_DrBlob_Div::CATEGORY_TABLE.'_mm'
 			);
 
 				//OR-Link
@@ -417,11 +409,11 @@ class Tx_DrBlob_Pi1 extends tslib_pibase {
 
 				//AND-Link
 			} else if( $lConf['categoryMode'] == 2 ) {
-				$arrMM['catUidList'] = $lConf['categorySelection'] . ' ) AND `tx_drblob_category_mm`.`uid_foreign` IN ( ';
+				$arrMM['catUidList'] = $lConf['categorySelection'] . ' ) AND `' . Tx_DrBlob_Div::CATEGORY_TABLE.'_mm' . '`.`uid_foreign` IN ( ';
 				$tmpList = explode( ',', $lConf['categorySelection'] );
 				for($i=0;$i<sizeof( $tmpList ); $i++ ) {
 					$arrMM['catUidList'] .= $tmpList[$i] . 
-						( ( sizeof( $tmpList )-$i > 1 ) ?  ' ) AND `tx_drblob_category_mm`.`uid_local` IN ( SELECT `tx_drblob_category_mm`.`uid_local` FROM ' . $arrMM['mmtable'] . ' WHERE `tx_drblob_category_mm`.`uid_foreign` IN ( ' : '' );
+						( ( sizeof( $tmpList )-$i > 1 ) ?  ' ) AND `' . Tx_DrBlob_Div::CATEGORY_TABLE.'_mm`.`uid_local` IN ( SELECT `' . Tx_DrBlob_Div::CATEGORY_TABLE.'_mm`.`uid_local` FROM ' . $arrMM['mmtable'] . ' WHERE `' . Tx_DrBlob_Div::CATEGORY_TABLE.'_mm`.`uid_foreign` IN ( ' : '' );
 				}
 				$arrMM['catUidList'] .= str_repeat( ' )', sizeof( $tmpList )-1 );
 			}
@@ -1141,12 +1133,12 @@ class Tx_DrBlob_Pi1 extends tslib_pibase {
 	 */
 	protected function getCategories( $item ) {
 		$rslt = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
-			$this->dbVars['table_categories'].'.title',
+			Tx_DrBlob_Div::CATEGORY_TABLE.'.title',
 			Tx_DrBlob_Div::CONTENT_TABLE,
-			$this->dbVars['table_categories_mm'],
-			$this->dbVars['table_categories'],
+			Tx_DrBlob_Div::CATEGORY_TABLE.'_mm',
+			Tx_DrBlob_Div::CATEGORY_TABLE,
 			' AND ' . Tx_DrBlob_Div::CONTENT_TABLE . '.uid=' . $item .
-			$this->cObj->enableFields( $this->dbVars['table_categories'] )
+			$this->cObj->enableFields( Tx_DrBlob_Div::CATEGORY_TABLE )
 		);
 		$arrCat = array();
 		while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rslt ) ) {

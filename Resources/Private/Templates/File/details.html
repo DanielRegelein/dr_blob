@@ -6,7 +6,10 @@
 	<div class="blob-single">
 		<f:translate key="list_field_tstamp" /> <f:format.date date="{file.changeDate}" format="d.m.Y" /> (<vhc:format.age date="{file.changeDate}" />)
 		<h1>{file.title}</h1>
-		{file.version}
+		
+		<f:if condition="{file.version}">
+			<h5>{file.version}</h5>
+		</f:if>
 		
 		<f:if condition="{file.images}">
 			<f:for each="{file.images}" as="image">
@@ -37,6 +40,7 @@
 			</p>
 		</f:if>
 		
+		<f:link.action action="index">[ <f:translate key="single_button_back" /> ]</f:link.action>
 	</div>
 	
 

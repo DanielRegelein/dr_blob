@@ -1,3 +1,6 @@
+###
+# This is the default TS-setup for dr_blob, pi2 (EXTBASE), Version 2.4.0
+###
 plugin.tx_drblob {
   settings {
     code = list
@@ -11,6 +14,9 @@ plugin.tx_drblob {
     tryToOpenFileInline = 1
     substitutePagetitle = 1
     substituteIndextitle = 1
+    
+    categoryMode = 0
+    categorySelection =
   }
 
   persistence {
@@ -22,7 +28,6 @@ plugin.tx_drblob {
           tableName = tx_drblob_content
 
           columns {
-            category.foreignClass = Tx_DrBlob_Domain_Model_Category
             t3ver_label.mapOnProperty = version
             author_email.mapOnProperty = authorEmail
             download_count.mapOnProperty = downloadCount
@@ -53,7 +58,7 @@ plugin.tx_drblob {
 
 plugin.tx_drblob._LOCAL_LANG {
 }
-	
+
 plugin.tx_drblob._CSS_DEFAULT_STYLE (
   div.blob-top-container div.blob-top-item,
   div.blob-personal-container div.blob-personal-item { width: 300px; margin-bottom: 1px; border: 1px solid #afafaf; padding: 5px;}
@@ -63,3 +68,17 @@ plugin.tx_drblob._CSS_DEFAULT_STYLE (
   ul.browsebox { list-style-type: none; }
   ul.browsebox li { display: inline; } 
 )
+
+
+ /********************************************************************************
+  * Integration into linkhandler Extension
+  */
+plugin.tx_linkhandler.tx_drblob_domain_model_file {
+  forceLink = 0
+  parameter = {$plugin.tx_drblob.downloadPID}
+  no_cache = 1
+  additionalParams = &tx_drblob_pi2[file]={field:uid}&tx_drblob_pi2[action]=download&tx_drblob_pi2[controller]=File
+  additionalParams.insertData = 1 
+  useCacheHash = 0
+}
+plugin.tx_linkhandler.tx_drblob_content < plugin.tx_linkhandler.tx_drblob_domain_model_file

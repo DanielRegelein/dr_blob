@@ -24,6 +24,21 @@
 			<label index="hidden.details">Set whether to show- or hide the record.</label>
 			<label index="hidden.description">Set this field to avoid the current record from being shown.</label>
 		</languageKey>
+		<languageKey index="de" type="array">
+			<label index=".description">Verwaltung von Kategorien für sichere Dateien.</label>
+			<label index="title.description">Geben Sie einen Titel für die Kategorie an</label>
+			<label index="title.details">&quot;Titel&quot; ist ein Pflichtfeld und muss ausgefüllt werden</label>
+			<label index="hidden.description">Aktivieren Sie dieses Feld, um die Kategorie zu verbergen.</label>
+			<label index="hidden.details">Kategorie verbergen oder sichtbar machen.</label>
+			<label index="_.seeAlso">tx_drblob_content</label>
+		</languageKey>
+		<languageKey index="th" type="array">
+			<label index=".description">จัดการรายการ - ประเภทของไฟล์ที่ปลอดภัย</label>
+			<label index="title.description">ป้อนชื่อสำหรับประเภทนี้</label>
+			<label index="title.details">นี้เป็นเขตบังคับจึงต้องได้รับการบรรจุ</label>
+			<label index="hidden.description">ตั้งค่าฟิลด์นี้เพื่อหลีกเลี่ยงการบันทึกปัจจุบันจากการแสดง</label>
+			<label index="hidden.details">กำหนดว่าจะแสดงหรือซ่อนระเบียน</label>
+		</languageKey>
 	</data>
 	<orig_hash type="array">
 	</orig_hash>

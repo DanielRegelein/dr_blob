@@ -1,5 +1,5 @@
 ###
-# This is the default TS-setup for dr_blob, pi1, Version 2.4.0
+# This is the default TS-setup for dr_blob, pi1 (PIBASE), Version 2.4.0
 ###
 plugin.tx_drblob_pi1 = USER
 plugin.tx_drblob_pi1 {
