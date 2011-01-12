@@ -53,34 +53,53 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 	 * @param int $pointer Pointer for the Page browser
 	 */
 	public function indexAction( $sort = null, $pointer = 0 ) {
+		if( $this->settings['code'] == 'recordinsert' ) {
+			$cObjArr = $this->request->getContentObjectData();
+			$this->forward( 'details', null, null, array( 'file' => $cObjArr['uid'] ) );
+		}
 		
-		$this->fileRepository->qryParams['orderBy'] = ( $sort ? $sort : $this->settings['orderBy'] );
-		$this->fileRepository->qryParams['orderDir'] = $this->settings['orderDir'];
-		$this->fileRepository->qryParams['limit'] = intval( $this->settings['limit'] ) ? $this->settings['limit'] : 30;
-		$this->fileRepository->qryParams['pointer'] = intval( $pointer );
-		$this->fileRepository->qryParams['categoryMode'] = intval( $this->settings['categoryMode'] );
+		$filter = t3lib_div::makeInstance( 'Tx_DrBlob_Domain_Model_Filter' );
+
+		$filter->setLimit( $this->settings['limit'] );
+		$filter->setPointer( $pointer );
+		$filter->setOrderBy( ( $sort ? $sort : $this->settings['orderBy'] ), $this->settings['orderDir'] );
+		
 		if( !empty( $this->settings['categorySelection'] ) ) {
-			$this->fileRepository->qryParams['categorySelection'] = Tx_Extbase_Utility_Arrays::integerExplode( ',', $this->settings['categorySelection'] );
+			$filter->setCategorySelection( 
+				Tx_Extbase_Utility_Arrays::integerExplode( 
+					',', 
+					$this->settings['categorySelection']
+				), 
+				$this->settings['categoryMode'] 
+			);
+		}
+		
+		if( !empty( $this->settings['templateFile'] ) ) {
+			$this->view->setTemplatePathAndFilename( $this->settings['templateFile'] );
 		}
 		
 		switch( $this->settings['code'] ) {
 			case 'top': 
-				$filelist = $this->fileRepository->findVipRecords();
-				$numRows = $this->fileRepository->countVipRecords();
+				$filelist = $this->fileRepository->findVipRecords( $filter );
+				$numRows = $this->fileRepository->countVipRecords( $filter );
+				$sectionName = 'top';
 			break;
 			#case 'personal':  	
-			#	$filelist = $this->fileRepository->findSubscribedRecords();
-			#	$numRows = $this->fileRepository->countSubscribedRecords();
+			#	$filelist = $this->fileRepository->findSubscribedRecords( $filter );
+			#	$numRows = $this->fileRepository->countSubscribedRecords( $filter );
+			#	$sectionName = 'personal';
 			#break;
 			case 'list':
 			default: 			
-				$filelist = $this->fileRepository->findAll();
-				$numRows = $this->fileRepository->countAll();
+				$filelist = $this->fileRepository->findAllByFilter( $filter );
+				$numRows = $this->fileRepository->countAllByFilter( $filter );
+				$sectionName = 'content';
 			break;
 		}
 		
 		$this->view->assign( 'files', $filelist );
 		$this->view->assign( 'files_count', $numRows );
+		return $this->view->renderSection( $sectionName );
 	}
 
 	/**
@@ -89,17 +108,20 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 	 * @param Tx_DrBlob_Domain_Model_File $file
 	 */
 	public function detailsAction( Tx_DrBlob_Domain_Model_File $file ) {
-			//substitute Pagetitle [should be part of the view, ot of the controller...]
-		if( (bool)$this->settings['substitutePagetitle'] == true ) {
-			$GLOBALS['TSFE']->page['title'] = $file->getTitle();	
-		}
-
-			//substitute Indextitle
-		if( (bool)$this->settings['substituteIndextitle'] == true ) {
-			$GLOBALS['TSFE']->indexedDocTitle = $file->getTitle();
+		if( $this->settings['code'] != 'recordinsert' ) {
+				//substitute Pagetitle [should be part of the view, ot of the controller...]
+			if( (bool)$this->settings['substitutePagetitle'] == true ) {
+				$GLOBALS['TSFE']->page['title'] = $file->getTitle();	
+			}
+	
+				//substitute Indextitle
+			if( (bool)$this->settings['substituteIndextitle'] == true ) {
+				$GLOBALS['TSFE']->indexedDocTitle = $file->getTitle();
+			}
 		}
 		
 		$this->view->assign( 'file', $file );
+		return $this->view->renderSection( 'content' );
 	}
 	
 	/**
@@ -119,7 +141,6 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 	 * 					Unlike for the other types this download is handled by the webserver, not inside this method.
 	 * @internal API spots:	
 	 * 		The hook preProcessDownloadHook
-	 * 		The TS API call downloadFilenameUserFunc
 	 * 
 	 * @internal IE6 SSL Bug: http://support.microsoft.com/default.aspx?scid=kb;EN-US;q297822
 	 * 

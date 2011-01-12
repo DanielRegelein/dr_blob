@@ -40,7 +40,7 @@ class Tx_DrBlob_TceMain {
 	
 	
 	/**
-	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain) when a record is saved. This is used for two purposes:
+	 * This method is called by a hook in the TYPO3 Core Engine (TCEmain) when a record is saved. It is used for two purposes:
 	 * 	 - To manipulate the TCA-Array for tx_drblob_content for type=3
 	 *   - to preview a record
 	 *
@@ -100,8 +100,8 @@ class Tx_DrBlob_TceMain {
 	 * attached file, and should not be manipulated on their own (execpt for the filename maybe)
 	 * 
 	 * Therefore the attributes are extracted from the $_FILES-Array.
-	 * When submitting a group-record (type=3) the file has already been processed the tcemain. 
-	 * Thus we've to use the file from the tcemain mapping array because the file is already moved.
+	 * When submitting a group-record (type=3) the file has already been processed by tcemain. 
+	 * Thus we've to use the file from the tcemain mapping array because the file has already been moved.
 	 * For type=1 and type=2-files we have to do that on our own.
 	 * 
 	 * Hook <code>processDatamap</code> in TCEmain
@@ -145,14 +145,14 @@ class Tx_DrBlob_TceMain {
 					if( $obj->checkValue_currentRecord['type'] == '1' ) {
 						$fieldArray['blob_data'] = addslashes( $data );
 					} else {
-						$fieldArray['blob_data'] = tx_drblob_div::generateStorageFilename();
-						move_uploaded_file( $fileArray['tmp_name'], tx_drblob_div::getStorageFolder() . $fieldArray['blob_data'] );
-						$fileArray['tmp_name'] = tx_drblob_div::getStorageFolder() . $fieldArray['blob_data'];
+						$fieldArray['blob_data'] = Tx_DrBlob_Div::generateStorageFilename();
+						move_uploaded_file( $fileArray['tmp_name'], Tx_DrBlob_Div::getStorageFolder() . $fieldArray['blob_data'] );
+						$fileArray['tmp_name'] = Tx_DrBlob_Div::getStorageFolder() . $fieldArray['blob_data'];
 					}
 				} else {
 					$fileArray['tmp_name'] = $obj->copiedFileMap[$fileArray['tmp_name']];
 				}
-				$fieldArray['blob_checksum'] = tx_drblob_div::calculateFileChecksum( $fileArray['tmp_name'] );
+				$fieldArray['blob_checksum'] = Tx_DrBlob_Div::calculateFileChecksum( $fileArray['tmp_name'] );
 				$fieldArray['blob_name'] = $fileArray['name'];
 				$fieldArray['blob_size'] = $fileArray['size'];
 				$fieldArray['blob_type'] = $fileArray['type'];
@@ -198,11 +198,11 @@ class Tx_DrBlob_TceMain {
 							if( ( !empty( $row['blob_data'] ) ) && intval( $extConf['reallyDeleteFiles'] ) == 1 ) {
 								
 								if( $row['type'] == 2 ) {
-									$target = tx_drblob_div::getStorageFolder() . $row['blob_data'];
+									$target = Tx_DrBlob_Div::getStorageFolder() . $row['blob_data'];
 									unlink( $target );
 								}
 								if( $row['type'] == 3 ) {
-									$target = tx_drblob_div::getUploadFolder() . 'storage/' . $row['blob_data'];
+									$target = Tx_DrBlob_Div::getUploadFolder() . 'storage/' . $row['blob_data'];
 									unlink( $target );
 								}
 								
@@ -227,10 +227,10 @@ class Tx_DrBlob_TceMain {
 								//Duplicate File on versioning and store it using a new name...
 								
 								$newVersionID = $pObj->copyMappingArray[$table][$srcId];
-								$newFileName = tx_drblob_div::generateStorageFilename( $newVersionID );
+								$newFileName = Tx_DrBlob_Div::generateStorageFilename( $newVersionID );
 								
-								$sourceFile = tx_drblob_div::getStorageFolder() . $row['blob_data'];
-								$targetFile = tx_drblob_div::getStorageFolder() . $newFileName;
+								$sourceFile = Tx_DrBlob_Div::getStorageFolder() . $row['blob_data'];
+								$targetFile = Tx_DrBlob_Div::getStorageFolder() . $newFileName;
 								
 								if( copy( $sourceFile, $targetFile ) ) {
 									$rslt = $GLOBALS['TYPO3_DB']->exec_UPDATEquery( 

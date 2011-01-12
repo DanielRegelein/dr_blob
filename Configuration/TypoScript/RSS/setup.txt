@@ -80,3 +80,29 @@ drblobRSS {
     }
   }
 }
+
+
+drblobFileFeed = PAGE
+drblobFileFeed {
+  typeNum = 236
+  
+  config {
+    disableAllHeaderCode = 1
+    additionalHeaders = Content-type:application/xml
+    xhtml_cleaning = 0
+    admPanel = 0
+    no_cache = 1
+  }
+
+  10 = USER
+  10 {
+    userFunc = tx_extbase_dispatcher->dispatch
+    pluginName = Pi2
+    extensionName = DrBlob
+    controller = File
+    action = index
+    settings.code = list
+    persistence = < plugin.tx_drblob.persistence
+    view = < plugin.tx_drblob.view
+  }  
+}

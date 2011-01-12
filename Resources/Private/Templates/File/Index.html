@@ -1,0 +1,137 @@
+{namespace vhc=Tx_Vhc_ViewHelpers}
+
+
+<f:layout name="default" />
+
+<f:section name="content">
+	<f:if condition="{files}">
+		<f:then>
+
+			<table class="blob-list-container">
+				<colgroup>
+					<col width="30%" />
+					<col width="30%" />
+					<col width="15%" />
+					<col width="10%" />
+					<col width="15%" />
+				</colgroup>
+				<thead>
+					<tr class="blob-list-head">
+						<th><f:link.action arguments="{sort : 'title'}"><f:translate key="list_field_title" /></f:link.action></th>
+						<th><f:link.action arguments="{sort : 'author'}"><f:translate key="list_field_author" /></f:link.action></th>
+						<th><f:link.action arguments="{sort : 'crdate'}"><f:translate key="list_field_crdate" /></f:link.action></th>
+						<th><f:link.action arguments="{sort : 'blob_size'}"><f:translate key="list_field_blob_size" /></f:link.action></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tfoot></tfoot>
+				<tbody>
+
+					<f:for each="{files}" as="file">
+						<f:cycle values="{0: 'even', 1: 'odd'}" as="zebraClass">
+							<tr class="tr-{zebraClass}">
+								<td>{file.title}</td>
+								<td>{file.author}</td>
+								<td><f:format.date date="{file.createDate}" format="d.m.Y" /></td>
+								<td><vhc:format.filesize>{file.filesize}</vhc:format.filesize></td>
+								<td style="white-space: nowrap;">
+									<f:render partial="downloadLink" arguments="{file : file, label : 'list_button_download' }"/>
+									<f:link.action action="details" arguments="{file : file}">[ <f:translate key="list_button_show" /> ]</f:link.action>
+								</td>
+							</tr>
+						</f:cycle>
+					</f:for>
+					
+				</tbody>
+			</table>
+			
+			<f:if condition="{settings.usePageBrowser}">
+				<vhc:Pagebrowser resCount="{files_count}" resultsPerPage="{settings.limit}" maxPages="5" showResultCount="0" forceOutput="false" />
+			</f:if>
+		</f:then>
+	</f:if>
+</f:section>
+
+
+<f:section name="top">
+	<div class="blob-top-container">
+		<f:if condition="{files}">
+			<f:then>
+				<f:for each="{files}" as="file">
+					<f:cycle values="{0: '1', 1: '2'}" as="zebraClass">
+
+						<div class="blob-top-item{zebraClass}">
+							<f:format.date date="{file.changeDate}" format="d.m.Y" />
+							<h2><f:link.action action="download" arguments="{file : file}" noCache="1">{file.title}</f:link.action></h2>
+							
+							<f:if condition="{file.images}">
+								<f:image src="{file.images.0}" alt="{file.title}" width="100px" />
+							</f:if>
+
+							<f:format.crop maxCharacters="150" append="..."><vhc:format.stripTags content="{file.description}" /></f:format.crop>
+							
+							<f:if condition="{file.categories}">
+								<ul>
+								<f:for each="{file.categories}" as="category">
+									<li>{category.title}</li>
+								</f:for>
+								</ul>
+							</f:if>
+							<br />
+							
+							<f:link.action action="details" arguments="{file : file}">[ <f:translate key="list_button_show" /> ]</f:link.action>
+						</div>
+
+					</f:cycle>
+				</f:for>
+			</f:then>
+			<f:else>
+				<div class="blob-top-item">
+					<f:translate key="noRecordsFound" />
+				</div>
+			</f:else>
+		</f:if>
+	</div>
+</f:section>
+
+
+<f:section name="personal">
+	<div class="blob-personal-container">
+		<f:if condition="{files}">
+			<f:then>
+				<f:for each="{files}" as="file">
+					<f:cycle values="{0: '1', 1: '2'}" as="zebraClass">
+
+						<div class="blob-personal-item{zebraClass}">
+							<f:format.date date="{file.changeDate}" format="d.m.Y" />
+							<h2><f:link.action action="download" arguments="{file : file}" noCache="1">{file.title}</f:link.action></h2>
+							
+							<f:if condition="{file.images}">
+								<f:image src="{file.images.0}" alt="{file.title}" width="150px"/>
+							</f:if>
+
+							<f:format.crop maxCharacters="150" append="..."><vhc:format.stripTags content="{file.description}" /></f:format.crop>
+							
+							<f:if condition="{file.categories}">
+								<ul>
+								<f:for each="{file.categories}" as="category">
+									<li>{category.title}</li>
+								</f:for>
+								</ul>
+							</f:if>
+							<br />
+							
+							<f:link.action action="details" arguments="{file : file}">[ <f:translate key="personal_button_show" /> ]</f:link.action>
+						</div>
+
+					</f:cycle>
+				</f:for>
+			</f:then>
+			<f:else>
+				<div class="blob-personal-item">
+					<f:translate key="noRecordsFound" />
+				</div>
+			</f:else>
+		</f:if>
+	</div>
+</f:section>

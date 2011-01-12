@@ -65,6 +65,11 @@ $TCA[Tx_DrBlob_Div::CATEGORY_TABLE] = array(
 );
 
 
+	//Add default pageTS
+if ( true ) {
+	t3lib_extMgm::addPageTSConfig( Tx_DrBlob_Div::getUserOrPageTS( 'PageTS/default.txt' ) );
+}
+
 	//Integration into the extension "linkhandler"
 if ( t3lib_extMgm::isLoaded( 'linkhandler' ) ) {
 	t3lib_extMgm::addPageTSConfig( Tx_DrBlob_Div::getUserOrPageTS( 'PageTS/linkhandler.txt' ) );
@@ -87,6 +92,7 @@ if ( TYPO3_MODE == 'BE' ) {
 		$ICON_TYPES['files'] = array( 'icon' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'Resources/Public/Icons/pages.gif' );
 	}
 
+		//Adding CSH-Language-Files
 	t3lib_extMgm::addLLrefForTCAdescr( Tx_DrBlob_Div::CONTENT_TABLE, 'EXT:dr_blob/Resources/Private/Language/locallang_csh_txdrblobcontent.xml' );
 	t3lib_extMgm::addLLrefForTCAdescr( Tx_DrBlob_Div::CATEGORY_TABLE, 'EXT:dr_blob/Resources/Private/Language/locallang_csh_txdrblobcategory.xml' );
 	t3lib_extMgm::allowTableOnStandardPages( Tx_DrBlob_Div::CONTENT_TABLE );
@@ -94,12 +100,11 @@ if ( TYPO3_MODE == 'BE' ) {
 		// add the dr_blob record to the insert records content element
 	t3lib_extMgm::addToInsertRecords( Tx_DrBlob_Div::CONTENT_TABLE );
 
-
 		//Including the class containing the nessesary custom input elements
 	require_once( t3lib_extMgm::extPath( $_EXTKEY ) . 'Classes/FormFields.php' );
 		//Including the class containing the hook for TCEmain
 	require_once( t3lib_extMgm::extPath( $_EXTKEY ) . 'Classes/TceMain.php' );
-
+}
 	
 	t3lib_div::loadTCA( 'tt_content' );
 	
@@ -116,7 +121,6 @@ if ( TYPO3_MODE == 'BE' ) {
 
 			//Add static templates
 		t3lib_extMgm::addStaticFile( $_EXTKEY, 'Configuration/TypoScript/Pi1/', 'File List [pibase]' );
-		t3lib_extMgm::addStaticFile( $_EXTKEY, 'Configuration/TypoScript/RSS/', 'File List RSS 2.0 Feed' );
 	}
 	
 		//"new" plugin architecture (Extbase / Fluid)
@@ -132,5 +136,7 @@ if ( TYPO3_MODE == 'BE' ) {
 		$TCA['tt_content']['types']['list']['subtypes_addlist']['drblob_pi2'] = 'pi_flexform';
 		t3lib_extMgm::addPiFlexFormValue( 'drblob_pi2', 'FILE:EXT:dr_blob/Configuration/FlexForms/pi2.xml' );
 	}
-}
+	
+	t3lib_extMgm::addStaticFile( $_EXTKEY, 'Configuration/TypoScript/RSS/', 'File List RSS 2.0 Feed' );
+
 ?>

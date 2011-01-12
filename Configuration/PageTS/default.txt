@@ -1,0 +1,2 @@
+tx_drblob.previewMode = single
+tx_drblob.previewPid = 

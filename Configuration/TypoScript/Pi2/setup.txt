@@ -71,6 +71,36 @@ plugin.tx_drblob._CSS_DEFAULT_STYLE (
 
 
  /********************************************************************************
+  * Configuration for the "Record Insert" Mode
+  */
+tt_content.shortcut.20.0.tables := addToList(tx_drblob_content)
+tt_content.shortcut.20.1.tables := addToList(tx_drblob_content)
+
+tx_drblob_content >
+tx_drblob_content = USER
+tx_drblob_content {
+  userFunc = tx_extbase_dispatcher->dispatch
+  pluginName = Pi2
+  extensionName = DrBlob
+  controller = File
+  action = index
+  switchableControllerActions {
+    1 {
+      controller = File
+      actions = index,details,download
+    }
+  }
+  settings < plugin.tx_drblob.settings
+  settings.code = recordinsert
+  persistence =< plugin.tx_drblob.persistence
+  view =< plugin.tx_drblob.view
+  
+  _LOCAL_LANG = < plugin.tx_drblob._LOCAL_LANG
+}
+
+
+
+ /********************************************************************************
   * Integration into linkhandler Extension
   */
 plugin.tx_linkhandler.tx_drblob_domain_model_file {

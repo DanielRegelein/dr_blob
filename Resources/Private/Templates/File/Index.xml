@@ -1,0 +1,46 @@
+<f:section name="content">
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+	<channel>
+		<title>New Files</title>
+		<link><f:uri.page absolute="1" pageType="0"/></link>
+		<description></description>
+		<language>en</language>
+		<image>
+			<title>DrBlob</title>
+			<url><f:uri.resource absolute="1" path="Images/rssicon.gif" /></url>
+			<link><f:uri.page absolute="1" pageType="0"/></link>
+			<width>18</width>
+			<height>16</height>
+			<description></description>
+		</image>
+		<generator>TYPO3 - get.content.right</generator>
+		<docs><f:uri.external uri="http://blogs.law.harvard.edu/tech/rss" /></docs>
+		
+		<webMaster></webMaster>
+		<managingEditor></managingEditor>
+		<lastBuildDate><f:format.date format="D, d M Y H:i:s O">now</f:format.date></lastBuildDate>
+
+		<f:if condition="{files}">
+			{namespace vhc=Tx_Vhc_ViewHelpers}
+				<f:for each="{files}" as="file">
+					<item>
+						<title><vhc:format.HtmlSpecialChars>{file.title}</vhc:format.HtmlSpecialChars></title>
+						<link><vhc:format.HtmlSpecialChars><f:uri.action absolute="1" action="details" arguments="{file : file}" /></vhc:format.HtmlSpecialChars></link>
+						<description><vhc:format.HtmlSpecialChars>{file.description}</vhc:format.HtmlSpecialChars></description>
+						<f:if condition="{file.categories}">
+						<category><f:for each="{file.categories}" as="category">{category.title}</f:for></category>
+						</f:if>
+						<author><vhc:format.HtmlSpecialChars>{file.author}</vhc:format.HtmlSpecialChars></author>
+						<pubDate><f:format.date date="{file.createDate}" format="d.m.Y" /></pubDate>
+						<!--
+						<content:encoded><![CDATA[<vhc:format.HtmlSpecialChars>{file.images}{file.description}</vhc:format.HtmlSpecialChars>]]></content:encoded>
+						-->
+						<f:if condition="{file.hasWorkload}==1">
+						<enclosure type="{file.fileMimeType}" length="{file.fileSize}" url="<vhc:format.HtmlSpecialChars><f:uri.action absolute="1" action="download" arguments="{file : file}" noCache="1" /></vhc:format.HtmlSpecialChars>" />
+						</f:if>
+					</item>
+				</f:for>
+		</f:if>
+	</channel>
+</rss>
+</f:section>

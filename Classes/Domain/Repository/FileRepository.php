@@ -33,99 +33,114 @@
  */
 class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_Repository {
 	
-	public $qryParams = array(
-		'orderBy' => 'title',
-		'orderDir' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
-		'limit' => 30,
-		'pointer' => 0,
-		'categoryMode' => 0,
-		'categorySelection' => array()
-	);
-	
 	/**
 	 * Returns all objects of this repository
 	 *
+	 * @param Tx_DrBlob_Domain_Model_Filter $filter 
 	 * @return array An array of objects, empty if no objects found
 	 * @api
 	 */
-	public function findAll() {
+	public function findAllByFilter( Tx_DrBlob_Domain_Model_Filter $filter ) {
 		$query = $this->createQuery();
+		
+		if( $filter->getCategoryCombinationMode() !== 0 ) {
+			$query->matching( $this->buildCategorySelectionSubQuery( $filter->getCategorySelection(), $filter->getCategoryCombinationMode() ) );
+		}
+		
 		return $query
-			->matching( $this->buildCategorySelectionSubQuery() )
-			->setOrderings( $this->validateOrdering() )
-			->setLimit( (integer)$this->qryParams['limit'] )
-			->setOffset( (integer)$this->qryParams['pointer'] * (integer)$this->qryParams['limit'] )
+			->setOrderings( $filter->getOrderBy() )
+			->setLimit( $filter->getLimit() )
+			->setOffset( $filter->getPointer() * $filter->getLimit() )
 			->execute();
 	}
 
 	/**
 	 * Counts all objects of this repository
 	 *
-	 * @return integer The number of results
+	 * @param Tx_DrBlob_Domain_Model_Filter $filter
+	 * @return integer The number of records
 	 * @api
 	 */
-	public function countAll() {
+	public function countAllByFilter( Tx_DrBlob_Domain_Model_Filter $filter ) {
 		$query = $this->createQuery();
-		return $query
-			#->matching( $this->buildCategorySelectionSubQuery() )
-			->count();
+		if( $filter->getCategoryCombinationMode() !== 0 ) {
+			$query->matching( $this->buildCategorySelectionSubQuery( $filter->getCategorySelection(), $filter->getCategoryCombinationMode() ) );
+		}
+		return $query->count();
 	}
 	
 	/**
 	 * Returns vip records
 	 *
+	 * @param Tx_DrBlob_Domain_Model_Filter $filter
 	 * @return array
 	 */
-	public function findVipRecords() {
+	public function findVipRecords( Tx_DrBlob_Domain_Model_Filter $filter ) {
 		$query = $this->createQuery();
-		$catSelectSubQry = $this->buildCategorySelectionSubQuery();
-		if( $catSelectSubQry != null ) {
-			$query = $query->matching(
-				$query->logicalAnd(  
-					$query->equals( 'is_vip', 1 ),
-					$catSelectSubQry
-				) 
-			);
-		} else {
-			$query = $query->matching( $query->equals( 'is_vip', 1 ) );
+		
+		$constraints = array();
+		$constraints[] = $query->equals( 'is_vip', 1 );
+		
+		if( $filter->getCategoryCombinationMode() !== 0 ) {
+			$constraints[] =  $this->buildCategorySelectionSubQuery( $filter->getCategorySelection(), $filter->getCategoryCombinationMode() );
 		}
 		
 		return $query
-			->setOrderings( $this->validateOrdering() )
-			->setLimit( (integer)$this->qryParams['limit'] )
-			->setOffset( (integer)$this->qryParams['pointer'] )
+			->matching( $query->logicalAnd( $constraints ) )
+			->setOrderings( $filter->getOrderBy() )
+			->setLimit( $filter->getLimit() )
+			->setOffset( $filter->getPointer() )
 		 	->execute();
 	}
 	
 	/**
 	 * Counts all vip records
 	 *
-	 * @return array
+	 * @param Tx_DrBlob_Domain_Model_Filter $filter
+	 * @return integer The number of records
 	 */
-	public function countVipRecords() {
+	public function countVipRecords( Tx_DrBlob_Domain_Model_Filter $filter ) {
 		$query = $this->createQuery();
-		$catSelectSubQry = $this->buildCategorySelectionSubQuery();
-		if( $catSelectSubQry != null ) {
-			$query = $query->matching(
-				$query->logicalAnd(  
-					$query->equals( 'is_vip', 1 ),
-					$catSelectSubQry
-				) 
-			);
-		} else {
-			$query = $query->matching( $query->equals( 'is_vip', 1 ) );
+		
+		$constraints = array();
+		$constraints[] = $query->equals( 'is_vip', 1 );
+		
+		if( $filter->getCategoryCombinationMode() !== 0 ) {
+			$constraints[] =  $this->buildCategorySelectionSubQuery( $filter->getCategorySelection(), $filter->getCategoryCombinationMode() );
 		}
 		
-		return $query->count();
+		return $query
+			->matching( $query->logicalAnd( $constraints ) )
+		 	->count();
 	}
 	
-	public function findSubscribedRecords() {
+	/**
+	 * Returns a list of subscribe records
+	 *
+	 * @param Tx_DrBlob_Domain_Model_Filter $filter
+	 * @return array
+	 */
+	public function findSubscribedRecords( Tx_DrBlob_Domain_Model_Filter $filter ) {
 		die( 'not yet implemented' );
+		$query = $this->createQuery();
+		return $query->execute();
+	}
+	
+	/**
+	 * Returns the number of subscribe records
+	 *
+	 * @param Tx_DrBlob_Domain_Model_Filter $filter
+	 * @return integer The number of records
+	 */
+	public function countSubscribedRecords( Tx_DrBlob_Domain_Model_Filter $filter ) {
+		die( 'not yet implemented' );
+		$query = $this->createQuery();
+		return $query->count();
 	}
 
 	/**
 	 * This method is called by the download method.
-	 * It is used to return the record workload
+	 * It is used to return the record's workload
 	 *
 	 * @param integer $uid
 	 * @return string the value of the blob_data-field
@@ -144,43 +159,26 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 		
 		return $data[0];
 	}
-	
-	/**
-	 * This method validates to ordering
-	 *
-	 * @return array
-	 */
-	protected function validateOrdering() {
-		$allowedOrderByFields = explode( ',', 'sorting,title,crdate,tstamp,blob_size,uid,download_count,blob_type,author,author_email,t3ver_label' );
-		$orderArr = array();
-		if( in_array( $this->qryParams['orderBy'], $allowedOrderByFields ) ) {
-			$orderArr[$this->qryParams['orderBy']] = ( 
-				$this->qryParams['orderDir'] == Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING || 
-				$this->qryParams['orderDir'] == Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING ) ? 
-					$this->qryParams['orderDir'] : 
-					Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING;
-		} else {
-			$orderArr['title'] = Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING;
-		}
-		
-		return $orderArr;
-	}
-	
+
 	/**
 	 * This method generates the subquery to build the category selection.
-	 * @uses $this->qryParams['categoryMode']
-	 * @uses $this->qryParams['categorySelection']
 	 * @return Tx_Extbase_Persistence_QOM_OrInterface or null
 	 */
-	protected function buildCategorySelectionSubQuery() {
-		if( $this->qryParams['categoryMode'] == 1 && sizeof( $this->qryParams['categorySelection'] ) ) {
-			$query = $this->createQuery();
-			$constraint = array();
-			foreach( $this->qryParams['categorySelection'] as $cat ) {
-				$constraint[] = $query->equals( 'category.uid', $cat );
+	protected function buildCategorySelectionSubQuery( $selectedCategories, $combinationMode ) {
+		if( $combinationMode === 0 || sizeof( $selectedCategories ) === 0 ) {
+			return null;
+		} else {
+			
+			if( $combinationMode === 1 ) {
+				$query = $this->createQuery();
+				$constraints = array();
+				foreach( $selectedCategories as $cat ) {
+					$constraints[] = $query->equals( 'category.uid', $cat );
+				}
+				return $query->logicalOr( $constraints );
 			}
-			return $query->logicalOr( $constraint );
 		}
+		
 		return null;
 	}
 }
