@@ -32,10 +32,10 @@ if( Tx_DrBlob_Div::extConf_enablePi2() ) {
 		$_EXTKEY,
 		'Pi2',
 		array(
-			'File' => 'index,details,download',
+			'File' => 'index,details,download,manageSubscription',
 		),
 		array(
-			'File' => 'download'
+			'File' => 'download,subscribe,manageSubscription'
 		)
 	);
 	

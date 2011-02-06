@@ -9,14 +9,13 @@ plugin.tx_drblob {
     orderBy = title
     orderDir = ASC
     
-    usePageBrowser = 1
-    
     tryToOpenFileInline = 1
     substitutePagetitle = 1
     substituteIndextitle = 1
     
     categoryMode = 0
     categorySelection =
+    showAdd2Fav = 0
   }
 
   persistence {
@@ -79,17 +78,10 @@ tt_content.shortcut.20.1.tables := addToList(tx_drblob_content)
 tx_drblob_content >
 tx_drblob_content = USER
 tx_drblob_content {
-  userFunc = tx_extbase_dispatcher->dispatch
+  userFunc = tx_extbase_core_bootstrap->run
   pluginName = Pi2
   extensionName = DrBlob
   controller = File
-  action = index
-  switchableControllerActions {
-    1 {
-      controller = File
-      actions = index,details,download
-    }
-  }
   settings < plugin.tx_drblob.settings
   settings.code = recordinsert
   persistence =< plugin.tx_drblob.persistence

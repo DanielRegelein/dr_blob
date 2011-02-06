@@ -898,12 +898,12 @@ class Tx_DrBlob_Pi1 extends tslib_pibase {
 			
 				//Preprocess the content depending on the type of the record
 			switch( $this->getFieldContent( 'type' ) ) {
-				case '3': 
+				case Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_FILESYSTEM_UNSECURE: 
 					$blob['blob_data'] = Tx_DrBlob_Div::getUploadFolder() . 'storage/' . $this->getFieldContent( 'blob_data' );
 					$blob['is_quoted'] = false;
 				break;
 				
-				case '2': 
+				case Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_FILESYSTEM_SECURE: 
 					$file = Tx_DrBlob_Div::getStorageFolder() . $this->getFieldContent( 'blob_data' );
 					
 						//asume the file to be quoted --> no streaming possible
@@ -919,7 +919,7 @@ class Tx_DrBlob_Pi1 extends tslib_pibase {
 					}
 				break;
 				
-				case '1': 
+				case Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_DATABASE: 
 					$blob['blob_data'] = $this->getFieldContent( 'blob_data' );
 					$blob['blob_data'] = stripslashes( $blob['blob_data'] );
 					$blob['is_quoted'] = true;
@@ -951,7 +951,7 @@ class Tx_DrBlob_Pi1 extends tslib_pibase {
 				//The user will be redirected to the requested file.
 				//Otherwise the content streamed to the browser
 			$headerList = array();
-			if( $this->getFieldContent( 'type' ) == 3 ) {
+			if( $this->getFieldContent( 'type' ) == Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_FILESYSTEM_UNSECURE ) {
 				$headerList['Location'] = t3lib_div::locationHeaderUrl( $blob['blob_data'] );
 			} else {
 				$contentDisposition = 'attachment';

@@ -54,7 +54,7 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 	 */
 	public function indexAction( $sort = null, $pointer = 0 ) {
 		if( $this->settings['code'] == 'recordinsert' ) {
-			$cObjArr = $this->request->getContentObjectData();
+			$cObjArr = $this->configurationManager->getContentObject()->data;
 			$this->forward( 'details', null, null, array( 'file' => $cObjArr['uid'] ) );
 		}
 		
@@ -82,32 +82,38 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 			case 'top': 
 				$filelist = $this->fileRepository->findVipRecords( $filter );
 				$numRows = $this->fileRepository->countVipRecords( $filter );
-				$sectionName = 'top';
+				$template = 'Top';
 			break;
-			#case 'personal':  	
-			#	$filelist = $this->fileRepository->findSubscribedRecords( $filter );
-			#	$numRows = $this->fileRepository->countSubscribedRecords( $filter );
-			#	$sectionName = 'personal';
-			#break;
+			case 'personal':
+				if ( $GLOBALS['TSFE']->loginUser ) {
+					$filelist = $this->fileRepository->findSubscribedRecords( $filter );
+					$numRows = $this->fileRepository->countSubscribedRecords( $filter );
+					$template = 'Personal';
+				} else {
+					return '';
+				}
+			break;
 			case 'list':
-			default: 			
+			default:
+				$this->request->setArgument( 'isFolderSubscribed', $this->isFolderSubscribed() );
 				$filelist = $this->fileRepository->findAllByFilter( $filter );
 				$numRows = $this->fileRepository->countAllByFilter( $filter );
-				$sectionName = 'content';
+				$template = 'Index';
 			break;
 		}
 		
 		$this->view->assign( 'files', $filelist );
 		$this->view->assign( 'files_count', $numRows );
-		return $this->view->renderSection( $sectionName );
+
+		return $this->view->render( $template );
 	}
 
 	/**
 	 * Method to show the details of a given file
 	 *
-	 * @param Tx_DrBlob_Domain_Model_File $file
+	 * @param Tx_DrBlob_Domain_Model_FileInterface $file
 	 */
-	public function detailsAction( Tx_DrBlob_Domain_Model_File $file ) {
+	public function detailsAction( Tx_DrBlob_Domain_Model_FileInterface $file ) {
 		if( $this->settings['code'] != 'recordinsert' ) {
 				//substitute Pagetitle [should be part of the view, ot of the controller...]
 			if( (bool)$this->settings['substitutePagetitle'] == true ) {
@@ -121,7 +127,48 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 		}
 		
 		$this->view->assign( 'file', $file );
-		return $this->view->renderSection( 'content' );
+	}
+	
+	/**
+	 * Enter description here...
+	 */
+	public function manageSubscriptionAction() {
+		if ( $GLOBALS['TSFE']->loginUser ) {
+	
+			$storagePids = $this->getStoragePidForThisPlugin();
+			
+				//the return value has to be "cached" because the first step is 
+				//to delete the exisiting subscription for this folder
+			$isAlreadySubscribed = $this->isFolderSubscribed();
+	
+				//Delete all items first...
+			$rsltDelete = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
+				'tx_drblob_personal',
+				'uid_feusers = \'' . $GLOBALS['TSFE']->fe_user->user['uid'] . '\' AND ' .
+					'uid_pages IN ( ' . $GLOBALS['TYPO3_DB']->cleanIntList( $storagePids ) . ' ) '
+			);
+		
+				//folder has not been subscribed till now, so we can asume 
+				//a "subscribe" button has been clicked.
+				//otherwise it would have been an "unsubscribe"-button
+			if( !$isAlreadySubscribed ) {
+				$arrItems = Tx_Extbase_Utility_Arrays::trimExplode( ',', $storagePids );
+				for( $i=0; $i < count($arrItems); $i++ ) {
+					$rsltInsert= $GLOBALS['TYPO3_DB']->exec_INSERTquery(
+						'tx_drblob_personal',
+						array(
+							'uid_feusers' => $GLOBALS['TSFE']->fe_user->user['uid'],
+							'uid_pages' => $arrItems[$i]
+						)
+					);
+				}
+			}
+		}
+		$this->forward( 'index' );
+	}
+	
+	public function isFolderSubscribed() {
+		return false;
 	}
 	
 	/**
@@ -130,7 +177,7 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 	 * The exact type- and amount of header sent out depends on the record type
 	 * This method is also used to increment the download counter
 	 *
-	 * @param Tx_DrBlob_Domain_Model_File $file
+	 * @param Tx_DrBlob_Domain_Model_FileInterface $file
 	 * 
 	 * @internal
 	 * 		type=1		The file is decoded and this method controls the download procedure. Therefore the file's content
@@ -146,7 +193,7 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 	 * 
 	 * @see		RfC 2045, RfC 2046, RfC 2077 for Content Disposition
 	 */
-	public function downloadAction( Tx_DrBlob_Domain_Model_File $file ) {
+	public function downloadAction( Tx_DrBlob_Domain_Model_FileInterface $file ) {
 		$this->response->setStatus( 100 );
 		
 		if( !$file->hasWorkload() ) { $this->response->setStatus( 400 ); }
@@ -163,7 +210,7 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 			$record = $this->fileRepository->getFileWorkload( $file->getUid() );
 			
 			switch( $file->getRecordType() ) {
-				case '2': 
+				case Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_FILESYSTEM_SECURE: 
 					$fileReference = Tx_DrBlob_Div::getStorageFolder() . $record['blob_data'];
 					
 						//asume the file to be quoted --> no streaming possible
@@ -179,7 +226,7 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 					}
 				break;
 				
-				case '1': 
+				case Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_DATABASE: 
 					$record['blob_data'] = stripslashes( $record['blob_data'] );
 					$record['is_quoted'] = true;
 				break;
@@ -190,7 +237,7 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 			$this->fileRepository->update( $file );
 
 				//Perform download action
-			if( $file->getRecordType() == 3 ) {
+			if( $file->getRecordType() == Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_FILESYSTEM_UNSECURE ) {
 				$this->redirectToURI(  t3lib_div::locationHeaderUrl( Tx_DrBlob_Div::getUploadFolder() . 'storage/' . $record['blob_data'] ) );
 			} else {
 			
@@ -277,6 +324,12 @@ class Tx_DrBlob_Controller_FileController extends Tx_Extbase_MVC_Controller_Acti
 			fclose( $fp );
 		}
 		return false;
+	}
+	
+	
+	private function getStoragePidForThisPlugin() {
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		return $frameworkConfiguration['persistence']['storagePid'];
 	}
 }
 ?>

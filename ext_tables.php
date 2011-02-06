@@ -37,9 +37,9 @@ $TCA[Tx_DrBlob_Div::CONTENT_TABLE] = array(
 		),
 		'typeicon_column' => 'type',
 		'typeicons' => array (
-			'1' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'Resources/Public/Icons/tx_drblob_content-1.gif',
-			'2' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'Resources/Public/Icons/tx_drblob_content-2.gif',
-			'3' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'Resources/Public/Icons/tx_drblob_content-3.gif',
+			Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_DATABASE => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'Resources/Public/Icons/tx_drblob_content-1.gif',
+			Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_FILESYSTEM_SECURE => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'Resources/Public/Icons/tx_drblob_content-2.gif',
+			Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_FILESYSTEM_UNSECURE => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'Resources/Public/Icons/tx_drblob_content-3.gif',
 		),
 		'iconfile' => t3lib_extMgm::extRelPath( $_EXTKEY ) . 'Resources/Public/Icons/tx_drblob_content.gif',
 		'dynamicConfigFile' => t3lib_extMgm::extPath( $_EXTKEY ) . 'Configuration/TCA/tca.php',

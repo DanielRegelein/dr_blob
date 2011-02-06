@@ -1,0 +1,44 @@
+{namespace vhc=Tx_Vhc_ViewHelpers}
+
+<f:layout name="default" />
+
+<f:section name="content">
+	<div class="blob-top-container">
+		<f:if condition="{files}">
+			<f:then>
+				<f:for each="{files}" as="file">
+					<f:cycle values="{0: '1', 1: '2'}" as="zebraClass">
+
+						<div class="blob-top-item{zebraClass}">
+							<f:format.date date="{file.changeDate}" format="d.m.Y" />
+							<h2><f:link.action action="download" arguments="{file : file}" noCache="1">{file.title}</f:link.action></h2>
+							
+							<f:if condition="{file.images}">
+								<f:image src="{file.images.0}" alt="{file.title}" width="100px" />
+							</f:if>
+
+							<f:format.crop maxCharacters="150" append="..."><vhc:format.stripTags content="{file.description}" /></f:format.crop>
+							
+							<f:if condition="{file.categories}">
+								<ul>
+								<f:for each="{file.categories}" as="category">
+									<li>{category.title}</li>
+								</f:for>
+								</ul>
+							</f:if>
+							<br />
+							
+							<f:link.action action="details" arguments="{file : file}">[ <f:translate key="list_button_show" /> ]</f:link.action>
+						</div>
+
+					</f:cycle>
+				</f:for>
+			</f:then>
+			<f:else>
+				<div class="blob-top-item">
+					<f:translate key="noRecordsFound" />
+				</div>
+			</f:else>
+		</f:if>
+	</div>
+</f:section>

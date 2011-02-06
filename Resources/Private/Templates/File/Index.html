@@ -1,4 +1,5 @@
 {namespace vhc=Tx_Vhc_ViewHelpers}
+{namespace drblob=Tx_DrBlob_ViewHelpers}
 
 
 <f:layout name="default" />
@@ -6,7 +7,6 @@
 <f:section name="content">
 	<f:if condition="{files}">
 		<f:then>
-
 			<table class="blob-list-container">
 				<colgroup>
 					<col width="30%" />
@@ -44,94 +44,42 @@
 					
 				</tbody>
 			</table>
-			
-			<f:if condition="{settings.usePageBrowser}">
-				<vhc:Pagebrowser resCount="{files_count}" resultsPerPage="{settings.limit}" maxPages="5" showResultCount="0" forceOutput="false" />
-			</f:if>
 		</f:then>
+		<f:else>
+			Empty list
+		</f:else>
 	</f:if>
+	<f:render section="subscribe" arguments="{pidlist: pidlist}" />
 </f:section>
 
 
-<f:section name="top">
-	<div class="blob-top-container">
-		<f:if condition="{files}">
-			<f:then>
-				<f:for each="{files}" as="file">
-					<f:cycle values="{0: '1', 1: '2'}" as="zebraClass">
-
-						<div class="blob-top-item{zebraClass}">
-							<f:format.date date="{file.changeDate}" format="d.m.Y" />
-							<h2><f:link.action action="download" arguments="{file : file}" noCache="1">{file.title}</f:link.action></h2>
-							
-							<f:if condition="{file.images}">
-								<f:image src="{file.images.0}" alt="{file.title}" width="100px" />
-							</f:if>
-
-							<f:format.crop maxCharacters="150" append="..."><vhc:format.stripTags content="{file.description}" /></f:format.crop>
-							
-							<f:if condition="{file.categories}">
-								<ul>
-								<f:for each="{file.categories}" as="category">
-									<li>{category.title}</li>
-								</f:for>
-								</ul>
-							</f:if>
-							<br />
-							
-							<f:link.action action="details" arguments="{file : file}">[ <f:translate key="list_button_show" /> ]</f:link.action>
-						</div>
-
-					</f:cycle>
-				</f:for>
-			</f:then>
-			<f:else>
-				<div class="blob-top-item">
-					<f:translate key="noRecordsFound" />
-				</div>
-			</f:else>
-		</f:if>
-	</div>
-</f:section>
 
 
-<f:section name="personal">
-	<div class="blob-personal-container">
-		<f:if condition="{files}">
-			<f:then>
-				<f:for each="{files}" as="file">
-					<f:cycle values="{0: '1', 1: '2'}" as="zebraClass">
-
-						<div class="blob-personal-item{zebraClass}">
-							<f:format.date date="{file.changeDate}" format="d.m.Y" />
-							<h2><f:link.action action="download" arguments="{file : file}" noCache="1">{file.title}</f:link.action></h2>
-							
-							<f:if condition="{file.images}">
-								<f:image src="{file.images.0}" alt="{file.title}" width="150px"/>
-							</f:if>
-
-							<f:format.crop maxCharacters="150" append="..."><vhc:format.stripTags content="{file.description}" /></f:format.crop>
-							
-							<f:if condition="{file.categories}">
-								<ul>
-								<f:for each="{file.categories}" as="category">
-									<li>{category.title}</li>
-								</f:for>
-								</ul>
-							</f:if>
-							<br />
-							
-							<f:link.action action="details" arguments="{file : file}">[ <f:translate key="personal_button_show" /> ]</f:link.action>
-						</div>
-
-					</f:cycle>
-				</f:for>
-			</f:then>
-			<f:else>
-				<div class="blob-personal-item">
-					<f:translate key="noRecordsFound" />
-				</div>
-			</f:else>
-		</f:if>
-	</div>
+<f:section name="subscribe">
+	<f:if condition="{settings.showAdd2Fav}==1">
+		<f:then>
+			<f:security.ifAuthenticated>
+				<f:then>
+					<div class="blob-personal-btn">
+						<f:form method="post" action="manageSubscription">
+						<drblob:IsFolderSubscribed>
+							<f:then>
+								<f:form.submit value="{f:translate(key: 'personal_button_add')}" />
+							</f:then>
+							<f:else>
+								<f:form.submit value="{f:translate(key: 'personal_button_remove')}" />
+							</f:else>
+						</drblob:IsFolderSubscribed>
+						</f:form>
+					</div>
+				</f:then>
+				<f:else>
+					<!-- not logged in, so no subscription possible -->
+				</f:else>
+			</f:security.ifAuthenticated>
+		</f:then>
+		<f:else>
+			<!-- subscription not activated -->
+		</f:else>
+	</f:if>	
 </f:section>

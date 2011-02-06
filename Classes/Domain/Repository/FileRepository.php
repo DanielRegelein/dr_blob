@@ -66,7 +66,7 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 		if( $filter->getCategoryCombinationMode() !== 0 ) {
 			$query->matching( $this->buildCategorySelectionSubQuery( $filter->getCategorySelection(), $filter->getCategoryCombinationMode() ) );
 		}
-		return $query->count();
+		return $query->execute()->count();
 	}
 	
 	/**
@@ -111,6 +111,7 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 		
 		return $query
 			->matching( $query->logicalAnd( $constraints ) )
+			->execute()
 		 	->count();
 	}
 	
@@ -119,11 +120,29 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 	 *
 	 * @param Tx_DrBlob_Domain_Model_Filter $filter
 	 * @return array
+	 * @throws Tx_DrBlob_Exception_NotLoggedIn if no user is logged in
 	 */
 	public function findSubscribedRecords( Tx_DrBlob_Domain_Model_Filter $filter ) {
-		die( 'not yet implemented' );
-		$query = $this->createQuery();
-		return $query->execute();
+		if ( $GLOBALS['TSFE']->loginUser ) {
+			
+			$pidList = array();
+			$rsltPIDList = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'uid_pages',
+				'tx_drblob_personal',
+				'uid_feusers=\'' . $GLOBALS['TSFE']->fe_user->user['uid'] . '\''
+			);
+			while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rsltPIDList ) ) {
+				$pidList[] = $row['uid_pages'];
+			}
+			
+			$querySettings = t3lib_div::makeInstance( 'Tx_Extbase_Persistence_Typo3QuerySettings' );
+			$querySettings->setStoragePageIds( $pidList );
+			$this->setDefaultQuerySettings( $querySettings );
+			
+			return $this->findAllByFilter( $filter );
+		} else {
+			throw new Tx_DrBlob_Exception_NotLoggedIn( 'No user logged in, so this query is invalid', 1296768814 );
+		}
 	}
 	
 	/**
@@ -133,9 +152,26 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 	 * @return integer The number of records
 	 */
 	public function countSubscribedRecords( Tx_DrBlob_Domain_Model_Filter $filter ) {
-		die( 'not yet implemented' );
-		$query = $this->createQuery();
-		return $query->count();
+		if ( $GLOBALS['TSFE']->loginUser ) {
+			
+			$pidList = array();
+			$rsltPIDList = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'uid_pages',
+				'tx_drblob_personal',
+				'uid_feusers=\'' . $GLOBALS['TSFE']->fe_user->user['uid'] . '\''
+			);
+			while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc( $rsltPIDList ) ) {
+				$pidList[] = $row['uid_pages'];
+			}
+			
+			$querySettings = t3lib_div::makeInstance( 'Tx_Extbase_Persistence_Typo3QuerySettings' );
+			$querySettings->setStoragePageIds( $pidList );
+			$this->setDefaultQuerySettings( $querySettings );
+			
+			return $this->CountAllByFilter( $filter );
+		} else {
+			throw new Tx_DrBlob_Exception_NotLoggedIn( 'No user logged in, so this query is invalid', 1296768815 );
+		}
 	}
 
 	/**

@@ -26,7 +26,7 @@
  * @package TYPO3
  * @subpackage dr_blob
  */
-class Tx_DrBlob_Domain_Model_File extends Tx_Extbase_DomainObject_AbstractEntity {
+class Tx_DrBlob_Domain_Model_File extends Tx_Extbase_DomainObject_AbstractEntity implements Tx_DrBlob_Domain_Model_FileInterface {
 	
 	/**
 	 * @var string

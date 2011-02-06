@@ -64,7 +64,7 @@ class Tx_DrBlob_CmsLayout {
 					$result .= ' ' . $GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_wiz.xml:cms_layout.mode.usingAdd2Fav' );					
 				}
 			}
-			
+			$PImode = 'PIBASE';
 		} else if ( $params['row']['list_type'] == 'drblob_pi2' ) {
 			
 			$data = t3lib_div::xml2array( $params['row']['pi_flexform'] );
@@ -75,6 +75,10 @@ class Tx_DrBlob_CmsLayout {
 				$GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_wiz.xml:cms_layout.mode' ),
 				$GLOBALS['LANG']->sL( 'LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.' . $listType ) 
 			);
+			$PImode = 'EXTBASE';
+		}
+		if( $GLOBALS['BE_USER']->isAdmin() ) {
+			$result .= ' [' . $PImode . ']';
 		}
 		return $result;
 	}

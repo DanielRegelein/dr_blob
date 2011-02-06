@@ -226,13 +226,13 @@ abstract class Tx_DrBlob_Div {
 	public static function extConf_defaultStorageTypes() {
 		$validTypes = self::extConf_getAllowedStorageTypes();
 		if( $validTypes['db'] == 1 ) {
-			return 1;
+			return Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_DATABASE;
 		}
 		if( $validTypes['fs'] == 1 ) {
-			return 2;
+			return Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_FILESYSTEM_SECURE;
 		}
 		if( $validTypes['fsus'] == 1 ) {
-			return 3;
+			return Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_FILESYSTEM_UNSECURE;
 		}
 	}
 	

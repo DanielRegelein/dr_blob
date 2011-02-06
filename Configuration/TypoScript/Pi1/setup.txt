@@ -6,6 +6,9 @@ plugin.tx_drblob_pi1 {
   includeLibs = EXT:dr_blob/Classes/Pi1.php
   userFunc = tx_drblob_pi1->main
 
+  pidList = {$plugin.tx_drblob.persistence.storagePid}
+  recursive = 0
+  
   templateFile = EXT:dr_blob/Resources/Private/ClassicTemplates/dr_blob_v2.tmpl
   fileExtIconFolder = {$plugin.tx_drblob.fileExtIconFolder}
   searchFieldList = title,description,author,blob_name,t3ver_label

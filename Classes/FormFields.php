@@ -82,7 +82,7 @@ class Tx_DrBlob_FormFields {
 		
 		switch( $PA['row']['type'] ) {
 			
-			case '3':
+			case Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_FILESYSTEM_UNSECURE:
 			$GLOBALS['TCA']['tx_drblob_content']['columns']['blob_data']['config']['type'] = 'group';
 				$el = $PA['pObj']->getSingleField_typeGroup( 
 					'tx_drblob_content', 
@@ -92,8 +92,8 @@ class Tx_DrBlob_FormFields {
 				);
 			break;
 			
-			case '1':
-			case '2':
+			case Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_DATABASE:
+			case Tx_DrBlob_Domain_Model_FileInterface::RECORD_TYPE_FILESYSTEM_SECURE:
 			default:
 				$el = '<input ' .
 				'type="file" ' .

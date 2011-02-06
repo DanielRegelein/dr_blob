@@ -3,6 +3,8 @@
 ##
 
 plugin.tx_drblob {
+  persistence.storagePid = 
+
   stdDateWrap = d/m/Y
     # cat=plugin.tx_drblob/10; type=text; label=Standard Format for Date-Fields (Create Date / Change Date)
   dateFormat = %d/%m/%Y
