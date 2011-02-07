@@ -135,11 +135,15 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 				$pidList[] = $row['uid_pages'];
 			}
 			
-			$querySettings = t3lib_div::makeInstance( 'Tx_Extbase_Persistence_Typo3QuerySettings' );
-			$querySettings->setStoragePageIds( $pidList );
-			$this->setDefaultQuerySettings( $querySettings );
-			
-			return $this->findAllByFilter( $filter );
+			if( sizeof( $pidList) ) {
+				$querySettings = t3lib_div::makeInstance( 'Tx_Extbase_Persistence_Typo3QuerySettings' );
+				$querySettings->setStoragePageIds( $pidList );
+				$this->setDefaultQuerySettings( $querySettings );
+				
+				return $this->findAllByFilter( $filter );
+			} else {
+				return null;
+			}
 		} else {
 			throw new Tx_DrBlob_Exception_NotLoggedIn( 'No user logged in, so this query is invalid', 1296768814 );
 		}
@@ -168,7 +172,15 @@ class Tx_DrBlob_Domain_Repository_FileRepository extends Tx_Extbase_Persistence_
 			$querySettings->setStoragePageIds( $pidList );
 			$this->setDefaultQuerySettings( $querySettings );
 			
-			return $this->CountAllByFilter( $filter );
+			if( sizeof( $pidList) ) {
+				$querySettings = t3lib_div::makeInstance( 'Tx_Extbase_Persistence_Typo3QuerySettings' );
+				$querySettings->setStoragePageIds( $pidList );
+				$this->setDefaultQuerySettings( $querySettings );
+				
+				return $this->CountAllByFilter( $filter );
+			} else {
+				return null;
+			}
 		} else {
 			throw new Tx_DrBlob_Exception_NotLoggedIn( 'No user logged in, so this query is invalid', 1296768815 );
 		}

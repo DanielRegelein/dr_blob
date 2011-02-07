@@ -35,7 +35,7 @@ if( Tx_DrBlob_Div::extConf_enablePi2() ) {
 			'File' => 'index,details,download,manageSubscription',
 		),
 		array(
-			'File' => 'download,subscribe,manageSubscription'
+			'File' => 'download,manageSubscription'
 		)
 	);
 	

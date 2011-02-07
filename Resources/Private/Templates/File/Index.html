@@ -7,6 +7,8 @@
 <f:section name="content">
 	<f:if condition="{files}">
 		<f:then>
+			<f:render section="search" />
+			
 			<table class="blob-list-container">
 				<colgroup>
 					<col width="30%" />
@@ -36,7 +38,7 @@
 								<td><vhc:format.filesize>{file.filesize}</vhc:format.filesize></td>
 								<td style="white-space: nowrap;">
 									<f:render partial="downloadLink" arguments="{file : file, label : 'list_button_download' }"/>
-									<f:link.action action="details" arguments="{file : file}">[ <f:translate key="list_button_show" /> ]</f:link.action>
+									<f:link.action action="details" arguments="{file : file}"><f:translate key="list_button_show" /></f:link.action>
 								</td>
 							</tr>
 						</f:cycle>
@@ -49,13 +51,23 @@
 			Empty list
 		</f:else>
 	</f:if>
-	<f:render section="subscribe" arguments="{pidlist: pidlist}" />
+	<f:render section="manageSubscription" />
 </f:section>
 
 
+<f:section name="search">
+	<f:alias map="{code: 'search'}">
+		<f:if condition="{settings.code}=={code}">
+			<f:form method="post" noCache="1">
+				<f:form.textbox maxlength="100" size="30" name="sword" />
+				<f:form.submit name="search" value="{f:translate(key: 'search_button_search')}" />
+			</f:form>
+			<hr />
+		</f:if>
+	</f:alias>
+</f:section>
 
-
-<f:section name="subscribe">
+<f:section name="manageSubscription">
 	<f:if condition="{settings.showAdd2Fav}==1">
 		<f:then>
 			<f:security.ifAuthenticated>

@@ -28,6 +28,10 @@
 										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.personal_list</numIndex>
 										<numIndex index="1">personal</numIndex>
 									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:dr_blob/Resources/Private/Language/locallang_tca.xml:tt_content.pi_flexform.whatToDisplay.search</numIndex>
+										<numIndex index="1">search</numIndex>
+									</numIndex>
 								</items>
 								<default>list</default>
 								<maxitems>1</maxitems>
